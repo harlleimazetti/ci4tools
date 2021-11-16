@@ -1,5 +1,7 @@
 <?php namespace Harlleimazetti\Ci4crud;
 
+use App\Controllers\BaseController;
+
 define('DS', DIRECTORY_SEPARATOR);
 define('VENDOR_NAME', 'harlleimazetti');
 define('PACKAGE_NAME', 'ci4crud');
