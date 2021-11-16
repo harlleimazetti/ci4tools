@@ -1,4 +1,8 @@
-<?php namespace App\Controllers;
+<?php namespace Harlleimazetti\Ci4crud;
+
+define('DS', DIRECTORY_SEPARATOR);
+define('VENDOR_NAME', 'harlleimazetti');
+define('PACKAGE_NAME', 'ci4crud');
 
 class Crud extends BaseController {
 	protected $db;
@@ -27,14 +31,14 @@ class Crud extends BaseController {
 	{
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
-		$this->crudConfigFolder = APPPATH."Config".DIRECTORY_SEPARATOR."Crud".DIRECTORY_SEPARATOR;
-		$this->crudTemplatesFolder = APPPATH."Config".DIRECTORY_SEPARATOR."Crud".DIRECTORY_SEPARATOR."Templates".DIRECTORY_SEPARATOR;
-		$this->controllersFolder = APPPATH."Controllers".DIRECTORY_SEPARATOR;
-		$this->crudControllersBaseFolder = APPPATH."Controllers".DIRECTORY_SEPARATOR."CrudBase".DIRECTORY_SEPARATOR;
-		$this->modelsFolder = APPPATH."Models".DIRECTORY_SEPARATOR;
-		$this->crudModelsBaseFolder = APPPATH."Models".DIRECTORY_SEPARATOR."CrudBase".DIRECTORY_SEPARATOR;
-		$this->entitiesFolder = APPPATH."Entities".DIRECTORY_SEPARATOR;
-		$this->crudEntitiesBaseFolder = APPPATH."Entities".DIRECTORY_SEPARATOR."CrudBase".DIRECTORY_SEPARATOR;
+		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."templates".DS;
+		$this->crudConfigFolder 					= APPPATH."Config".DS."Crud".DS;
+		$this->controllersFolder 					= APPPATH."Controllers".DS;
+		$this->crudControllersBaseFolder 	= APPPATH."Controllers".DS."CrudBase".DS;
+		$this->modelsFolder 							= APPPATH."Models".DS;
+		$this->crudModelsBaseFolder 			= APPPATH."Models".DS."CrudBase".DS;
+		$this->entitiesFolder 						= APPPATH."Entities".DS;
+		$this->crudEntitiesBaseFolder 		= APPPATH."Entities".DS."CrudBase".DS;
 		//$this->load->helper('form');
 		//$this->load->helper('custom_form');
 	}
