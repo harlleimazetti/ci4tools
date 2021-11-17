@@ -5,6 +5,7 @@ use App\Controllers\BaseController;
 define('DS', DIRECTORY_SEPARATOR);
 define('VENDOR_NAME', 'harlleimazetti');
 define('PACKAGE_NAME', 'ci4crud');
+define('CONTROLLERS_FOLDER', 'controllers');
 
 class Crud extends BaseController {
 	protected $db;
