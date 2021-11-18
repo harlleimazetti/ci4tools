@@ -1,11 +1,10 @@
-<?php namespace Harlleimazetti\Ci4crud;
+<?php namespace Harlleimazetti\Ci4tools;
 
 use App\Controllers\BaseController;
 
 define('DS', DIRECTORY_SEPARATOR);
 define('VENDOR_NAME', 'harlleimazetti');
-define('PACKAGE_NAME', 'ci4crud');
-define('CONTROLLERS_FOLDER', 'controllers');
+define('PACKAGE_NAME', 'ci4tools');
 
 class Crud extends BaseController {
 	protected $db;
@@ -34,7 +33,7 @@ class Crud extends BaseController {
 	{
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
-		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."templates".DS;
+		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
 		$this->crudBaseFolder 						= APPPATH."CrudBase".DS;
 		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
 		$this->controllersFolder 					= APPPATH."Controllers".DS;
