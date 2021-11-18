@@ -35,13 +35,21 @@ class Crud extends BaseController {
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
 		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."templates".DS;
-		$this->crudConfigFolder 					= APPPATH."Crud".DS."Config".DS;
+		$this->crudBaseFolder 						= APPPATH."CrudBase".DS;
+		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
 		$this->controllersFolder 					= APPPATH."Controllers".DS;
-		$this->crudControllersBaseFolder 	= APPPATH."Crud".DS."Controllers".DS;
+		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
 		$this->modelsFolder 							= APPPATH."Models".DS;
-		$this->crudModelsBaseFolder 			= APPPATH."Crud".DS."Models".DS;
+		$this->crudModelsBaseFolder 			= $this->crudBaseFolder."Models".DS;
 		$this->entitiesFolder 						= APPPATH."Entities".DS;
-		$this->crudEntitiesBaseFolder 		= APPPATH."Crud".DS."Entities".DS;
+		$this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
+
+		if (!is_dir($this->crudBaseFolder))		{ mkdir($this->crudBaseFolder); }
+		if (!is_dir($this->crudConfigFolder))	{ mkdir($this->crudConfigFolder); }
+		if (!is_dir($this->crudControllersBaseFolder))	{ mkdir($this->crudControllersBaseFolder); }
+		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
+		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
+
 		//$this->load->helper('form');
 		//$this->load->helper('custom_form');
 	}
@@ -132,11 +140,6 @@ class Crud extends BaseController {
 			{
 				$this->tables = array_map('trim', explode(',', $tables));
 			}
-		}
-
-		if (!is_dir($this->crudConfigFolder))
-		{
-			mkdir($this->crudConfigFolder);
 		}
 
 		foreach ($this->tables as $table)
