@@ -35,13 +35,13 @@ class Crud extends BaseController {
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
 		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."templates".DS;
-		$this->crudConfigFolder 					= APPPATH."Config".DS."Crud".DS;
+		$this->crudConfigFolder 					= APPPATH."Crud".DS."Config".DS;
 		$this->controllersFolder 					= APPPATH."Controllers".DS;
-		$this->crudControllersBaseFolder 	= APPPATH."Controllers".DS."CrudBase".DS;
+		$this->crudControllersBaseFolder 	= APPPATH."Crud".DS."Controllers".DS;
 		$this->modelsFolder 							= APPPATH."Models".DS;
-		$this->crudModelsBaseFolder 			= APPPATH."Models".DS."CrudBase".DS;
+		$this->crudModelsBaseFolder 			= APPPATH."Crud".DS."Models".DS;
 		$this->entitiesFolder 						= APPPATH."Entities".DS;
-		$this->crudEntitiesBaseFolder 		= APPPATH."Entities".DS."CrudBase".DS;
+		$this->crudEntitiesBaseFolder 		= APPPATH."Crud".DS."Entities".DS;
 		//$this->load->helper('form');
 		//$this->load->helper('custom_form');
 	}
