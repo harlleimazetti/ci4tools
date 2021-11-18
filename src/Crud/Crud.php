@@ -1,4 +1,4 @@
-<?php namespace Harlleimazetti\Ci4tools;
+<?php namespace Harlleimazetti\Ci4tools\Crud;
 
 use App\Controllers\BaseController;
 
