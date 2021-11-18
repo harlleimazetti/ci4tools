@@ -1,19 +1,19 @@
 {
-  "name": "harlleimazetti/ci4crud",
-  "description": "CI4 CRUD Tools",
+  "name": "harlleimazetti/ci4tools",
+  "description": "Tools for Codeigniter 4",
   "type": "library",
   "license": "MIT",
   "authors": [
       {
           "name": "Harllei Mazetti",
-          "email": "harlleimazetti@email.com"
+          "email": "harlleimazetti@gmail.com"
       }
   ],
   "minimum-stability": "dev",
   "require": {},
   "autoload" : {
     "psr-4" : {
-      "Harlleimazetti\\Ci4crud\\" :  "src/"
+      "Harlleimazetti\\Ci4tools\\" :  "src/"
     }
   }
 }
