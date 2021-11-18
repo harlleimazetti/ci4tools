@@ -62,16 +62,19 @@ class Crud extends BaseController {
 
 	public function tableinfo($table = "") {
 		if (empty($table)) {
-			echo "\r\n";
-			echo "> ".$this->color("TABLEINFO (ERROR): Please, type a table name.", "red").$table."\r\n";
-			echo "\r\n\r\n";
+			//echo "\r\n";
+			//echo "> ".$this->color("TABLEINFO (ERROR): Please, type a table name.", "red").$table."\r\n";
+			CLI::write("TABLEINFO (ERROR): Please, type a table name.", "red");
+			//echo "\r\n\r\n";
 			exit;
 		}
 		if (!$this->db->tableExists($table))
 		{
-			echo "\r\n";
-			echo "> ".$this->color("TABLEINFO (ERROR): TABLE NOT FOUND - ", "red").$table."\r\n";
-			echo "\r\n\r\n";
+			//echo "\r\n";
+			//echo "> ".$this->color("TABLEINFO (ERROR): TABLE NOT FOUND - ", "red").$table."\r\n";
+			CLI::print("TABLEINFO (ERROR): Table not found: ", "red");
+			CLI::write($table);
+			//echo "\r\n\r\n";
 			exit;
 		}
 
