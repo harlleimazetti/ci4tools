@@ -1,5 +1,6 @@
 <?php namespace Harlleimazetti\Ci4tools\Crud;
 
+use CodeIgniter\CLI\CLI;
 use App\Controllers\BaseController;
 
 define('DS', DIRECTORY_SEPARATOR);
