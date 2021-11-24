@@ -29,11 +29,14 @@ class Crud extends BaseController {
 	protected $crudEntitiesBaseFolder;
 	protected $crudConfigFolder;
 	protected $crudTemplatesFolder;
+  protected $fieldsNotConfigurable;
+  protected $fieldOptionsNotConfigurable;
 
 	function __construct()
 	{
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
+
 		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
 		$this->crudBaseFolder 						= APPPATH."CrudBase".DS;
 		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
@@ -44,6 +47,9 @@ class Crud extends BaseController {
 		$this->entitiesFolder 						= APPPATH."Entities".DS;
 		$this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
 
+    $this->fieldsNotConfigurable        = ['id', 'created_at', 'updated_at', 'deleted_at'];
+    $this->fieldOptionsNotConfigurable  = ['name'];
+    
 		if (!is_dir($this->crudBaseFolder))		{ mkdir($this->crudBaseFolder); }
 		if (!is_dir($this->crudConfigFolder))	{ mkdir($this->crudConfigFolder); }
 		if (!is_dir($this->crudControllersBaseFolder))	{ mkdir($this->crudControllersBaseFolder); }
@@ -80,8 +86,7 @@ class Crud extends BaseController {
 
 		echo "> FIELDS \r\n";
 		echo "\r\n";
-		foreach ($this->fields as $field)
-		{
+		foreach ($this->fields as $field) {
 			echo STR_PAD($field->name, 30);
 			echo STR_PAD($field->type, 20);
 			echo STR_PAD($field->max_length, 10);
@@ -109,8 +114,7 @@ class Crud extends BaseController {
 		echo "> INDEXES \r\n";
 		echo "\r\n";
 
-		foreach ($this->indexes as $index)
-		{
+		foreach ($this->indexes as $index) {
 			$color = $index->name == "PRIMARY" ? "orange" : "white";
 
 			echo $this->color(STR_PAD($index->name, 15), $color);
@@ -333,22 +337,72 @@ class Crud extends BaseController {
 
 			$arquivo = APPPATH.'views/'.ucfirst($table).'_ver.php';
 			$this->grava_arquivo($arquivo, $conteudo_view);
-
-			/*
-			$arquivo = APPPATH.'language/english/'.ucfirst($table).'_lang.php';
-			$arq = fopen($arquivo, 'w');
-			fwrite($arq, $conteudo_lang);
-			fclose($arq);
-			$arquivo = APPPATH.'language/portuguese/'.ucfirst($table).'_lang.php';
-			$arq = fopen($arquivo, 'w');
-			fwrite($arq, $conteudo_lang);
-			fclose($arq);
-			$arquivo = APPPATH.'language/spanish/'.ucfirst($table).'_lang.php';
-			$arq = fopen($arquivo, 'w');
-			fwrite($arq, $conteudo_lang);
-			fclose($arq);
 			*/
 		}
+	}
+
+	public function config($tables = "")
+  {
+		if (!empty($tables)) {
+			$pos = strpos($tables, ",");
+			if ($pos === false) {
+				$this->tables = array($tables);
+			} else {
+				$this->tables = array_map('trim', explode(',', $tables));
+			}
+		}
+
+		if (!is_dir($this->crudConfigFolder)) {
+      CLI::error("ERROR: CRUD Config folder not found");
+			exit;
+		}
+
+		foreach ($this->tables as $table)
+    {
+			if (!$this->db->tableExists($table)) {
+        CLI::error("TABLE CONFIG (ERROR): Table not found: ". CLI::color($table, 'green'));
+				exit;
+			}
+
+      CLI::write("Edit CRUD Config file for table: ". CLI::color($table, 'green'), 'white');
+
+      CLI::write("Retrieving table config");
+			$fileConfigPath = $this->crudConfigFolder.$table.".json";
+
+			if (!file_exists($fileConfigPath)) {
+        CLI::error("ERROR: Config file not found: ". CLI::color($table, 'green'));
+				exit;
+			}
+			
+			$this->tableConfig = file_get_contents($fileConfigPath);
+
+      $tableConfig   = json_decode($this->tableConfig, true);
+      $tableFields  = array_column($tableConfig, 'name');
+      $tableFields  = array_diff($tableFields, $this->fieldsNotConfigurable);
+
+      $selectedField = CLI::promptByKey("Selecione o campo que deseja configurar", $tableFields);
+      
+      $configOptions = array_keys($tableConfig[$selectedField]);
+      $configOptions = array_diff($configOptions, $this->fieldOptionsNotConfigurable);
+      
+      foreach($configOptions as $i => $option)
+      {
+        $promptOptions = $tableConfig[$selectedField][$option];
+
+        if ($option === 'multiple' || $option === 'show' || $option === 'allowed') {
+          $promptOptions = ['Y' => 'Yes', 'N' => 'No'];
+          $tableConfig[$selectedField][$option] = CLI::promptByKey($option, $promptOptions);
+        } else {
+          $tableConfig[$selectedField][$option] = CLI::prompt($option, $promptOptions);
+        }
+      }
+
+			$tableConfig = json_encode($tableConfig);
+			$tableConfig = $this->indent($tableConfig);
+			$fileConfigPath = $this->crudConfigFolder.$table.".json";
+
+			file_put_contents($fileConfigPath, $tableConfig);
+    }
 	}
 
 	protected function grava_arquivo($arquivo, $conteudo) {
