@@ -1,4 +1,4 @@
-<?php namespace App\Controllers\CrudBase;
+<?php namespace App\CrudBase\Controllers;
 
 use App\Controllers\BaseController;
 

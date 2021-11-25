@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use App\Models\CrudBase\{class_name}ModelBase;
+use App\CrudBase\Models\{class_name}ModelBase;
 
 class {class_name}Model extends {class_name}ModelBase
 {

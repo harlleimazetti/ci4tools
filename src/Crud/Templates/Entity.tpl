@@ -1,6 +1,6 @@
 <?php namespace App\Entities;
 
-use App\Entities\CrudBase\{class_name}Base;
+use App\CrudBase\Entities\{class_name}Base;
 
 class {class_name} extends {class_name}Base
 {
