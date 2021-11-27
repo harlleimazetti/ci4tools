@@ -2,6 +2,7 @@
 
 use CodeIgniter\Model;
 use App\Entities\{class_name};
+use Harlleimazetti\Ci4tools\Relation\Relation;
 
 class {class_name}ModelBase extends Model
 {
@@ -11,6 +12,7 @@ class {class_name}ModelBase extends Model
 	protected $emptyRecord;
 	protected $countAllRecords;
 	protected $countResultsRecords;
+  protected $relations = [];
 
 	protected $table              = '{table}';
 	protected $primaryKey         = 'id';
@@ -25,12 +27,62 @@ class {class_name}ModelBase extends Model
 	//protected $validationMessages = [];
 	protected $allowedFields      = [{record_allowed_fields}];
 
+  protected $afterFind          = ['findRelations'];
+
 	function __construct() {
 		parent::__construct();
 		//$this->fields = array_fill_keys($this->db->list_fields("{table}"), '');
 		$database = \Config\Database::connect();
 		$this->db	= $database->table('{table}');
 	}
+
+  protected function findRelations(array $data)
+  {
+    foreach($data['data'] as $record) {
+      foreach($this->relations as $r) {
+        $r->record = $record;
+        $relation = new Relation($r);
+        $record->{$r->name} = $relation->get();
+      }
+    }
+    return $data;
+  }
+
+  public function manyToOne($table)
+  {
+    $relation = (object)[
+      'name' => $table,
+      'type' => 'manyToOne',
+      'parentTable'=> $table,
+      'childTable'=> $this->table
+    ];
+    array_push($this->relations, $relation);
+    return $this;
+  }
+
+  public function oneToMany($table)
+  {
+    $relation = (object)[
+      'name' => $table,
+      'type' => 'oneToMany',
+      'parentTable'=> $this->table,
+      'childTable'=> $table
+    ];
+    array_push($this->relations, $relation);
+    return $this;
+  }
+
+  public function manyToMany($table)
+  {
+    $relation = (object)[
+      'name' => $table,
+      'type' => 'manyToMany',
+      'parentTable'=> $this->table,
+      'childTable'=> $table
+    ];
+    array_push($this->relations, $relation);
+    return $this;
+  }
 
 	function countAll() {
 		$this->countAllRecords = $this->db->count_all('{table}');
