@@ -56,6 +56,37 @@ class {class_name}Base extends BaseController {
 
 	public function list()
 	{
+		${table}Model = new \App\Models\{model_name}Model();
+    $this->data['data'] = array();
+		${record}s = ${table}Model->findAll();
+    
+    $this->data['{record}s']        = ${record}s;
+    $this->data['page_title']       = 'Lista';
+    $this->data['page_subtitle']    = 'de registros';
+    $this->data['page_description'] = '{system_area_list_description}';
+    $this->data['page_icon']        = 'fal fa-globe';
+    $this->data['body_id']          = 'body_{table}_list';
+    $this->data['system_area']      = '{system_area_list_description}';
+    $this->data['menus']            = $this->menus;
+    $this->data['theme_options']    = [
+      'show_header' => true,
+      'show_nav_side' => true,
+      'show_nav_top' => true,
+      'show_footer' => true,
+    ];
+
+    $contents = array('list');
+
+    echo $this->showView(
+      $theme_name     = $this->themeConfig->themeName,
+      $theme_options  = $this->data['theme_options'],
+      $contents       = $contents,
+      $data           = $this->data,
+    );
+	}
+
+	public function list_backup()
+	{
 		$this->permissao->resultado($this->permissao->verifica($this->router->class, $this->router->method));
 		${table}Model = new \App\Models\{model_name}Model();
 		//${record}s = ${table}Model->getAll(array());
