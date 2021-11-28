@@ -1,8 +1,8 @@
 <?php namespace Harlleimazetti\Ci4tools\Relation;
 
-define('DS', DIRECTORY_SEPARATOR);
-define('VENDOR_NAME', 'harlleimazetti');
-define('PACKAGE_NAME', 'ci4tools');
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
+defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
 class Relation  {
 	protected $db;

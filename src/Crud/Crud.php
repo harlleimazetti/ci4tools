@@ -3,9 +3,9 @@
 use CodeIgniter\CLI\CLI;
 use App\Controllers\BaseController;
 
-define('DS', DIRECTORY_SEPARATOR);
-define('VENDOR_NAME', 'harlleimazetti');
-define('PACKAGE_NAME', 'ci4tools');
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
+defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
 class Crud extends BaseController {
 	protected $db;
@@ -276,6 +276,9 @@ class Crud extends BaseController {
 
 			echo "Making model files"."\r\n";
 			$this->makeModelFiles();
+
+			echo "Making View List files"."\r\n";
+			$this->makeViewListFiles();
 
 			echo "End of table config"."\r\n";
 			echo ".:."."\r\n";
@@ -601,6 +604,14 @@ class Crud extends BaseController {
 		if (!file_exists($this->modelsFolder.$modelFileName)) {
 			file_put_contents($this->modelsFolder.$modelFileName, $newModelContent);
 		}
+	}
+
+  protected function makeViewListFiles()
+	{
+		$listContent = file_get_contents($this->crudTemplatesFolder."list.tpl");
+		$newListContent = $this->parse($listContent, $this->templateVars);
+		$listFileName = ucfirst($this->table).".php";
+		file_put_contents($this->listFolder.$listFileName, $newListContent);
 	}
 
 	protected function color($text, $color)
