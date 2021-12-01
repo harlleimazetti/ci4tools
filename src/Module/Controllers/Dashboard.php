@@ -2,7 +2,7 @@
 
 namespace Ci4toolsadmin\Controllers;
 
-class Dashboard extends Ci4toolsadmin\Controllers\BaseController
+class Dashboard extends \Ci4toolsadmin\Controllers\BaseController
 {
   protected $data;
 
@@ -22,15 +22,15 @@ class Dashboard extends Ci4toolsadmin\Controllers\BaseController
     $this->data['menus']            = $this->menus;
     $this->data['theme_options']    = [
       'show_header' => true,
-      'show_nav_side' => true,
-      'show_nav_top' => true,
+      'show_nav_primary' => true,
+      'show_nav_secondary' => true,
       'show_footer' => true,
     ];
 
     $contents = array('dashboard');
 
     echo $this->showView(
-      $theme_name     = $this->themeConfig->themeName,
+      $theme_name     = $this->themeConfig->themeAdminName,
       $theme_options  = $this->data['theme_options'],
       $contents       = $contents,
       $data           = $this->data,
