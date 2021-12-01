@@ -77,7 +77,7 @@ class Crud extends BaseController {
     $source = $this->vendorFolder."Module";
     $sourceAssets = $this->vendorFolder."Module".DS."public";
     $destinationModule = $this->moduleFolder;
-    $destinationAssets = FCPATH."modules".DS."ci4tools".DS;
+    $destinationAssets = FCPATH;
 
     $publisher = new \CodeIgniter\Publisher\Publisher($source, $destinationModule);
 
@@ -87,9 +87,9 @@ class Crud extends BaseController {
 
     $publisher->merge(false);
 
-    $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets);
+    $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     
-    $publisherAssets->addPath('modules');
+    $publisherAssets->addPath('ci4tools');
     
     $publisherAssets->merge(false);
   }
