@@ -46,7 +46,7 @@ class Crud extends BaseController {
 
 		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
 		
-    $this->crudBaseFolder 						= $this->moduleFolder."crudbase".DS;
+    $this->crudBaseFolder 						= $this->moduleFolder."Crudbase".DS;
 
 		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
 		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
@@ -81,6 +81,7 @@ class Crud extends BaseController {
 
     $publisher = new \CodeIgniter\Publisher\Publisher($source, $destinationModule);
 
+    $publisher->addPath('Controllers');
     $publisher->addPath('Entities');
     $publisher->addPath('Models');
     $publisher->addPath('Views');

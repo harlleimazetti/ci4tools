@@ -1,6 +1,6 @@
 <?php namespace App\Controllers;
 
-use App\CrudBase\Controllers\{class_name}Base;
+use Ci4tools\Crudbase\Controllers\{class_name}Base;
 
 class {class_name} extends {class_name}Base
 {
