@@ -1,6 +1,8 @@
-<?php namespace Ci4toolsadmin\Controllers;
+<?php
 
-class Dashboard extends \CodeIgniter\Controller
+namespace Ci4toolsadmin\Controllers;
+
+class Dashboard extends Ci4toolsadmin\Controllers\BaseController
 {
   protected $data;
 
