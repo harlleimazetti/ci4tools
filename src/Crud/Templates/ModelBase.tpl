@@ -1,4 +1,4 @@
-<?php namespace Ci4tools\Crudbase\Models;
+<?php namespace Ci4toolsadmin\Crudbase\Models;
 
 use CodeIgniter\Model;
 use App\Entities\{class_name};
@@ -254,4 +254,4 @@ class {class_name}ModelBase extends Model
 }
 
 /* End of File {class_name}ModelBase.php */
-/* Path: ./app/Models/CrudBase/{class_name}ModelBase.php */
+/* Path: ./Ci4toolsadmin/CrudBase/Models/{class_name}ModelBase.php */

@@ -1,4 +1,4 @@
-<?php namespace Ci4tools\Crudbase\Controllers;
+<?php namespace Ci4toolsadmin\Crudbase\Controllers;
 
 use App\Controllers\BaseController;
 use Harlleimazetti\Ci4tools\Crud\Crud;
@@ -243,4 +243,4 @@ class {class_name}Base extends BaseController {
 }
 
 /* End of File {class_name}Base.php */
-/* Path: ./app/Controllers/CrudBase/{class_name}Base.php */
+/* Path: ./Ci4toolsadmin/CrudBase/Controllers/{class_name}Base.php */

@@ -1,13 +1,12 @@
 <?php namespace Harlleimazetti\Ci4tools\Crud;
 
 use CodeIgniter\CLI\CLI;
-use App\Controllers\BaseController;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Crud extends BaseController {
+class Crud extends \CodeIgniter\Controller {
 	protected $db;
 	protected $tables;
 	protected $table;
@@ -42,7 +41,7 @@ class Crud extends BaseController {
 
     $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
 
-    $this->moduleFolder 						  = ROOTPATH."ci4tools".DS;
+    $this->moduleFolder 						  = ROOTPATH."ci4toolsadmin".DS;
 
 		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
 		
@@ -90,7 +89,7 @@ class Crud extends BaseController {
 
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     
-    $publisherAssets->addPath('ci4tools');
+    $publisherAssets->addPath('ci4toolsadmin');
     
     $publisherAssets->merge(false);
   }

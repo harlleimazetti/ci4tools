@@ -1,6 +1,6 @@
 <?php namespace App\Controllers;
 
-use Ci4tools\Crudbase\Controllers\{class_name}Base;
+use Ci4toolsadmin\Crudbase\Controllers\{class_name}Base;
 
 class {class_name} extends {class_name}Base
 {
@@ -10,4 +10,4 @@ class {class_name} extends {class_name}Base
 }
 
 /* End of File {class_name}.php */
-/* Path: ./app/Controllers/{class_name}.php */
+/* Path: ./App/Controllers/{class_name}.php */
