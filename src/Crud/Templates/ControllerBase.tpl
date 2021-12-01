@@ -1,45 +1,19 @@
 <?php namespace App\CrudBase\Controllers;
 
 use App\Controllers\BaseController;
+use Harlleimazetti\Ci4tools\Crud\Crud;
 
 class {class_name}Base extends BaseController {
 	private $result;
 	private $relations;
-	private $data = array();
+  private $visibleFields;
+	private $data = [];
 
 	function __construct()
 	{
-		$this->result['message'] = array();
-		/*
-		if(!$this->session->userdata('logado'))
-		{
-			redirect('login');
-		}
-		*/
-
-		//$this->lang->load("Header", $this->session->userdata('system_user_site_lang'));
-		//$this->lang->load("Sidebar", $this->session->userdata('system_user_site_lang'));
-		//$this->lang->load("{classe_nome}", $this->session->userdata('system_user_site_lang'));
-
-		//$this->load->helper('util');
-
-		/*
-		$this->load->model('table_def_model');
-		$table_def = $this->table_def_model->get_table_def(array('AND' => array('tabela' => '{table}')));
-		$table_def = reset($table_def);
-		if (!empty($table_def->relation)) {
-		$relations = json_decode($table_def->relation);
-			foreach ($relations as $relation) {
-				$model_name = $relation->table2.'_model';
-				$table_name = $relation->table2;
-				$this->load->model($model_name);
-				${$table_name."s"} = $this->{$model_name}->get_all();
-				if (!isset($this->data[$table_name."s"])) {
-					$this->data[$table_name."s"] = ${$table_name."s"};
-				}
-			}
-		}
-		*/
+		$this->result['message'] = [];
+    $crud = new Crud();
+    $this->visibleFields = $crud->getVisibleFields('{table}');
 	}
 
 	public function index()
@@ -61,6 +35,7 @@ class {class_name}Base extends BaseController {
 		${record}s = ${table}Model->findAll();
     
     $this->data['{record}s']        = ${record}s;
+    $this->data['visibleFields']    = $this->visibleFields;
     $this->data['page_title']       = 'Lista';
     $this->data['page_subtitle']    = 'de registros';
     $this->data['page_description'] = '{system_area_list_description}';
@@ -75,7 +50,7 @@ class {class_name}Base extends BaseController {
       'show_footer' => true,
     ];
 
-    $contents = array('list');
+    $contents = array('{view_name}List');
 
     echo $this->showView(
       $theme_name     = $this->themeConfig->themeName,

@@ -19,6 +19,9 @@ class Crud extends BaseController {
 	protected $formFields;
 	protected $tableHeader;
 	protected $templateVars;
+  protected $vendorFolder;
+  protected $moduleFolder;
+  protected $crudBaseFolder;
 	protected $controllersFolder;
 	protected $modelsFolder;
 	protected $viewsFolder;
@@ -27,7 +30,7 @@ class Crud extends BaseController {
 	protected $crudModelsBaseFolder;
 	protected $crudViewsBaseFolder;
 	protected $crudEntitiesBaseFolder;
-	protected $crudConfigFolder;
+  protected $crudConfigFolder;
 	protected $crudTemplatesFolder;
   protected $fieldsNotConfigurable;
   protected $fieldOptionsNotConfigurable;
@@ -37,28 +40,50 @@ class Crud extends BaseController {
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
 
+    $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
+
+    $this->moduleFolder 						  = ROOTPATH."ci4tools".DS;
+
 		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
-		$this->crudBaseFolder 						= APPPATH."CrudBase".DS;
+		
+    $this->crudBaseFolder 						= $this->moduleFolder."crudbase".DS;
+
 		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
-		$this->controllersFolder 					= APPPATH."Controllers".DS;
 		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
-		$this->modelsFolder 							= APPPATH."Models".DS;
-		$this->crudModelsBaseFolder 			= $this->crudBaseFolder."Models".DS;
-		$this->entitiesFolder 						= APPPATH."Entities".DS;
+    $this->crudModelsBaseFolder 			= $this->crudBaseFolder."Models".DS;
 		$this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
 
-    $this->fieldsNotConfigurable        = ['id', 'created_at', 'updated_at', 'deleted_at'];
+    $this->controllersFolder 					= APPPATH."Controllers".DS;
+		$this->modelsFolder 							= APPPATH."Models".DS;
+    $this->entitiesFolder 						= APPPATH."Entities".DS;
+    $this->viewsFolder     						= APPPATH."Views".DS;
+
+    $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
     
-		if (!is_dir($this->crudBaseFolder))		{ mkdir($this->crudBaseFolder); }
+		//$this->load->helper('form');
+		//$this->load->helper('custom_form');
+	}
+
+  public function install()
+  {
+		if (!is_dir($this->moduleFolder))	{ mkdir($this->moduleFolder); }
+    if (!is_dir($this->crudBaseFolder))	{ mkdir($this->crudBaseFolder); }
 		if (!is_dir($this->crudConfigFolder))	{ mkdir($this->crudConfigFolder); }
 		if (!is_dir($this->crudControllersBaseFolder))	{ mkdir($this->crudControllersBaseFolder); }
 		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
 		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
 
-		//$this->load->helper('form');
-		//$this->load->helper('custom_form');
-	}
+    $source = $this->vendorFolder;
+    $destination = $this->moduleFolder;
+
+    $publisher = new \CodeIgniter\Publisher\Publisher($source, $destination);
+
+    $publisher->addPath('Crud');
+    $publisher->addPath('Crud/Templates');
+
+    $publisher->merge(false);
+  }
 
 	protected function setTableInfo($table) {
 		$this->table		= $table;
@@ -408,6 +433,54 @@ class Crud extends BaseController {
     }
 	}
 
+	public function getVisibleFields($tables = "")
+  {
+		if (!empty($tables)) {
+			$pos = strpos($tables, ",");
+			if ($pos === false) {
+				$this->tables = array($tables);
+			} else {
+				$this->tables = array_map('trim', explode(',', $tables));
+			}
+		}
+
+		if (!is_dir($this->crudConfigFolder)) {
+      CLI::error("ERROR: CRUD Config folder not found");
+			exit;
+		}
+
+		foreach ($this->tables as $table)
+    {
+			if (!$this->db->tableExists($table)) {
+        CLI::error("TABLE CONFIG (ERROR): Table not found: ". CLI::color($table, 'green'));
+				exit;
+			}
+
+			$fileConfigPath = $this->crudConfigFolder.$table.".json";
+
+			if (!file_exists($fileConfigPath)) {
+        CLI::error("ERROR: Config file not found: ". CLI::color($table, 'green'));
+				exit;
+			}
+			
+			$this->tableConfig = file_get_contents($fileConfigPath);
+
+      $tableConfig   = json_decode($this->tableConfig, true);
+
+      /* Find fields that area displayable: show = Y */
+      $displayableFields = array_keys(array_column($tableConfig, 'show'), 'Y');
+
+      /* Intersect displyable fields to filter $tableConfig array */
+      $b = array_intersect_key($tableConfig, array_flip($displayableFields));
+
+      /* Retrieve array with fields names and filter for return only configurable fields */
+      $tableFields  = array_column($b, 'name');
+      $tableFields  = array_diff($tableFields, $this->fieldsNotConfigurable);
+  
+      return $tableFields;
+    }
+	}
+
 	protected function grava_arquivo($arquivo, $conteudo) {
 		if (file_exists($arquivo)) {
 			$fp = fopen($arquivo, 'rb');
@@ -610,8 +683,8 @@ class Crud extends BaseController {
 	{
 		$listContent = file_get_contents($this->crudTemplatesFolder."list.tpl");
 		$newListContent = $this->parse($listContent, $this->templateVars);
-		$listFileName = ucfirst($this->table).".php";
-		file_put_contents($this->listFolder.$listFileName, $newListContent);
+		$listFileName = ucfirst($this->table)."List.php";
+		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
 	}
 
 	protected function color($text, $color)

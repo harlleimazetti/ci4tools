@@ -155,7 +155,14 @@
                         <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
                             {table_header}
                             <tbody>
-
+                            <?php foreach(${table}s as ${table}) { ?>
+                              <tr>
+                                <?php foreach($visibleFields as $field) { ?>
+                                  <td><?php echo ${table}->{$field} ?></td>
+                                <?php } ?>
+                                <td>X</td>
+                              </tr>
+                            <?php } ?>
                             </tbody>
                         </table>
                         <!-- datatable end -->
