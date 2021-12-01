@@ -74,15 +74,23 @@ class Crud extends BaseController {
 		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
 		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
 
-    $source = $this->vendorFolder;
-    $destination = $this->moduleFolder;
+    $source = $this->vendorFolder."Module";
+    $destinationModule = $this->moduleFolder;
+    $destinationAssets = FCPATH;
 
-    $publisher = new \CodeIgniter\Publisher\Publisher($source, $destination);
+    $publisher = new \CodeIgniter\Publisher\Publisher($source, $destinationModule);
 
-    $publisher->addPath('Crud');
-    $publisher->addPath('Crud/Templates');
+    $publisher->addPath('Entities');
+    $publisher->addPath('Models');
+    $publisher->addPath('Views');
 
     $publisher->merge(false);
+
+    $publisherAssets = new \CodeIgniter\Publisher\Publisher($source, $destinationAssets);
+    
+    $publisher->addPath('public/modules/ci4tools');
+    
+    $publisherAssets->merge(false);
   }
 
 	protected function setTableInfo($table) {
