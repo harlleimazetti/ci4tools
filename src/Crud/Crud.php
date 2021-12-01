@@ -75,8 +75,9 @@ class Crud extends BaseController {
 		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
 
     $source = $this->vendorFolder."Module";
+    $sourceAssets = $this->vendorFolder."Module";
     $destinationModule = $this->moduleFolder;
-    $destinationAssets = FCPATH;
+    $destinationAssets = FCPATH."modules".DS."ci4tools".DS;
 
     $publisher = new \CodeIgniter\Publisher\Publisher($source, $destinationModule);
 
@@ -86,11 +87,16 @@ class Crud extends BaseController {
 
     $publisher->merge(false);
 
-    $publisherAssets = new \CodeIgniter\Publisher\Publisher($source, $destinationAssets);
+    $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets);
     
-    $publisher->addPath('public/modules/ci4tools');
+    $publisherAssets->addPath('public');
+    //$publisherAssets->addPath('modules');
+    //$publisherAssets->addPath('modules/ci4tools');
+    //$publisherAssets->addPath('modules/ci4tools/css');
+    //$publisherAssets->addPath('modules/ci4tools/img');
+    //$publisherAssets->addPath('modules/ci4tools/js');
     
-    $publisherAssets->merge(false);
+    $publisherAssets->merge(true);
   }
 
 	protected function setTableInfo($table) {
