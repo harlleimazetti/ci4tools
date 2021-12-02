@@ -52,6 +52,13 @@ class BaseController extends Controller
   protected $themeConfig;
 
   /**
+   * Module name.
+   *
+   * @var string moduleName
+   */
+  protected $moduleName;
+
+  /**
    * Constructor.
    */
   public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
@@ -66,6 +73,7 @@ class BaseController extends Controller
     setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
     date_default_timezone_set('America/Sao_Paulo');
 
+    $this->moduleName = 'Ci4toolsadmin';
     $this->themeConfig = $this->getThemeConfig();
     $this->menus = $this->mountMenu();
   }
@@ -78,16 +86,16 @@ class BaseController extends Controller
   ) {
 		$template = "";
 
-		$theme_options['show_header'] && $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/header', $data);
-		$theme_options['show_nav_primary'] && $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/nav_primary', $data);
-		$theme_options['show_nav_secondary'] && $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/nav_secondary', $data);
+		$theme_options['show_header'] && $template .= view('\\'.$this->moduleName.'\\Views\\themes\\'.$theme_name.'\\header', $data);
+		$theme_options['show_nav_primary'] && $template .= view('\\'.$this->moduleName.'\\Views\\themes\\'.$theme_name.'\\nav_primary', $data);
+		$theme_options['show_nav_secondary'] && $template .= view('\\'.$this->moduleName.'\\Views\\themes\\'.$theme_name.'\\nav_secondary', $data);
 		
     foreach ($contents as $content) {
 		  //$template .= view($content, $data);
-      $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/'.$content, $data);
+      $template .= view('\\'.$this->moduleName.'\\Views\\themes\\'.$theme_name.'\\'.$content, $data);
 		}
 
-		$theme_options['show_footer'] && $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/footer', $data);
+		$theme_options['show_footer'] && $template .= view('\\'.$this->moduleName.'\\Views\\themes\\'.$theme_name.'\\footer', $data);
 
 		return $template;
 	}
