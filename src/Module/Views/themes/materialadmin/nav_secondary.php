@@ -150,7 +150,7 @@
                 <div class="scrollbar-inner">
                     <div class="listview listview--hover chat__buddies">
                         <a class="listview__item chat__available">
-                            <img src="demo/img/profile-pics/7.jpg" class="listview__img" alt="">
+                            <img src="<?php echo base_url() ?>/ci4toolsadmin/assets/<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/profile-pics/7.jpg" class="listview__img" alt="">
 
                             <div class="listview__content">
                                 <div class="listview__heading">Jeannette Lawson</div>
@@ -159,7 +159,7 @@
                         </a>
 
                         <a class="listview__item chat__available">
-                            <img src="demo/img/profile-pics/5.jpg" class="listview__img" alt="">
+                            <img src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/profile-pics/5.jpg" class="listview__img" alt="">
 
                             <div class="listview__content">
                                 <div class="listview__heading">Jeannette Lawson</div>
@@ -168,7 +168,7 @@
                         </a>
 
                         <a class="listview__item chat__away">
-                            <img src="demo/img/profile-pics/3.jpg" class="listview__img" alt="">
+                            <img src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/profile-pics/3.jpg" class="listview__img" alt="">
 
                             <div class="listview__content">
                                 <div class="listview__heading">Jeannette Lawson</div>
@@ -177,7 +177,7 @@
                         </a>
 
                         <a class="listview__item">
-                            <img src="demo/img/profile-pics/8.jpg" class="listview__img" alt="">
+                            <img src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/profile-pics/8.jpg" class="listview__img" alt="">
 
                             <div class="listview__content">
                                 <div class="listview__heading">Jeannette Lawson</div>
@@ -186,7 +186,7 @@
                         </a>
 
                         <a class="listview__item">
-                            <img src="demo/img/profile-pics/6.jpg" class="listview__img" alt="">
+                            <img src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/profile-pics/6.jpg" class="listview__img" alt="">
 
                             <div class="listview__content">
                                 <div class="listview__heading">Jeannette Lawson</div>
@@ -195,7 +195,7 @@
                         </a>
 
                         <a class="listview__item chat__busy">
-                            <img src="demo/img/profile-pics/9.jpg" class="listview__img" alt="">
+                            <img src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/profile-pics/9.jpg" class="listview__img" alt="">
 
                             <div class="listview__content">
                                 <div class="listview__heading">Jeannette Lawson</div>

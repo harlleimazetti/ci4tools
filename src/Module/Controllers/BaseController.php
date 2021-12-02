@@ -78,16 +78,16 @@ class BaseController extends Controller
   ) {
 		$template = "";
 
-		$theme_options['show_header'] && $template .= view('/Ci4tools/Views/themes/'.$theme_name.'/header', $data);
-		$theme_options['show_nav_primary'] && $template .= view('/Ci4tools/Views/themes/'.$theme_name.'/nav_primary', $data);
-		$theme_options['show_nav_secondary'] && $template .= view('/Ci4tools/Views/themes/'.$theme_name.'/nav_secondary', $data);
+		$theme_options['show_header'] && $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/header', $data);
+		$theme_options['show_nav_primary'] && $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/nav_primary', $data);
+		$theme_options['show_nav_secondary'] && $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/nav_secondary', $data);
 		
     foreach ($contents as $content) {
 		  //$template .= view($content, $data);
-      $template .= view('/Ci4tools/Views/themes/'.$theme_name.'/'.$content, $data);
+      $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/'.$content, $data);
 		}
 
-		$theme_options['show_footer'] && $template .= view('/Ci4tools/Views/themes/'.$theme_name.'/footer', $data);
+		$theme_options['show_footer'] && $template .= view('/Ci4toolsadmin/Views/themes/'.$theme_name.'/footer', $data);
 
 		return $template;
 	}
