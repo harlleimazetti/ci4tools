@@ -47,6 +47,8 @@ class MainController extends BaseController
     // Do Not Edit This Line
     parent::initController($request, $response, $logger);
 
+    echo "aqui..."; exit;
+
     // Preload any models, libraries, etc, here.
 
     // E.g.: $this->session = \Config\Services::session();
