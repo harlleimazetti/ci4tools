@@ -73,25 +73,40 @@ class Crud extends \CodeIgniter\Controller {
 		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
 		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
 
+    /**
+     * Publish Ci4toolsadmin Module
+     */
     $source = $this->vendorFolder."Module";
-    $sourceAssets = $this->vendorFolder."Module".DS."public";
     $destinationModule = $this->moduleFolder;
-    $destinationAssets = FCPATH;
 
     $publisher = new \CodeIgniter\Publisher\Publisher($source, $destinationModule);
-
     $publisher->addPath('Controllers');
     $publisher->addPath('Entities');
     $publisher->addPath('Models');
     $publisher->addPath('Views');
-
     $publisher->merge(false);
 
+
+    /**
+     * Publish Ci4toolsadmin Module Assets
+     */
+    $sourceAssets = $this->vendorFolder."Module".DS."public";
+    $destinationAssets = FCPATH;
+
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
-    
     $publisherAssets->addPath('ci4toolsadmin');
-    
     $publisherAssets->merge(false);
+
+
+    /**
+     * Publish Ci4toolsadmin Main Controller
+     */
+    $sourceMainController = $this->vendorFolder."Crud";
+    $destinationMainController = APPPATH.DS."Controllers";
+
+    $publisherMainController = new \CodeIgniter\Publisher\Publisher($sourceMainController, $destinationMainController);
+    $publisherMainController->addPath('MainController.php');
+    $publisherMainController->merge(false);
   }
 
 	protected function setTableInfo($table) {
