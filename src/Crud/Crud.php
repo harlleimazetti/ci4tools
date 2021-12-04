@@ -102,7 +102,8 @@ class Crud extends \CodeIgniter\Controller {
      * Publish Ci4toolsadmin Main Controller
      */
     $sourceMainController = $this->vendorFolder."Crud";
-    $destinationMainController = APPPATH.DS."Controllers";
+    //$destinationMainController = APPPATH.DS."Controllers";
+    $destinationMainController = $this->crudControllersBaseFolder;
 
     $publisherMainController = new \CodeIgniter\Publisher\Publisher($sourceMainController, $destinationMainController);
     $publisherMainController->addPath('MainController.php');

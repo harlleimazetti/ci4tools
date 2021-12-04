@@ -1,6 +1,6 @@
 <?php namespace Ci4toolsadmin\Crudbase\Controllers;
 
-use App\Controllers\MainController;
+use Ci4toolsadmin\Crudbase\Controllers\MainController;
 use Harlleimazetti\Ci4tools\Crud\Crud;
 
 class {class_name}Base extends MainController {
