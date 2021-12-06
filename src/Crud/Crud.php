@@ -45,7 +45,7 @@ class Crud extends \CodeIgniter\Controller {
 
 		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
 		
-    $this->crudBaseFolder 						= $this->moduleFolder."Crudbase".DS;
+    $this->crudBaseFolder 						= APPPATH."Crudbase".DS;
 
 		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
 		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;

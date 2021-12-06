@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Crudbase\Controllers;
 
-//use CodeIgniter\Controller;
-use App\Controllers\BaseController;
+use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
@@ -23,7 +22,7 @@ use Psr\Log\LoggerInterface;
  *
  * For security be sure to declare any new methods as protected or private.
  */
-class MainController extends BaseController
+class MainController extends Controller
 {
   /**
    * System menus mounted according to the area being acessed.

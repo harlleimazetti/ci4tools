@@ -1,6 +1,6 @@
 <?php namespace App\Models;
 
-use Ci4toolsadmin\Crudbase\Models\{class_name}ModelBase;
+use App\Crudbase\Models\{class_name}ModelBase;
 
 class {class_name}Model extends {class_name}ModelBase
 {

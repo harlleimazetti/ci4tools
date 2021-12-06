@@ -1,4 +1,4 @@
-<?php namespace Ci4toolsadmin\Crudbase\Models;
+<?php namespace App\Crudbase\Models;
 
 use CodeIgniter\Model;
 use App\Entities\{class_name};

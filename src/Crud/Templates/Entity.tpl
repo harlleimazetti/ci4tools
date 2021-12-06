@@ -1,6 +1,6 @@
 <?php namespace App\Entities;
 
-use Ci4toolsadmin\Crudbase\Entities\{class_name}Base;
+use App\Crudbase\Entities\{class_name}Base;
 
 class {class_name} extends {class_name}Base
 {
