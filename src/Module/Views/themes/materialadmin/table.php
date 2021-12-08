@@ -1,22 +1,6 @@
 <section class="content">
                 <div class="content__inner">
-                    <header class="content__title">
-                        <h1>Form Elements</h1>
-
-                        <div class="actions">
-                        <a href="" class="actions__item zmdi zmdi-trending-up"></a>
-                        <a href="" class="actions__item zmdi zmdi-check-all"></a>
-
-                        <div class="dropdown actions__item">
-                            <i data-toggle="dropdown" class="zmdi zmdi-more-vert"></i>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <a href="" class="dropdown-item">Refresh</a>
-                                <a href="" class="dropdown-item">Manage Widgets</a>
-                                <a href="" class="dropdown-item">Settings</a>
-                            </div>
-                        </div>
-                    </div>
-                    </header>
+                    <?php require_once('content_header.php') ?>
 
                     <div class="card">
                         <div class="card-body">
@@ -242,19 +226,6 @@
                     </div>
                 </div>
 
-                <footer class="footer hidden-xs-down">
-                    <p>© Material Admin Responsive. All rights reserved.</p>
+                <?php require_once('content_footer.php') ?>
 
-                    <ul class="nav footer__nav">
-                        <a class="nav-link" href="">Homepage</a>
-
-                        <a class="nav-link" href="">Company</a>
-
-                        <a class="nav-link" href="">Support</a>
-
-                        <a class="nav-link" href="">News</a>
-
-                        <a class="nav-link" href="">Contacts</a>
-                    </ul>
-                </footer>
             </section>

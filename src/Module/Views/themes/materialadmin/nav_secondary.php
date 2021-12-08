@@ -17,13 +17,13 @@
                     </div>
 
                     <ul class="navigation">
-                        <li class="navigation__active"><a href="index.html"><i class="zmdi zmdi-home"></i> Home</a></li>
+                        <li class="navigation__active"><a href="<?php echo base_url() ?>/admin/dashboard"><i class="zmdi zmdi-home"></i> Home</a></li>
 
                         <li class="navigation__sub">
                             <a href=""><i class="zmdi zmdi-view-list"></i> Tabelas</a>
 
                             <ul>
-                                <li><a href="<?php echo base_url() ?>/table/index/place">Place</a></li>
+                                <li><a href="<?php echo base_url() ?>/admin/table/place">Place</a></li>
                                 <li><a href="boxed-layout.html">Boxed Layout</a></li>
                                 <li><a href="hidden-sidebar-boxed-layout.html">Boxed Layout with Hidden Sidebar</a></li>
                                 <li><a href="top-navigation.html">Top Navigation</a></li>
