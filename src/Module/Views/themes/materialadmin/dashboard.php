@@ -92,7 +92,7 @@
 
                 <div data-columns>
                     <div class="card">
-                        <img class="card-img-top" src="<?php echo base_url() ?>/ci4toolsadmin/assets/img/demo/img/widgets/note.png" alt="">
+                        <img class="card-img-top" src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/widgets/note.png" alt="">
                         <div class="card-body">
                             <h4 class="card-title">Pellentesque Ligula Fringilla</h4>
                             <h6 class="card-subtitle">by Malinda Hollaway on 19th June 2015 at 09:10 AM</h6>
@@ -127,7 +127,7 @@
                                     <p>Sunday, September 4, 21:44:02 (2 Mins 56 Seconds)</p>
 
                                     <div class="listview__attrs">
-                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/img/demo/img/flags/United_States_of_America.png" alt=""> United States</span>
+                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/flags/United_States_of_America.png" alt=""> United States</span>
                                         <span>Firefox</span>
                                         <span>Mac OSX</span>
                                     </div>
@@ -139,7 +139,7 @@
                                     <p>Sunday, September 4, 20:21:01 (5 Mins 12 Seconds)</p>
 
                                     <div class="listview__attrs">
-                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/img/demo/img/flags/Australia.png" alt=""> Australia</span>
+                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/flags/Australia.png" alt=""> Australia</span>
                                         <span>Chrome</span>
                                         <span>Android</span>
                                     </div>
@@ -151,7 +151,7 @@
                                     <p>Sunday, September 4, 20:21:10 (10 Mins 43 Seconds)</p>
 
                                     <div class="listview__attrs">
-                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/img/demo/img/flags/Brazil.png" alt=""> Brazil</span>
+                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/flags/Brazil.png" alt=""> Brazil</span>
                                         <span>Edge</span>
                                         <span>Windows</span>
                                     </div>
@@ -163,7 +163,7 @@
                                     <p>Sunday, September 4, 20:59:04 (1 Min 02 Seconds)</p>
 
                                     <div class="listview__attrs">
-                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/img/demo/img/flags/South_Korea.png" alt=""> South Korea</span>
+                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/flags/South_Korea.png" alt=""> South Korea</span>
                                         <span>Chrome</span>
                                         <span>Android</span>
                                     </div>
@@ -175,7 +175,7 @@
                                     <p>Sunday, September 4, 20:58:12 (3 Min 44 Seconds)</p>
 
                                     <div class="listview__attrs">
-                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/img/demo/img/flags/Japan.png" alt=""> Japan</span>
+                                        <span><img class="widget-visitors__country" src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/img/flags/Japan.png" alt=""> Japan</span>
                                         <span>Chrome</span>
                                         <span>Windows</span>
                                     </div>

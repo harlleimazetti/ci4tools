@@ -86,7 +86,6 @@ class Crud extends \CodeIgniter\Controller {
     $publisher->addPath('Views');
     $publisher->merge(false);
 
-
     /**
      * Publish Ci4toolsadmin Module Assets
      */
@@ -97,9 +96,8 @@ class Crud extends \CodeIgniter\Controller {
     $publisherAssets->addPath('ci4toolsadmin');
     $publisherAssets->merge(false);
 
-
     /**
-     * Publish Ci4toolsadmin Main Controller
+     * Publish Crudbase Main Controller
      */
     $sourceMainController = $this->vendorFolder."Crud";
     //$destinationMainController = APPPATH.DS."Controllers";
