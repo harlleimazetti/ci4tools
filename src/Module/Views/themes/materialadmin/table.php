@@ -3,6 +3,133 @@
                     <?php require_once('content_header.php') ?>
 
                     <div class="card">
+
+                      <div class="card-body">
+                        <h4 class="card-title">Form controls</h4>
+                        <h6 class="card-subtitle">Textual form controls like <code>&lt;input&gt;</code>s, <code class="highlighter-rouge">&lt;select&gt;</code>s, and <code>&lt;textarea&gt;</code>s are styled with the <code>.form-control</code> class. Included are styles for general appearance, focus state, sizing, and more.</h6>
+                      </div>
+
+                      <div class="listview listview--hover" id="table-config">
+
+                        <div class="listview__item p-2">
+                          <div class="col-1">
+                            <div class="listview__heading">Name</div>
+                          </div>
+                          <div class="col-4 listview__content">
+                            <div class="listview__heading">Label</div>
+                          </div>
+                          <div class="col-4 listview__content">
+                            <div class="listview__heading">Type</div>
+                          </div>
+                          <div class="col-1 text-center">
+                            <div class="listview__heading">Allowed</div>
+                          </div>
+                          <div class="col-1 text-center">
+                            <div class="listview__heading">Multiple</div>
+                          </div>
+                          <div class="col-1 text-center">
+                            <div class="listview__heading">Show</div>
+                          </div>
+                        </div>
+
+                        <div class="listview__item p-2">
+                          <div class="col-1 mr-2">
+                            <input type="email" class="form-control" placeholder="id" readonly>
+                            <i class="form-group__bar"></i>
+                          </div>
+
+                          <div class="col-4">
+                            <input type="text" class="form-control" placeholder="ID">
+                            <i class="form-group__bar"></i>
+                          </div>
+
+                          <div class="col-4">
+                            <div class="select">
+                              <select class="form-control">
+                                <option>Text</option>
+                                <option>Text Area</option>
+                                <option>Hidden</option>
+                                <option>Select</option>
+                                <option>Checkbox</option>
+                                <option>Radio</option>
+                              </select>
+                              <i class="form-group__bar"></i>
+                            </div>
+                          </div>
+
+                          <div class="col-1 text-center">
+                            <div class="checkbox mt-2">
+                              <input type="checkbox" id="customCheck1">
+                              <label class="checkbox__label" for="customCheck1"></label>
+                            </div>
+                          </div>
+
+                          <div class="col-1 text-center">
+                            <div class="checkbox mt-2">
+                              <input type="checkbox" id="customCheck1">
+                              <label class="checkbox__label" for="customCheck1"></label>
+                            </div>
+                          </div>
+
+                          <div class="col-1 text-center">
+                            <div class="checkbox mt-2">
+                              <input type="checkbox" id="customCheck1">
+                              <label class="checkbox__label" for="customCheck1"></label>
+                            </div>
+                          </div>
+
+                        </div>
+
+                        <div class="listview__item p-2">
+                          <div class="col-1 mr-2">
+                            <input type="email" class="form-control" placeholder="name" readonly>
+                            <i class="form-group__bar"></i>
+                          </div>
+
+                          <div class="col-4">
+                            <input type="text" class="form-control" placeholder="ID">
+                            <i class="form-group__bar"></i>
+                          </div>
+
+                          <div class="col-4">
+                            <div class="select">
+                              <select class="form-control">
+                                <option>Text</option>
+                                <option>Text Area</option>
+                                <option>Hidden</option>
+                                <option>Select</option>
+                                <option>Checkbox</option>
+                                <option>Radio</option>
+                              </select>
+                              <i class="form-group__bar"></i>
+                            </div>
+                          </div>
+
+                          <div class="col-1 text-center">
+                            <div class="checkbox mt-2">
+                              <input type="checkbox" id="customCheck1">
+                              <label class="checkbox__label" for="customCheck1"></label>
+                            </div>
+                          </div>
+
+                          <div class="col-1 text-center">
+                            <div class="checkbox mt-2">
+                              <input type="checkbox" id="customCheck1">
+                              <label class="checkbox__label" for="customCheck1"></label>
+                            </div>
+                          </div>
+
+                          <div class="col-1 text-center">
+                            <div class="checkbox mt-2">
+                              <input type="checkbox" id="customCheck1">
+                              <label class="checkbox__label" for="customCheck1"></label>
+                            </div>
+                          </div>
+
+                        </div>
+
+                      </div>
+
                         <div class="card-body">
                             <h4 class="card-title">Form controls</h4>
                             <h6 class="card-subtitle">Textual form controls like <code>&lt;input&gt;</code>s, <code class="highlighter-rouge">&lt;select&gt;</code>s, and <code>&lt;textarea&gt;</code>s are styled with the <code>.form-control</code> class. Included are styles for general appearance, focus state, sizing, and more.</h6>

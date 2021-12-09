@@ -53,6 +53,9 @@
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/sparkline/jquery.sparkline.min.js"></script>
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/moment/moment.min.js"></script>
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/fullcalendar/fullcalendar.min.js"></script>
+<!--<script src="<?php /*echo base_url()*/ ?>/ci4toolsadmin/assets/vendors/sortable/Sortable.min.js"></script>-->
+
+<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
 
 <!-- Charts and maps-->
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/curved-line.js"></script>
@@ -64,5 +67,6 @@
 
 <!-- App functions and actions -->
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/app.min.js"></script>
+<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/javascripts.js"></script>
 </body>
 </html>

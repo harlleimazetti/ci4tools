@@ -12,8 +12,8 @@ use Psr\Log\LoggerInterface;
 /**
  * Class MainController
  *
- * MainController extends the BaseController for App\Controllers\BaseController
- * and has additional properties and methods use by Ci4tools.
+ * MainController extends the Codeigniter Default Controller
+ * and has additional properties and methods used by Ci4tools.
  * It has the main configuration for the Ci4tools Controllers to work.
  * All Ci4tools Controllers Base extend from this MainController and depend
  * of its data and configuration. You can skip to extend the Controllers

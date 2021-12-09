@@ -37,12 +37,13 @@ class {class_name}Base extends MainController {
     $this->data['{record}s']        = ${record}s;
     $this->data['visibleFields']    = $this->visibleFields;
     $this->data['page_title']       = 'Lista';
-    $this->data['page_subtitle']    = 'de registros';
+    $this->data['page_subtitle']    = 'Listagem de registros';
     $this->data['page_description'] = '{system_area_list_description}';
     $this->data['page_icon']        = 'fal fa-globe';
     $this->data['body_id']          = 'body_{table}_list';
     $this->data['system_area']      = '{system_area_list_description}';
     $this->data['menus']            = $this->menus;
+
     $this->data['theme_options']    = [
       'show_header' => true,
       'show_nav_side' => true,
