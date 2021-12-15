@@ -53,17 +53,21 @@
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/sparkline/jquery.sparkline.min.js"></script>
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/moment/moment.min.js"></script>
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/fullcalendar/fullcalendar.min.js"></script>
-<!--<script src="<?php /*echo base_url()*/ ?>/ci4toolsadmin/assets/vendors/sortable/Sortable.min.js"></script>-->
+<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/select2/js/select2.full.min.js"></script>
+<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/sortable/Sortable.min.js"></script>
+<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/jquery-serializejson/jquery.serializejson.js"></script>
 
-<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>
+<!--<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>-->
 
 <!-- Charts and maps-->
-<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/curved-line.js"></script>
-<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/dynamic.js"></script>
-<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/line.js"></script>
-<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/chart-tooltips.js"></script>
-<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/js/other-charts.js"></script>
-<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/demo/js/jqvmap.js"></script>
+<!--
+<script src="<?php //echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/curved-line.js"></script>
+<script src="<?php //echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/dynamic.js"></script>
+<script src="<?php //echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/line.js"></script>
+<script src="<?php //echo base_url() ?>/ci4toolsadmin/assets/demo/js/flot-charts/chart-tooltips.js"></script>
+<script src="<?php //echo base_url() ?>/ci4toolsadmin/assets/demo/js/other-charts.js"></script>
+<script src="<?php //echo base_url() ?>/ci4toolsadmin/assets/demo/js/jqvmap.js"></script>
+-->
 
 <!-- App functions and actions -->
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/app.min.js"></script>

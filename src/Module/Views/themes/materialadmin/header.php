@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/animate.css/animate.min.css">
         <link rel="stylesheet" href="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/jquery-scrollbar/jquery.scrollbar.css">
         <link rel="stylesheet" href="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/fullcalendar/fullcalendar.min.css">
+        <link rel="stylesheet" href="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/select2/css/select2.min.css">
 
         <!-- App styles -->
         <link rel="stylesheet" href="<?php echo base_url() ?>/ci4toolsadmin/assets/css/app.min.css">

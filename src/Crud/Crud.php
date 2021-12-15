@@ -13,6 +13,7 @@ class Crud extends \CodeIgniter\Controller {
 	protected $fields;
 	protected $keys;
 	protected $indexes;
+  protected $tableConfig;
 	protected $recordFields;
 	protected $recordAllowedFields;
 	protected $formFields;
@@ -31,6 +32,7 @@ class Crud extends \CodeIgniter\Controller {
 	protected $crudEntitiesBaseFolder;
   protected $crudConfigFolder;
 	protected $crudTemplatesFolder;
+  protected $fieldsConfigurable;
   protected $fieldsNotConfigurable;
   protected $fieldOptionsNotConfigurable;
 
@@ -78,7 +80,6 @@ class Crud extends \CodeIgniter\Controller {
      */
     $source = $this->vendorFolder."Module";
     $destinationModule = $this->moduleFolder;
-
     $publisher = new \CodeIgniter\Publisher\Publisher($source, $destinationModule);
     $publisher->addPath('Controllers');
     $publisher->addPath('Entities');
@@ -91,7 +92,6 @@ class Crud extends \CodeIgniter\Controller {
      */
     $sourceAssets = $this->vendorFolder."Module".DS."public";
     $destinationAssets = FCPATH;
-
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     $publisherAssets->addPath('ci4toolsadmin');
     $publisherAssets->merge(false);
@@ -100,20 +100,67 @@ class Crud extends \CodeIgniter\Controller {
      * Publish Crudbase Main Controller
      */
     $sourceMainController = $this->vendorFolder."Crud";
-    //$destinationMainController = APPPATH.DS."Controllers";
     $destinationMainController = $this->crudControllersBaseFolder;
-
     $publisherMainController = new \CodeIgniter\Publisher\Publisher($sourceMainController, $destinationMainController);
     $publisherMainController->addPath('MainController.php');
     $publisherMainController->merge(false);
+  }
+
+  public function setTable($table = "") {
+		if (empty($table)) {
+      throw new Exception('Table name can`t be null');
+		}
+
+    if (!$this->db->tableExists($table)) {
+			throw new Exception('Table not found');
+		}
+
+    $this->setTableInfo($table);
   }
 
 	protected function setTableInfo($table) {
 		$this->table		= $table;
 		$this->fields		= $this->db->getFieldData($this->table);
 		$this->keys			= $this->db->getForeignKeyData($this->table);
-		$this->indexes	= $this->db->getIndexData($this->table);
+		$this->indexes  = $this->db->getIndexData($this->table);
+
+    $this->setTableConfig($this->table);
+    $this->setFieldsConfigurable();
 	}
+
+  protected function setTableConfig($table) {
+    $fileConfigPath = $this->crudConfigFolder.$table.".json";
+
+    if (!file_exists($fileConfigPath)) {
+      return null;
+    }
+
+    $this->tableConfig = json_decode(file_get_contents($fileConfigPath));
+  }
+
+  protected function setFieldsConfigurable() {
+    $fields = json_decode(json_encode($this->fields), true);
+    $fieldsConfigurable = array_column($fields, 'name');
+    $fieldsConfigurable = array_diff($fieldsConfigurable, $this->fieldsNotConfigurable);
+    $fieldsConfigurable = array_intersect_key($this->fields, $fieldsConfigurable);
+    $this->fieldsConfigurable  = $fieldsConfigurable;
+  }
+
+  public function getTableConfig() {
+    return $this->tableConfig;
+  }
+
+  public function getFields() {
+    return $this->fields;
+  }
+
+  public function getFieldsNotConfigurable() {
+    return $this->fieldsNotConfigurable;
+  }
+
+  public function getFieldsConfigurable() {
+    return $this->fieldsConfigurable;
+  }
 
 	public function tableinfo($table = "") {
 		if (empty($table)) {
@@ -302,7 +349,7 @@ class Crud extends \CodeIgniter\Controller {
 				echo "\r\n";
 				break;
 			}
-			$this->tableConfig = file_get_contents($fileConfigPath);
+			//$this->tableConfig = file_get_contents($fileConfigPath);
 
 			//$relation = json_decode($table_def->relation);
 
@@ -317,7 +364,7 @@ class Crud extends \CodeIgniter\Controller {
 
 			echo "Setting template vars"."\r\n";
 			$this->templateVars = $this->setTemplateVars();
-			//$this->makeRecordHtmlForm($tableConfig);
+			//$this->makeRecordHtmlForm($this->tableConfig);
 
 			echo "Making controller files"."\r\n";
 			$this->makeControllerFiles();
@@ -357,22 +404,6 @@ class Crud extends \CodeIgniter\Controller {
 			$arq = fopen($arquivo, 'r');
 			$conteudo_view = fread($arq, filesize($arquivo));
 			fclose($arq);
-
-			$arquivo = FCPATH.'assets/tpl/lang.tpl';
-			$arq = fopen($arquivo, 'r');
-			$conteudo_lang = fread($arq, filesize($arquivo));
-			fclose($arq);
-
-			foreach ($vars as $k => $v)
-			{
-				$str_search = '{{'.$k.'}}';
-				$conteudo_control = str_replace($str_search, $v, $conteudo_control);
-				$conteudo_model = str_replace($str_search, $v, $conteudo_model);
-				$conteudo_list = str_replace($str_search, $v, $conteudo_list);
-				$conteudo_form = str_replace($str_search, $v, $conteudo_form);
-				$conteudo_view = str_replace($str_search, $v, $conteudo_view);
-				$conteudo_lang = str_replace($str_search, $v, $conteudo_lang);
-			}
 
 			$arquivo = APPPATH."controllers/".ucfirst($table).".php";
 			$this->grava_arquivo($arquivo, $conteudo_control);
@@ -425,11 +456,11 @@ class Crud extends \CodeIgniter\Controller {
 				exit;
 			}
 			
-			$this->tableConfig = file_get_contents($fileConfigPath);
+			$this->tableConfig = json_decode(file_get_contents($fileConfigPath));
 
-      $tableConfig   = json_decode($this->tableConfig, true);
-      $tableFields  = array_column($tableConfig, 'name');
-      $tableFields  = array_diff($tableFields, $this->fieldsNotConfigurable);
+      $tableConfig = json_decode(json_encode($this->tableConfig), true);
+      $tableFields = array_column($tableConfig, 'name');
+      $tableFields = array_diff($tableFields, $this->fieldsNotConfigurable);
 
       $selectedField = CLI::promptByKey("Selecione o campo que deseja configurar", $tableFields);
       
@@ -486,9 +517,9 @@ class Crud extends \CodeIgniter\Controller {
 				exit;
 			}
 			
-			$this->tableConfig = file_get_contents($fileConfigPath);
+			$this->tableConfig = json_decode(file_get_contents($fileConfigPath));
 
-      $tableConfig   = json_decode($this->tableConfig, true);
+      $tableConfig = json_decode(json_encode($this->tableConfig), true);
 
       /* Find fields that area displayable: show = Y */
       $displayableFields = array_keys(array_column($tableConfig, 'show'), 'Y');
@@ -502,23 +533,6 @@ class Crud extends \CodeIgniter\Controller {
   
       return $tableFields;
     }
-	}
-
-	protected function grava_arquivo($arquivo, $conteudo) {
-		if (file_exists($arquivo)) {
-			$fp = fopen($arquivo, 'rb');
-			$conteudo_arquivo = fread($fp, filesize($arquivo));
-			$conteudo_arquivo_extraido = $this->extrair_conteudo($conteudo_arquivo, '//<<inicio>>', '//<<fim>>');
-			fclose($fp);
-			if ($conteudo_arquivo_extraido) {
-				$conteudo = $this->inserir_conteudo($conteudo, $conteudo_arquivo_extraido, '//<<inicio>>', '//<<fim>>');
-			} else {
-				$conteudo = $conteudo_arquivo;
-			}
-		}
-		$fp = fopen($arquivo, 'wb');
-		fwrite($fp, $conteudo);
-		fclose($fp);
 	}
 
 	protected function extrair_conteudo($conteudo, $tag_inicio, $tag_fim) {
@@ -557,7 +571,7 @@ class Crud extends \CodeIgniter\Controller {
 
 	protected function makeRecordAllowedFieldsString() {
 		$recordAllowedFields = "";
-		$tableConfig = json_decode($this->tableConfig);
+		$tableConfig = $this->tableConfig;
 		foreach ($tableConfig as $field)
 		{
 			if ($field->allowed) {
@@ -569,7 +583,7 @@ class Crud extends \CodeIgniter\Controller {
 	}
 
 	protected function makeRecordHtmlTableHeader($tableConfig) {
-		$tableConfig = json_decode($tableConfig);
+		//$tableConfig = json_decode($tableConfig);
 
 		$tableHeader  = str_repeat("\t", 3).'<thead>'."\r\n";
 		$tableHeader .= str_repeat("\t", 4)."<tr>"."\r\n";
@@ -590,13 +604,13 @@ class Crud extends \CodeIgniter\Controller {
 		$tableHeader .= str_repeat("\t", 4).'</tr>'."\r\n";
 		$tableHeader .= str_repeat("\t", 3)."</thead>"."\r\n";
 
-		 return $tableHeader;
+		return $tableHeader;
 	}
 
 	protected function makeRecordHtmlForm($tableConfig) {
-		$tableConfig = json_decode($tableConfig);
+		//$tableConfig = json_decode($tableConfig);
 
-		$formFields		= "";
+		$formFields	= "";
 
 		foreach ($tableConfig as $config)
 		{
@@ -608,18 +622,22 @@ class Crud extends \CodeIgniter\Controller {
 			  $label = $config->label;
 			}
 
-			if ($config->form_tipo_campo == 'checkbox') {
-			  $formFields .= custom_form_checkbox($table, $config);
-			} else if ($config->form_tipo_campo == 'text') {
+			if ($config->type == 'text') {
 			  $formFields .= custom_form_text($table, $config);
-			} else if ($config->form_tipo_campo == 'hidden') {
-			  $formFields .= custom_form_hidden($table, $config);
-			} else if ($config->form_tipo_campo == 'password') {
+			} else if ($config->type == 'password') {
 			  $formFields .= custom_form_password($table, $config);
-			} else if ($config->form_tipo_campo == 'select') {
+      } else if ($config->type == 'textarea') {
+			  $formFields .= custom_form_textarea($table, $config);
+      } else if ($config->type == 'select') {
 			  $formFields .= custom_form_select($table, $config, $relation);
-			} else if ($config->form_tipo_campo == 'file') {
+			} else if ($config->type == 'checkbox') {
+			  $formFields .= custom_form_checkbox($table, $config);
+			} else if ($config->type == 'radio') {
+			  $formFields .= custom_form_radio($table, $config, $relation);
+			} else if ($config->type == 'file') {
 			  $formFields .= custom_form_file($table, $config);
+			} else if ($config->type == 'hidden') {
+			  $formFields .= custom_form_hidden($table, $config);
 			} else {
 			  $formFields .= custom_form_text($table, $config);
 			}
