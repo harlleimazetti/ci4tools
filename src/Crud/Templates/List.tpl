@@ -148,9 +148,11 @@
                 </div>
                 <div class="panel-container show">
                     <div class="panel-content">
+                        <!--
                         <div class="panel-tag">
                             This example shows DataTables and the Responsive extension being used with the Bootstrap framework providing the styling. The DataTables / Bootstrap integration provides seamless integration for DataTables to be used in a Bootstrap page. <strong>Note</strong> that the <code>.dt-responsive</code> class is used to indicate to the extension that it should be enabled on this page, as responsive has special meaning in Bootstrap. The responsive option could also be used if required
                         </div>
+                        -->
                         <!-- datatable start -->
                         <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
                             {table_header}

@@ -254,24 +254,24 @@ class Crud extends \CodeIgniter\Controller {
 			{
 				$type			= "text";
 				$show			= "Y";
-				$allowed	= 1;
+				$allowed	= "Y";
 
 				if ($field->name == "id") {
 					$type			= "hidden";
 					$show			= "Y";
-					$allowed	= 0;
+					$allowed	= "Y";
 				}
 
 				if ($field->name == "created_at" || $field->name == "updated_at" || $field->name == "deleted_at") {
 					$type			= "hidden";
 					$show			= "N";
-					$allowed	= 0;
+					$allowed	= "N";
 				}
 
 				if ($field->name == "password") {
 					$type			= "hidden";
 					$show			= "N";
-					$allowed	= 0;
+					$allowed	= "N";
 				}
 
 				$tableConfig[] = array(
@@ -486,6 +486,14 @@ class Crud extends \CodeIgniter\Controller {
 			file_put_contents($fileConfigPath, $tableConfig);
     }
 	}
+
+  public function saveTableConfig($table, $tableConfig) {
+    $tableConfig = json_encode($tableConfig);
+    $tableConfig = $this->indent($tableConfig);
+    $fileConfigPath = $this->crudConfigFolder.$table.".json";
+
+    file_put_contents($fileConfigPath, $tableConfig);
+  }
 
 	public function getVisibleFields($tables = "")
   {

@@ -6,6 +6,8 @@
 
                       <form method="post" action="<?php echo base_url() ?>/admin/table/saveconfig" class="form-record">
 
+                        <input type="hidden" id="table" name="table" value="<?php echo $table ?>">
+
                         <div class="card-body">
                           <h4 class="card-title"><?php echo $page_title ?></h4>
                           <h6 class="card-subtitle"><?php echo $page_description ?></h6>
@@ -35,18 +37,22 @@
                           </div>
 
                           <?php
-                            foreach($tableFields as $tableField) {
+                            foreach($tableFields as $k => $tableField) {
                               $key = array_search($tableField->name, array_column($tableConfig, 'name'));
                           ?>
 
+                          <input type="hidden" id="order[]" name="order[]" value="<?php echo $tableConfig[$key]->order ?>">
+                          <input type="hidden" id="field_class[]" name="field_class[]" value="<?php echo $tableConfig[$key]->field_class ?>">
+                          <input type="hidden" id="label_class[]" name="label_class[]" value="<?php echo $tableConfig[$key]->label_class ?>">
+
                           <div class="listview__item p-2">
                             <div class="col-1 mr-2">
-                              <input type="text" id="id[]" name="id[]" class="form-control" placeholder="<?php echo $tableField->name ?>" readonly>
+                              <input type="text" id="name[]" name="name[]" class="form-control" value="<?php echo $tableConfig[$key]->name ?>" placeholder="<?php echo $tableField->name ?>" readonly>
                               <i class="form-group__bar"></i>
                             </div>
 
                             <div class="col-4">
-                              <input type="text" id="name[]" name="name[]" class="form-control" value="<?php echo $tableConfig[$key]->label ?>" placeholder="<?php echo $tableConfig[$key]->label ?>">
+                              <input type="text" id="label[]" name="label[]" class="form-control" value="<?php echo $tableConfig[$key]->label ?>" placeholder="<?php echo $tableConfig[$key]->label ?>">
                               <i class="form-group__bar"></i>
                             </div>
 
@@ -65,22 +71,22 @@
 
                             <div class="col-1 text-center">
                               <div class="checkbox mt-2">
-                                <input type="checkbox" id="allowed[]" name="allowed[]" <?php if ($tableConfig[$key]->allowed === 1) { ?> checked <?php } ?>>
-                                <label class="checkbox__label" for="allowed"></label>
+                                <input type="checkbox" id="allowed[<?php echo $k ?>]" name="allowed[]" value="Y" <?php if ($tableConfig[$key]->allowed === 'Y') { ?> checked <?php } ?>>
+                                <label class="checkbox__label" for="allowed[<?php echo $k ?>]"></label>
                               </div>
                             </div>
 
                             <div class="col-1 text-center">
                               <div class="checkbox mt-2">
-                                <input type="checkbox" id="multiple[]" name="multiple[]" <?php if ($tableConfig[$key]->multiple === 'Y') { ?> checked <?php } ?>>
-                                <label class="checkbox__label" for="customCheck1"></label>
+                                <input type="checkbox" id="multiple[<?php echo $k ?>]" name="multiple[]" value="Y" <?php if ($tableConfig[$key]->multiple === 'Y') { ?> checked <?php } ?>>
+                                <label class="checkbox__label" for="multiple[<?php echo $k ?>]"></label>
                               </div>
                             </div>
 
                             <div class="col-1 text-center">
                               <div class="checkbox mt-2">
-                                <input type="checkbox" id="show[]" name="show[]" <?php if ($tableConfig[$key]->show === 'Y') { ?> checked <?php } ?>>
-                                <label class="checkbox__label" for="customCheck1"></label>
+                                <input type="checkbox" id="show[<?php echo $k ?>]" name="show[]" value="Y" <?php if ($tableConfig[$key]->show === 'Y') { ?> checked <?php } ?>>
+                                <label class="checkbox__label" for="show[<?php echo $k ?>]"></label>
                               </div>
                             </div>
 

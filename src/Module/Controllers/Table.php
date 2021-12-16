@@ -28,6 +28,8 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
     $this->data['body_id']          = 'body_table';
     $this->data['system_area']      = 'Tabelas';
     $this->data['menus']            = $this->menus;
+
+    $this->data['table']            = $table;
     $this->data['tableFields']      = $tableFields;
     $this->data['tableConfig']      = $tableConfig;
 
@@ -46,5 +48,37 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
       $contents       = $contents,
       $data           = $this->data,
     );
+  }
+
+  public function saveconfig() {
+    $table = $this->request->getPost('table');
+
+    $this->crud->setTable($table);
+
+    $options = $this->request->getPost();
+
+    unset($options['table']);
+
+    $optionsKeys = array_keys($options);
+
+    $countOptions = count($options['name']);
+
+    for ($i = 0; $i < $countOptions; $i++) {
+      $newConfig[] = array_combine($optionsKeys, array_column($options, $i));
+    }
+    
+    $tableFields = $this->crud->getFieldsConfigurable();
+    $tableConfig = $this->crud->getTableConfig();
+    $tableConfig = json_decode(json_encode($tableConfig), true);
+
+    foreach($tableConfig as $key => $config) {
+      foreach($newConfig as $newConf) {
+        if ($config['name'] == $newConf['name']) {
+          $tableConfig[$key] = array_merge($config, $newConf);
+        }
+      }
+    }
+
+    $this->crud->saveTableConfig($table, $tableConfig);
   }
 }
