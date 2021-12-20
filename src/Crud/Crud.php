@@ -343,15 +343,14 @@ class Crud extends \CodeIgniter\Controller {
 			$this->setTableInfo($table);
 
 			echo "Retrieving table config"."\r\n";
+
 			$fileConfigPath = $this->crudConfigFolder.$table.".json";
+
 			if (!file_exists($fileConfigPath)) {
 				echo $this->color("ERROR: CONFIG FILE NOT FOUND - ", "red").$table;
 				echo "\r\n";
 				break;
 			}
-			//$this->tableConfig = file_get_contents($fileConfigPath);
-
-			//$relation = json_decode($table_def->relation);
 
 			echo "Making record fields list"."\r\n";
 			$this->recordFields	= $this->makeRecordFieldsString();
@@ -487,7 +486,28 @@ class Crud extends \CodeIgniter\Controller {
     }
 	}
 
-  public function saveTableConfig($table, $tableConfig) {
+  public function saveTableConfig($table, $options) {
+    unset($options['table']);
+    
+    $optionsKeys = array_keys($options);
+    $countOptions = count($options['name']);
+
+    for ($i = 0; $i < $countOptions; $i++) {
+      $newConf[] = array_combine($optionsKeys, array_column($options, $i));
+    }
+    
+    //$tableFields = $this->crud->getFieldsConfigurable();
+    $tableConfig = $this->getTableConfig();
+    $tableConfig = json_decode(json_encode($tableConfig), true);
+
+    foreach($tableConfig as $key => $config) {
+      foreach($newConf as $newConfig) {
+        if ($config['name'] == $newConfig['name']) {
+          $tableConfig[$key] = array_merge($config, $newConfig);
+        }
+      }
+    }
+
     $tableConfig = json_encode($tableConfig);
     $tableConfig = $this->indent($tableConfig);
     $fileConfigPath = $this->crudConfigFolder.$table.".json";

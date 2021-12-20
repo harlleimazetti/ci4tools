@@ -52,33 +52,10 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
 
   public function saveconfig() {
     $table = $this->request->getPost('table');
-
+    $options = $this->request->getPost();
+    
     $this->crud->setTable($table);
 
-    $options = $this->request->getPost();
-
-    unset($options['table']);
-
-    $optionsKeys = array_keys($options);
-
-    $countOptions = count($options['name']);
-
-    for ($i = 0; $i < $countOptions; $i++) {
-      $newConfig[] = array_combine($optionsKeys, array_column($options, $i));
-    }
-    
-    $tableFields = $this->crud->getFieldsConfigurable();
-    $tableConfig = $this->crud->getTableConfig();
-    $tableConfig = json_decode(json_encode($tableConfig), true);
-
-    foreach($tableConfig as $key => $config) {
-      foreach($newConfig as $newConf) {
-        if ($config['name'] == $newConf['name']) {
-          $tableConfig[$key] = array_merge($config, $newConf);
-        }
-      }
-    }
-
-    $this->crud->saveTableConfig($table, $tableConfig);
+    $this->crud->saveTableConfig($table, $options);
   }
 }

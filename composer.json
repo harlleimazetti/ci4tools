@@ -10,7 +10,9 @@
       }
   ],
   "minimum-stability": "dev",
-  "require": {},
+  "require": {
+    "mustache/mustache": "~2.5"
+  },
   "autoload" : {
     "psr-4" : {
       "Harlleimazetti\\Ci4tools\\" :  "src/"

@@ -154,7 +154,7 @@
                         </div>
                         -->
                         <!-- datatable start -->
-                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped w-100">
+                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped table-sm w-100">
                             {table_header}
                             <tbody>
                             <?php foreach(${table}s as ${table}) { ?>
@@ -162,7 +162,19 @@
                                 <?php foreach($visibleFields as $field) { ?>
                                   <td><?php echo ${table}->{$field} ?></td>
                                 <?php } ?>
-                                <td>X</td>
+                                <td class="text-center">
+                                  <div class="btn-group dropleft">
+                                    <button type="button" class="btn btn-outline btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                      <i class="fal fa-ellipsis-v"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                      <a class="dropdown-item" href="javascript:void(0)">Visualizar</a>
+                                      <a class="dropdown-item" href="javascript:void(0)">Editar</a>
+                                      <div class="dropdown-divider"></div>
+                                      <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
+                                    </div>
+                                  </div>
+                                </td>
                               </tr>
                             <?php } ?>
                             </tbody>
