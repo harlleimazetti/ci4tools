@@ -1,6 +1,7 @@
 <?php namespace Harlleimazetti\Ci4tools\Crud;
 
-use CodeIgniter\CLI\CLI;
+use \CodeIgniter\CLI\CLI;
+use \Mustache_Engine as Mustache;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
@@ -16,6 +17,7 @@ class Crud extends \CodeIgniter\Controller {
   protected $tableConfig;
 	protected $recordFields;
 	protected $recordAllowedFields;
+  protected $visibleFields;
 	protected $formFields;
 	protected $tableHeader;
 	protected $templateVars;
@@ -35,6 +37,7 @@ class Crud extends \CodeIgniter\Controller {
   protected $fieldsConfigurable;
   protected $fieldsNotConfigurable;
   protected $fieldOptionsNotConfigurable;
+  protected $mustache;
 
 	function __construct()
 	{
@@ -61,6 +64,10 @@ class Crud extends \CodeIgniter\Controller {
 
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
+
+    $this->mustache = new Mustache(array(
+      'loader' => new Mustache_Loader_FilesystemLoader($this->crudTemplatesFolder, array('extension' => '.tpl')),
+    ));
     
 		//$this->load->helper('form');
 		//$this->load->helper('custom_form');
@@ -119,10 +126,12 @@ class Crud extends \CodeIgniter\Controller {
   }
 
 	protected function setTableInfo($table) {
-		$this->table		= $table;
-		$this->fields		= $this->db->getFieldData($this->table);
-		$this->keys			= $this->db->getForeignKeyData($this->table);
-		$this->indexes  = $this->db->getIndexData($this->table);
+		$this->table		      = $table;
+		$this->fields		      = $this->db->getFieldData($this->table);
+		$this->keys			      = $this->db->getForeignKeyData($this->table);
+		$this->indexes        = $this->db->getIndexData($this->table);
+    
+    $this->visibleFields  = $this->loadVisibleFields($this->table);
 
     $this->setTableConfig($this->table);
     $this->setFieldsConfigurable();
@@ -303,11 +312,6 @@ class Crud extends \CodeIgniter\Controller {
 
 	public function make($tables = "")
 	{
-		//exit;
-		//$dir = FCPATH.'assets/tpl';
-		//$arquivos = scandir($dir);
-		//print_r($arquivos);
-
 		if (!empty($tables))
 		{
 			$pos = strpos($tables, ",");
@@ -515,52 +519,44 @@ class Crud extends \CodeIgniter\Controller {
     file_put_contents($fileConfigPath, $tableConfig);
   }
 
-	public function getVisibleFields($tables = "")
+	public function loadVisibleFields($table = "")
   {
-		if (!empty($tables)) {
-			$pos = strpos($tables, ",");
-			if ($pos === false) {
-				$this->tables = array($tables);
-			} else {
-				$this->tables = array_map('trim', explode(',', $tables));
-			}
+		if (empty($table)) {
+      return null;
 		}
 
 		if (!is_dir($this->crudConfigFolder)) {
-      CLI::error("ERROR: CRUD Config folder not found");
-			exit;
+      //CLI::error("ERROR: CRUD Config folder not found");
+			return null;
 		}
 
-		foreach ($this->tables as $table)
-    {
-			if (!$this->db->tableExists($table)) {
-        CLI::error("TABLE CONFIG (ERROR): Table not found: ". CLI::color($table, 'green'));
-				exit;
-			}
-
-			$fileConfigPath = $this->crudConfigFolder.$table.".json";
-
-			if (!file_exists($fileConfigPath)) {
-        CLI::error("ERROR: Config file not found: ". CLI::color($table, 'green'));
-				exit;
-			}
-			
-			$this->tableConfig = json_decode(file_get_contents($fileConfigPath));
-
-      $tableConfig = json_decode(json_encode($this->tableConfig), true);
-
-      /* Find fields that area displayable: show = Y */
-      $displayableFields = array_keys(array_column($tableConfig, 'show'), 'Y');
-
-      /* Intersect displyable fields to filter $tableConfig array */
-      $b = array_intersect_key($tableConfig, array_flip($displayableFields));
-
-      /* Retrieve array with fields names and filter for return only configurable fields */
-      $tableFields  = array_column($b, 'name');
-      $tableFields  = array_diff($tableFields, $this->fieldsNotConfigurable);
-  
-      return $tableFields;
+    if (!$this->db->tableExists($table)) {
+      //CLI::error("TABLE CONFIG (ERROR): Table not found: ". CLI::color($table, 'green'));
+      return null;
     }
+
+    $fileConfigPath = $this->crudConfigFolder.$table.".json";
+
+    if (!file_exists($fileConfigPath)) {
+      //CLI::error("ERROR: Config file not found: ". CLI::color($table, 'green'));
+      return null;
+    }
+    
+    $this->tableConfig = json_decode(file_get_contents($fileConfigPath));
+
+    $tableConfig = json_decode(json_encode($this->tableConfig), true);
+
+    /* Find fields that area displayable: show = Y */
+    $displayableFields = array_keys(array_column($tableConfig, 'show'), 'Y');
+
+    /* Intersect displyable fields to filter $tableConfig array */
+    $b = array_intersect_key($tableConfig, array_flip($displayableFields));
+
+    /* Retrieve array with fields names and filter for return only configurable fields */
+    $tableFields  = array_column($b, 'name');
+    $tableFields  = array_diff($tableFields, $this->fieldsNotConfigurable);
+
+    return $tableFields;
 	}
 
 	protected function extrair_conteudo($conteudo, $tag_inicio, $tag_fim) {
@@ -706,6 +702,7 @@ class Crud extends \CodeIgniter\Controller {
 			'system_area_new_description'				=> 'Novo registro',
 			'system_area_edit_description'			=> 'Editar registro',
 			'table_header'											=> $this->tableHeader,
+      'list_header'												=> $this->visibleFields,
 			'form_fields'												=> $this->formFields
 		);
 	}
@@ -749,6 +746,15 @@ class Crud extends \CodeIgniter\Controller {
 	}
 
   protected function makeViewListFiles()
+	{
+    print_r($this->templateVars);
+    echo $this->mustache->render($this->crudTemplatesFolder.'listTeste', $this->templateVars);
+    exit;
+		$listFileName = ucfirst($this->table)."List.php";
+		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
+	}
+
+  protected function _makeViewListFiles()
 	{
 		$listContent = file_get_contents($this->crudTemplatesFolder."list.tpl");
 		$newListContent = $this->parse($listContent, $this->templateVars);
