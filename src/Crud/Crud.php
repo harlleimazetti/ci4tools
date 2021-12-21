@@ -17,7 +17,6 @@ class Crud extends \CodeIgniter\Controller {
   protected $tableConfig;
 	protected $recordFields;
 	protected $recordAllowedFields;
-  protected $visibleFields;
 	protected $formFields;
 	protected $tableHeader;
 	protected $templateVars;
@@ -37,12 +36,20 @@ class Crud extends \CodeIgniter\Controller {
   protected $fieldsConfigurable;
   protected $fieldsNotConfigurable;
   protected $fieldOptionsNotConfigurable;
+  protected $visibleFields;
+  protected $listVisibleFields;
+  protected $listVisibleFieldsLabel;
+  protected $listVisibleFieldsConfig;
+  protected $formVisibleFields;
+  protected $formVisibleFieldsLabel;
+  protected $formVisibleFieldsConfig;
   protected $mustache;
 
 	function __construct()
 	{
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
+    $this->mustache = new Mustache();
 
     $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
 
@@ -64,10 +71,6 @@ class Crud extends \CodeIgniter\Controller {
 
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
-
-    $this->mustache = new Mustache(array(
-      'loader' => new Mustache_Loader_FilesystemLoader($this->crudTemplatesFolder, array('extension' => '.tpl')),
-    ));
     
 		//$this->load->helper('form');
 		//$this->load->helper('custom_form');
@@ -131,10 +134,15 @@ class Crud extends \CodeIgniter\Controller {
 		$this->keys			      = $this->db->getForeignKeyData($this->table);
 		$this->indexes        = $this->db->getIndexData($this->table);
     
-    $this->visibleFields  = $this->loadVisibleFields($this->table);
-
     $this->setTableConfig($this->table);
     $this->setFieldsConfigurable();
+
+    $this->visibleFields = $this->loadVisibleFields($this->table);
+    $this->listVisibleFields = $this->loadVisibleFields($this->table);
+    $this->listVisibleFieldsConfig = array_values($this->loadListVisibleFieldsConfig($this->table));
+    $this->listVisibleFieldsLabel = array_column($this->listVisibleFieldsConfig, 'label');
+
+    //print_r(\get_object_vars($this)); exit;
 	}
 
   protected function setTableConfig($table) {
@@ -161,6 +169,14 @@ class Crud extends \CodeIgniter\Controller {
 
   public function getFields() {
     return $this->fields;
+  }
+
+  public function getVisibleFields() {
+    return $this->visibleFields;
+  }
+
+  public function getListVisibleFields() {
+    return $this->listVisibleFields;
   }
 
   public function getFieldsNotConfigurable() {
@@ -519,7 +535,7 @@ class Crud extends \CodeIgniter\Controller {
     file_put_contents($fileConfigPath, $tableConfig);
   }
 
-	public function loadVisibleFields($table = "")
+	protected function loadVisibleFields($table = "")
   {
 		if (empty($table)) {
       return null;
@@ -558,6 +574,22 @@ class Crud extends \CodeIgniter\Controller {
 
     return $tableFields;
 	}
+
+  protected function loadListVisibleFieldsConfig($table = "") {
+		if (empty($table)) {
+      return null;
+		}
+
+    $tableConfig = json_decode(json_encode($this->tableConfig), true);
+
+    /* Find fields that area displayable: show = Y */
+    $displayableFields = array_keys(array_column($tableConfig, 'show'), 'Y');
+
+    /* Intersect displyable fields to filter $this->tableConfig array */
+    $listVisibleFieldsConfig = array_intersect_key($this->tableConfig, array_flip($displayableFields));
+
+    return $listVisibleFieldsConfig;
+  }
 
 	protected function extrair_conteudo($conteudo, $tag_inicio, $tag_fim) {
 		$pos_inicio = strpos($conteudo, $tag_inicio);
@@ -702,7 +734,8 @@ class Crud extends \CodeIgniter\Controller {
 			'system_area_new_description'				=> 'Novo registro',
 			'system_area_edit_description'			=> 'Editar registro',
 			'table_header'											=> $this->tableHeader,
-      'list_header'												=> $this->visibleFields,
+      'list_header'												=> $this->listVisibleFieldsLabel,
+      'list_visible_fields_config'			  => $this->listVisibleFieldsConfig,
 			'form_fields'												=> $this->formFields
 		);
 	}
@@ -747,17 +780,8 @@ class Crud extends \CodeIgniter\Controller {
 
   protected function makeViewListFiles()
 	{
-    print_r($this->templateVars);
-    echo $this->mustache->render($this->crudTemplatesFolder.'listTeste', $this->templateVars);
-    exit;
-		$listFileName = ucfirst($this->table)."List.php";
-		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
-	}
-
-  protected function _makeViewListFiles()
-	{
-		$listContent = file_get_contents($this->crudTemplatesFolder."list.tpl");
-		$newListContent = $this->parse($listContent, $this->templateVars);
+		$listContent = file_get_contents($this->crudTemplatesFolder."List.tpl");
+    $newListContent = $this->mustache->render($listContent, $this->templateVars);
 		$listFileName = ucfirst($this->table)."List.php";
 		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
 	}
@@ -778,8 +802,10 @@ class Crud extends \CodeIgniter\Controller {
 		$pattern = array();
 		$replacement = array();
 		foreach ($vars as $key => $value) {
-			$pattern[] = '/{'.$key.'}/';
-			$replacement[] = $value;
+      if (!is_array($value)) {
+        $pattern[] = '/{'.$key.'}/';
+        $replacement[] = $value;
+      }
 		}
 		$parsed_string = preg_replace($pattern, $replacement, $string);
 		return $parsed_string;

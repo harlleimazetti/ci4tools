@@ -7,13 +7,16 @@ class {class_name}Base extends MainController {
 	private $result;
 	private $relations;
   private $visibleFields;
+  private $listVisibleFields;
 	private $data = [];
 
 	function __construct()
 	{
 		$this->result['message'] = [];
     $crud = new Crud();
-    $this->visibleFields = $crud->getVisibleFields('{table}');
+    $crud->setTable('{table}');
+    $this->visibleFields = $crud->getVisibleFields();
+    $this->listVisibleFields = $crud->getListVisibleFields();
 	}
 
 	public function index()
@@ -34,17 +37,17 @@ class {class_name}Base extends MainController {
     $this->data['data'] = array();
 		${record}s = ${table}Model->findAll();
     
-    $this->data['{record}s']        = ${record}s;
-    $this->data['visibleFields']    = $this->visibleFields;
-    $this->data['page_title']       = 'Lista';
-    $this->data['page_subtitle']    = 'Listagem de registros';
-    $this->data['page_description'] = '{system_area_list_description}';
-    $this->data['page_icon']        = 'fal fa-globe';
-    $this->data['body_id']          = 'body_{table}_list';
-    $this->data['system_area']      = '{system_area_list_description}';
-    $this->data['menus']            = $this->menus;
+    $this->data['{record}s']          = ${record}s;
+    $this->data['listVisibleFields']  = $this->listVisibleFields;
+    $this->data['page_title']         = 'Lista';
+    $this->data['page_subtitle']      = 'Listagem de registros';
+    $this->data['page_description']   = '{system_area_list_description}';
+    $this->data['page_icon']          = 'fal fa-globe';
+    $this->data['body_id']            = 'body_{table}_list';
+    $this->data['system_area']        = '{system_area_list_description}';
+    $this->data['menus']              = $this->menus;
 
-    $this->data['theme_options']    = [
+    $this->data['theme_options']      = [
       'show_header' => true,
       'show_nav_side' => true,
       'show_nav_top' => true,
