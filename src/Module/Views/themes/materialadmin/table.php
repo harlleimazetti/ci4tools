@@ -1,4 +1,4 @@
-<section class="content">
+            <section class="content">
                 <div class="content__inner">
                     <?php require_once('content_header.php') ?>
 
@@ -58,14 +58,14 @@
 
                             <div class="col-4">
                               <select class="select2" id="type[]" name="type[]">
-                                <option value="text" <?php if ($tableConfig[$key]->type == 'text') { ?> selected <?php } ?> >Text</option>
-                                <option value="password" <?php if ($tableConfig[$key]->type == 'password') { ?> selected <?php } ?> >Password</option>
+                                <option value="text"     <?php if ($tableConfig[$key]->type == 'text') { ?>     selected <?php } ?>>Text</option>
+                                <option value="password" <?php if ($tableConfig[$key]->type == 'password') { ?> selected <?php } ?>>Password</option>
                                 <option value="textarea" <?php if ($tableConfig[$key]->type == 'textarea') { ?> selected <?php } ?>>Textarea</option>
-                                <option value="select" <?php if ($tableConfig[$key]->type == 'select') { ?> selected <?php } ?>>Select</option>
+                                <option value="select"   <?php if ($tableConfig[$key]->type == 'select') { ?>   selected <?php } ?>>Select</option>
                                 <option value="checkbox" <?php if ($tableConfig[$key]->type == 'checkbox') { ?> selected <?php } ?>>Checkbox</option>
-                                <option value="radio" <?php if ($tableConfig[$key]->type == 'radio') { ?> selected <?php } ?>>Radio</option>
-                                <option value="file" <?php if ($tableConfig[$key]->type == 'file') { ?> selected <?php } ?>>File</option>
-                                <option value="hidden" <?php if ($tableConfig[$key]->type == 'hidden') { ?> selected <?php } ?>>Hidden</option>
+                                <option value="radio"    <?php if ($tableConfig[$key]->type == 'radio') { ?>    selected <?php } ?>>Radio</option>
+                                <option value="file"     <?php if ($tableConfig[$key]->type == 'file') { ?>     selected <?php } ?>>File</option>
+                                <option value="hidden"   <?php if ($tableConfig[$key]->type == 'hidden') { ?>   selected <?php } ?>>Hidden</option>
                               </select>
                             </div>
 

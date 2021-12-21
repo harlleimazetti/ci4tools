@@ -379,20 +379,25 @@ class Crud extends \CodeIgniter\Controller {
 			$this->recordAllowedFields	= $this->makeRecordAllowedFieldsString();
 
 			echo "Making record table header"."\r\n";
-			$this->tableHeader	= $this->makeRecordHtmlTableHeader($this->tableConfig);
+			$this->tableHeader	= $this->makeRecordHtmlTableHeader();
+
+      //echo "Making record HTML form"."\r\n";
+			//$this->makeRecordHtmlForm();
 
 			echo "Setting template vars"."\r\n";
 			$this->templateVars = $this->setTemplateVars();
-			//$this->makeRecordHtmlForm($this->tableConfig);
 
-			echo "Making controller files"."\r\n";
+			echo "Making Controller files"."\r\n";
 			$this->makeControllerFiles();
 
-			echo "Making model files"."\r\n";
+			echo "Making Model files"."\r\n";
 			$this->makeModelFiles();
 
 			echo "Making View List files"."\r\n";
 			$this->makeViewListFiles();
+
+      echo "Making View Form files"."\r\n";
+			$this->makeViewFormFiles();
 
 			echo "End of table config"."\r\n";
 			echo ".:."."\r\n";
@@ -638,8 +643,8 @@ class Crud extends \CodeIgniter\Controller {
 		return $recordAllowedFields;
 	}
 
-	protected function makeRecordHtmlTableHeader($tableConfig) {
-		//$tableConfig = json_decode($tableConfig);
+	protected function makeRecordHtmlTableHeader() {
+		$tableConfig = $this->tableConfig;
 
 		$tableHeader  = str_repeat("\t", 3).'<thead>'."\r\n";
 		$tableHeader .= str_repeat("\t", 4)."<tr>"."\r\n";
@@ -663,8 +668,9 @@ class Crud extends \CodeIgniter\Controller {
 		return $tableHeader;
 	}
 
-	protected function makeRecordHtmlForm($tableConfig) {
-		//$tableConfig = json_decode($tableConfig);
+	protected function makeRecordHtmlForm() {
+		$tableConfig = $this->tableConfig;
+    print_r($tableConfig); exit;
 
 		$formFields	= "";
 
@@ -784,6 +790,14 @@ class Crud extends \CodeIgniter\Controller {
     $newListContent = $this->mustache->render($listContent, $this->templateVars);
 		$listFileName = ucfirst($this->table)."List.php";
 		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
+	}
+
+  protected function makeViewFormFiles()
+	{
+		$formContent = file_get_contents($this->crudTemplatesFolder."Form.tpl");
+    $newFormContent = $this->mustache->render($formContent, $this->templateVars);
+		$formFileName = ucfirst($this->table)."Form.php";
+		file_put_contents($this->viewsFolder.$formFileName, $newFormContent);
 	}
 
 	protected function color($text, $color)

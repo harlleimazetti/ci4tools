@@ -157,6 +157,7 @@
                         <table id="dt-basic-example" class="table table-bordered table-hover table-striped table-sm w-100">
                           <thead>
                             <tr>
+                              <th class="text-center" width="30">ID</th>
                               {{# list_header}}
                                 <th width="">{{.}}</th>
                               {{/ list_header}}
@@ -166,6 +167,12 @@
                           <tbody>
                           <?php foreach(${{table}}s as ${{table}}) { ?>
                             <tr>
+                              <td class="text-center">
+                                <div class="custom-control custom-checkbox">
+                                  <input type="checkbox" class="custom-control-input" name="id[]" id="id[<?php echo ${{table}}->id ?>]" value="<?php echo ${{table}}->id ?>">
+                                  <label class="custom-control-label" for="id[<?php echo ${{table}}->id ?>]"></label>
+                                </div>
+                              </td>
                               <?php foreach($listVisibleFields as $field) { ?>
                                 <td><?php echo ${{table}}->{$field} ?></td>
                               <?php } ?>
