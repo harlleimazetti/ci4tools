@@ -136,19 +136,6 @@ class Crud extends \CodeIgniter\Controller {
 		$this->indexes        = $this->db->getIndexData($this->table);
     
     $this->setTableConfig($this->table);
-    $this->setFieldsConfigurable();
-
-    $this->visibleFields = $this->loadVisibleFields($this->table);
-
-    $this->listVisibleFields = $this->loadVisibleFields($this->table);
-    $this->listVisibleFieldsConfig = array_values($this->loadListVisibleFieldsConfig($this->table));
-    $this->listVisibleFieldsLabel = array_column($this->listVisibleFieldsConfig, 'label');
-
-    $this->formVisibleFields = $this->loadVisibleFields($this->table);
-    $this->formVisibleFieldsConfig = array_values($this->loadListVisibleFieldsConfig($this->table));
-    $this->formVisibleFieldsLabel = array_column($this->formVisibleFieldsConfig, 'label');
-
-    //print_r(\get_object_vars($this)); exit;
 	}
 
   protected function setTableConfig($table) {
@@ -159,6 +146,26 @@ class Crud extends \CodeIgniter\Controller {
     }
 
     $this->tableConfig = json_decode(file_get_contents($fileConfigPath));
+
+    $this->setFieldsConfigurable();
+
+    $this->visibleFields = $this->loadVisibleFields($this->table);
+
+    $this->listVisibleFields = $this->loadVisibleFields($this->table);
+    $listVisibleFieldsConfig = $this->loadListVisibleFieldsConfig($this->table);
+
+    if (!empty($listVisibleFieldsConfig)) {
+      $this->listVisibleFieldsConfig = array_values($listVisibleFieldsConfig);
+      $this->listVisibleFieldsLabel = array_column($this->listVisibleFieldsConfig, 'label');
+    }
+
+    $this->formVisibleFields = $this->loadVisibleFields($this->table);
+    $formVisibleFieldsConfig = $this->loadFormVisibleFieldsConfig($this->table);
+
+    if (!empty($formVisibleFieldsConfig)) {
+      $this->formVisibleFieldsConfig = array_values($formVisibleFieldsConfig);
+      $this->formVisibleFieldsLabel = array_column($this->formVisibleFieldsConfig, 'label');
+    }
   }
 
   protected function setFieldsConfigurable() {
@@ -285,43 +292,73 @@ class Crud extends \CodeIgniter\Controller {
 			$tableConfig = array();
 			$n = 0;
 
+      $tableKeys = json_decode(json_encode($this->keys), true);
+
 			foreach ($this->fields as $field)
 			{
-				$type			= "text";
-				$show			= "Y";
-				$allowed	= "Y";
+				$type			    = "text";
+				$show			    = "Y";
+        $show_on_list = "Y";
+        $show_on_form = "Y";
+				$allowed	    = "Y";
 
 				if ($field->name == "id") {
-					$type			= "hidden";
-					$show			= "Y";
-					$allowed	= "Y";
+					$type			    = "hidden";
+					$show			    = "Y";
+          $show_on_list = "Y";
+          $show_on_form = "Y";
+					$allowed	    = "Y";
 				}
 
 				if ($field->name == "created_at" || $field->name == "updated_at" || $field->name == "deleted_at") {
-					$type			= "hidden";
-					$show			= "N";
-					$allowed	= "N";
+					$type			    = "hidden";
+					$show			    = "N";
+          $show_on_list = "N";
+          $show_on_form = "N";
+					$allowed	    = "N";
 				}
 
 				if ($field->name == "password") {
-					$type			= "hidden";
-					$show			= "N";
-					$allowed	= "N";
+					$type			    = "hidden";
+					$show			    = "N";
+          $show_on_list = "N";
+          $show_on_form = "N";
+					$allowed	    = "N";
 				}
 
+        $key = array_search($field->name, array_column($tableKeys, 'column_name'));
+
+        if (!(empty($key) && $key !== 0)) {
+          $fk = $this->keys[$key];
+        } else {
+          $fk = NULL;
+        }
+
 				$tableConfig[] = array(
-					"name"				=> $field->name,
-					"label"				=> $field->name,
-					"order"				=> $n,
-					"show"				=> $show,
-					"type"				=> $type,
-					"allowed"			=> $allowed,
-					"multiple"		=> "N",
-					"field_class"	=> "form-control",
-					"label_class"	=> "col-sm-2 control-label"
+					"table"				        => $table,
+          "name"				        => $field->name,
+					"label"				        => $field->name,
+          "nullable"		        => $field->nullable,
+          "required"		        => !$field->nullable,
+          "default"		          => $field->default,
+					"order"				        => $n,
+					"show"				        => $show,
+          "show_on_list"        => $show_on_list,
+          "show_on_form"        => $show_on_form,
+					"type"				        => $type,
+					"allowed"			        => $allowed,
+          "foreign_table_name"  => !empty($fk) ? $fk->foreign_table_name : '',
+          "foreign_column_name" => !empty($fk) ? $fk->foreign_column_name : '',
+          "relation_type"       => "",
+					"multiple"		        => "N",
+          "options" 		        => [],
+					"field_class"         => "form-control",
+					"label_class"         => "col-sm-2 control-label"
 				);
 				$n++;
 			}
+
+      //print_r($tableConfig); exit;
 
 			echo $this->color("CREATING CONFIG FILE - ", "green").$table.".json";
 			echo "\r\n";
@@ -556,6 +593,10 @@ class Crud extends \CodeIgniter\Controller {
 
     $tableConfig = json_decode(json_encode($this->tableConfig), true);
 
+    if (empty($tableConfig)) {
+      return null;
+    }
+
     /* Find fields that area displayable: show = Y */
     $displayableFields = array_keys(array_column($tableConfig, 'show'), 'Y');
 
@@ -563,6 +604,26 @@ class Crud extends \CodeIgniter\Controller {
     $listVisibleFieldsConfig = array_intersect_key($this->tableConfig, array_flip($displayableFields));
 
     return $listVisibleFieldsConfig;
+  }
+
+  protected function loadFormVisibleFieldsConfig($table = "") {
+		if (empty($table)) {
+      return null;
+		}
+
+    $tableConfig = json_decode(json_encode($this->tableConfig), true);
+
+    if (empty($tableConfig)) {
+      return null;
+    }
+
+    /* Find fields that area displayable: show_on_form = Y */
+    $displayableFields = array_keys(array_column($tableConfig, 'show_on_form'), 'Y');
+
+    /* Intersect displyable fields to filter $this->tableConfig array */
+    $formVisibleFieldsConfig = array_intersect_key($this->tableConfig, array_flip($displayableFields));
+
+    return $formVisibleFieldsConfig;
   }
 
 	protected function extrair_conteudo($conteudo, $tag_inicio, $tag_fim) {
@@ -705,8 +766,10 @@ class Crud extends \CodeIgniter\Controller {
         $fieldHtml = $this->makeFormFieldTextarea($table, $fieldConfig);
         break;
       case "select":
+        $fieldHtml = $this->makeFormFieldSelect($table, $fieldConfig);
         break;
       case "checkbox":
+        $fieldHtml = $this->makeFormFieldCheckbox($table, $fieldConfig);
         break;
       case "radio":
         break;
@@ -739,7 +802,7 @@ class Crud extends \CodeIgniter\Controller {
 
   protected function makeFormFieldTextarea($table, $fieldConfig) {
     $fieldConfig->table = $table;
-		$content = file_get_contents($this->crudTemplatesFolder."FormInputTextarea.tpl");
+		$content = file_get_contents($this->crudTemplatesFolder."FormTextarea.tpl");
     $newContent = $this->mustache->render($content, $fieldConfig);
 		return $newContent;
   }
@@ -747,6 +810,20 @@ class Crud extends \CodeIgniter\Controller {
   protected function makeFormFieldHidden($table, $fieldConfig) {
     $fieldConfig->table = $table;
 		$content = file_get_contents($this->crudTemplatesFolder."FormInputHidden.tpl");
+    $newContent = $this->mustache->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldCheckbox($table, $fieldConfig) {
+    $fieldConfig->table = $table;
+		$content = file_get_contents($this->crudTemplatesFolder."FormCheckbox.tpl");
+    $newContent = $this->mustache->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldSelect($table, $fieldConfig) {
+    $fieldConfig->table = $table;
+		$content = file_get_contents($this->crudTemplatesFolder."FormSelect.tpl");
     $newContent = $this->mustache->render($content, $fieldConfig);
 		return $newContent;
   }
