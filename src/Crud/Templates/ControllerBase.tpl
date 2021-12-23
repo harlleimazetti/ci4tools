@@ -8,6 +8,7 @@ class {class_name}Base extends MainController {
 	private $relations;
   private $visibleFields;
   private $listVisibleFields;
+  private $formVisibleFields;
 	private $data = [];
 
 	function __construct()
@@ -17,6 +18,7 @@ class {class_name}Base extends MainController {
     $crud->setTable('{table}');
     $this->visibleFields = $crud->getVisibleFields();
     $this->listVisibleFields = $crud->getListVisibleFields();
+    $this->formVisibleFields = $crud->getFormVisibleFields();
 	}
 
 	public function index()
@@ -63,6 +65,72 @@ class {class_name}Base extends MainController {
       $data           = $this->data,
     );
 	}
+
+  public function new()
+  {
+		${table}Model = new \App\Models\{model_name}Model();
+    ${record} = array(new \App\Entities\{model_name}());
+    
+    $this->data['data']               = array();
+    $this->data['{record}']           = ${record};
+    $this->data['formVisibleFields']  = $this->formVisibleFields;
+    $this->data['page_title']         = 'Novo registro';
+    $this->data['page_subtitle']      = 'Preencha o formulário abaixo';
+    $this->data['page_description']   = '{system_area_new_description}';
+    $this->data['page_icon']          = 'fal fa-globe';
+    $this->data['body_id']            = 'body_place_new';
+    $this->data['system_area']        = '{system_area_new_description}';
+    $this->data['menus']              = $this->menus;
+
+    $this->data['theme_options']      = [
+      'show_header' => true,
+      'show_nav_side' => true,
+      'show_nav_top' => true,
+      'show_footer' => true,
+    ];
+
+    $contents = array('{view_name}Form');
+
+    echo $this->showView(
+      $theme_name     = $this->themeConfig->themeName,
+      $theme_options  = $this->data['theme_options'],
+      $contents       = $contents,
+      $data           = $this->data,
+    );
+  }
+
+  public function edit($id)
+  {
+		${table}Model = new \App\Models\{model_name}Model();
+    ${record} = ${table}Model->find([$id]);
+    
+    $this->data['data']               = array();
+    $this->data['{record}']           = ${record};
+    $this->data['formVisibleFields']  = $this->formVisibleFields;
+    $this->data['page_title']         = 'Editar registro';
+    $this->data['page_subtitle']      = 'Preencha o formulário abaixo';
+    $this->data['page_description']   = '{system_area_edit_description}';
+    $this->data['page_icon']          = 'fal fa-globe';
+    $this->data['body_id']            = 'body_place_new';
+    $this->data['system_area']        = '{system_area_edit_description}';
+    $this->data['menus']              = $this->menus;
+
+    $this->data['theme_options']      = [
+      'show_header' => true,
+      'show_nav_side' => true,
+      'show_nav_top' => true,
+      'show_footer' => true,
+    ];
+
+    $contents = array('{view_name}Form');
+
+    echo $this->showView(
+      $theme_name     = $this->themeConfig->themeName,
+      $theme_options  = $this->data['theme_options'],
+      $contents       = $contents,
+      $data           = $this->data,
+    );
+  }
 
 	public function list_backup()
 	{
@@ -120,25 +188,7 @@ class {class_name}Base extends MainController {
 		echo $this->loadTemplate($this->data['pages'], $this->data);
 	}
 
-	public function new()
-	{
-		$this->permissao->resultado($this->permissao->verifica($this->router->class, $this->router->method));
-		${table}Model = new \App\Models\{model_name}Model();
-		${record} = ${table}Model->get{model_name}(array('AND' => array('{table_alias}.id' => 0)));
-		$this->data['page_title'] = '{page_title_new}';
-		//$this->data['title_page'] = lang('page_title_new');
-		$this->data['pages'][] = '{view_name}Form';
-		$this->data['data'] = array();
-		$this->data['body_id'] = '{body_id_new}';
-		$this->data['system_area_title'] = '{system_area_title}';
-		$this->data['system_area_description'] = '{system_area_new_description}';
-		$this->data['{record}'] = ${record};
-		$this->data['operacao_bd'] = 'new';
-		$this->data['acao'] = 'new';
-		echo $this->loadTemplate($this->data['pages'], $this->data);
-	}
-
-	public function edit($id)
+	public function edit_backup($id)
 	{
 		$this->permissao->resultado($this->permissao->verifica($this->router->class, $this->router->method));
 		${table}Model = new \App\Models\{model_name}Model();

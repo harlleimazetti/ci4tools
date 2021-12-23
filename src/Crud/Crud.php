@@ -17,6 +17,7 @@ class Crud extends \CodeIgniter\Controller {
   protected $tableConfig;
 	protected $recordFields;
 	protected $recordAllowedFields;
+  protected $recordFormFields;
 	protected $formFields;
 	protected $tableHeader;
 	protected $templateVars;
@@ -138,9 +139,14 @@ class Crud extends \CodeIgniter\Controller {
     $this->setFieldsConfigurable();
 
     $this->visibleFields = $this->loadVisibleFields($this->table);
+
     $this->listVisibleFields = $this->loadVisibleFields($this->table);
     $this->listVisibleFieldsConfig = array_values($this->loadListVisibleFieldsConfig($this->table));
     $this->listVisibleFieldsLabel = array_column($this->listVisibleFieldsConfig, 'label');
+
+    $this->formVisibleFields = $this->loadVisibleFields($this->table);
+    $this->formVisibleFieldsConfig = array_values($this->loadListVisibleFieldsConfig($this->table));
+    $this->formVisibleFieldsLabel = array_column($this->formVisibleFieldsConfig, 'label');
 
     //print_r(\get_object_vars($this)); exit;
 	}
@@ -177,6 +183,10 @@ class Crud extends \CodeIgniter\Controller {
 
   public function getListVisibleFields() {
     return $this->listVisibleFields;
+  }
+
+  public function getFormVisibleFields() {
+    return $this->formVisibleFields;
   }
 
   public function getFieldsNotConfigurable() {
@@ -381,8 +391,8 @@ class Crud extends \CodeIgniter\Controller {
 			echo "Making record table header"."\r\n";
 			$this->tableHeader	= $this->makeRecordHtmlTableHeader();
 
-      //echo "Making record HTML form"."\r\n";
-			//$this->makeRecordHtmlForm();
+      echo "Making record HTML form fields"."\r\n";
+			$this->recordFormFields = $this->makeRecordFormFields();
 
 			echo "Setting template vars"."\r\n";
 			$this->templateVars = $this->setTemplateVars();
@@ -401,49 +411,8 @@ class Crud extends \CodeIgniter\Controller {
 
 			echo "End of table config"."\r\n";
 			echo ".:."."\r\n";
+
 			//exit;
-
-			/*
-			$arquivo = FCPATH.'assets/tpl/control.tpl';
-			$arq = fopen($arquivo, 'r');
-			$conteudo_control = fread($arq, filesize($arquivo));
-			fclose($arq);
-
-			$arquivo = FCPATH.'assets/tpl/model.tpl';
-			$arq = fopen($arquivo, 'r');
-			$conteudo_model = fread($arq, filesize($arquivo));
-			fclose($arq);
-
-			$arquivo = FCPATH.'assets/tpl/list.tpl';
-			$arq = fopen($arquivo, 'r');
-			$conteudo_list = fread($arq, filesize($arquivo));
-			fclose($arq);
-
-			$arquivo = FCPATH.'assets/tpl/form.tpl';
-			$arq = fopen($arquivo, 'r');
-			$conteudo_form = fread($arq, filesize($arquivo));
-			fclose($arq);
-
-			$arquivo = FCPATH.'assets/tpl/view.tpl';
-			$arq = fopen($arquivo, 'r');
-			$conteudo_view = fread($arq, filesize($arquivo));
-			fclose($arq);
-
-			$arquivo = APPPATH."controllers/".ucfirst($table).".php";
-			$this->grava_arquivo($arquivo, $conteudo_control);
-
-			$arquivo = APPPATH.'models/'.ucfirst($table).'_model.php';
-			$this->grava_arquivo($arquivo, $conteudo_model);
-
-			$arquivo = APPPATH.'views/'.ucfirst($table).'_lista.php';
-			$this->grava_arquivo($arquivo, $conteudo_list);
-
-			$arquivo = APPPATH.'views/'.ucfirst($table).'_form.php';
-			$this->grava_arquivo($arquivo, $conteudo_form);
-
-			$arquivo = APPPATH.'views/'.ucfirst($table).'_ver.php';
-			$this->grava_arquivo($arquivo, $conteudo_view);
-			*/
 		}
 	}
 
@@ -668,14 +637,22 @@ class Crud extends \CodeIgniter\Controller {
 		return $tableHeader;
 	}
 
-	protected function makeRecordHtmlForm() {
-		$tableConfig = $this->tableConfig;
-    print_r($tableConfig); exit;
+	protected function makeRecordFormFields() {
+		$table = $this->table;
+    $tableConfig = $this->tableConfig;
+    $formVisibleFields = $this->formVisibleFields;
+    $formVisibleFieldsConfig = $this->formVisibleFieldsConfig;
 
-		$formFields	= "";
+		$recordFormFields	= "";
 
-		foreach ($tableConfig as $config)
+		foreach ($formVisibleFieldsConfig as $fieldConfig)
 		{
+      $recordFormFields .= $this->makeFormField($table, $fieldConfig);
+		}
+
+    return $recordFormFields;
+
+      /*
 			if ($config->type =='hidden') {
 			  $type = 'hidden';
 			  $label = '';
@@ -704,15 +681,75 @@ class Crud extends \CodeIgniter\Controller {
 			  $formFields .= custom_form_text($table, $config);
 			}
 
-		}
+      $formFields .= str_repeat("\t", 8).'<div class="form-group">'."\r\n";
+      $formFields .= str_repeat("\t", 9).'<label class="col-md-3 control-label"></label>'."\r\n";
+      $formFields .= str_repeat("\t", 9).'<div class="col-md-9">'."\r\n";
+      $formFields .= str_repeat("\t", 10).'<button type="submit" class="btn btn-sm btn-success">Salvar</button> <a href="<?php echo base_url() ?>'.$table.'"><button type="button" class="btn btn-sm btn-warning">Voltar</button></a>'."\r\n";
+      $formFields .= str_repeat("\t", 9).'</div>'."\r\n";
+      $formFields .= str_repeat("\t", 8).'</div>'."\r\n";
 
-		$campos_form .= str_repeat("\t", 8).'<div class="form-group">'."\r\n";
-		$campos_form .= str_repeat("\t", 9).'<label class="col-md-3 control-label"></label>'."\r\n";
-		$campos_form .= str_repeat("\t", 9).'<div class="col-md-9">'."\r\n";
-		$campos_form .= str_repeat("\t", 10).'<button type="submit" class="btn btn-sm btn-success">Salvar</button> <a href="<?php echo base_url() ?>'.$table.'"><button type="button" class="btn btn-sm btn-warning">Voltar</button></a>'."\r\n";
-		$campos_form .= str_repeat("\t", 9).'</div>'."\r\n";
-		$campos_form .= str_repeat("\t", 8).'</div>'."\r\n";
+      */
 	}
+
+  protected function makeFormField($table, $fieldConfig) {
+    $fieldHtml = '';
+
+    switch ($fieldConfig->type) {
+      case "text":
+        $fieldHtml = $this->makeFormFieldText($table, $fieldConfig);
+        break;
+      case "password":
+        $fieldHtml = $this->makeFormFieldPassword($table, $fieldConfig);
+        break;
+      case "textarea":
+        $fieldHtml = $this->makeFormFieldTextarea($table, $fieldConfig);
+        break;
+      case "select":
+        break;
+      case "checkbox":
+        break;
+      case "radio":
+        break;
+      case "file":
+        break;
+      case "hidden":
+        $fieldHtml = $this->makeFormFieldHidden($table, $fieldConfig);
+        break;
+      default:
+        $fieldHtml = $this->makeFormFieldText($table, $fieldConfig);
+        break;
+    }
+
+    return $fieldHtml;
+  }
+
+  protected function makeFormFieldText($table, $fieldConfig) {
+    $fieldConfig->table = $table;
+		$content = file_get_contents($this->crudTemplatesFolder."FormInputText.tpl");
+    $newContent = $this->mustache->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldPassword($table, $fieldConfig) {
+    $fieldConfig->table = $table;
+		$content = file_get_contents($this->crudTemplatesFolder."FormInputPassword.tpl");
+    $newContent = $this->mustache->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldTextarea($table, $fieldConfig) {
+    $fieldConfig->table = $table;
+		$content = file_get_contents($this->crudTemplatesFolder."FormInputTextarea.tpl");
+    $newContent = $this->mustache->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldHidden($table, $fieldConfig) {
+    $fieldConfig->table = $table;
+		$content = file_get_contents($this->crudTemplatesFolder."FormInputHidden.tpl");
+    $newContent = $this->mustache->render($content, $fieldConfig);
+		return $newContent;
+  }
 
 	protected function setTemplateVars()
 	{
@@ -742,7 +779,7 @@ class Crud extends \CodeIgniter\Controller {
 			'table_header'											=> $this->tableHeader,
       'list_header'												=> $this->listVisibleFieldsLabel,
       'list_visible_fields_config'			  => $this->listVisibleFieldsConfig,
-			'form_fields'												=> $this->formFields
+			'record_form_fields'								=> $this->recordFormFields
 		);
 	}
 
