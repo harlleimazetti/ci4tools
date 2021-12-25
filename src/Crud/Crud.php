@@ -2,7 +2,7 @@
 
 use \CodeIgniter\CLI\CLI;
 use \Mustache_Engine as Mustache;
-use \Ci4toolsadmin\Libraries\TemplateParser;
+use Templateparser\TemplateParser;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
