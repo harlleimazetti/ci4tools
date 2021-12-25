@@ -2,6 +2,7 @@
 
 use \CodeIgniter\CLI\CLI;
 use \Mustache_Engine as Mustache;
+use \Ci4toolsadmin\Libraries\TemplateParser;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
@@ -45,12 +46,14 @@ class Crud extends \CodeIgniter\Controller {
   protected $formVisibleFieldsLabel;
   protected $formVisibleFieldsConfig;
   protected $mustache;
+  protected $parser;
 
 	function __construct()
 	{
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
     $this->mustache = new Mustache();
+    $this->parser = new TemplateParser();
 
     $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
 
