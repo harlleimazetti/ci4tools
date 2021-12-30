@@ -32,6 +32,7 @@ class Crud extends \CodeIgniter\Controller {
 	protected $crudModelsBaseFolder;
 	protected $crudViewsBaseFolder;
 	protected $crudEntitiesBaseFolder;
+  protected $crudValidationFolder;
   protected $crudConfigFolder;
 	protected $crudTemplatesFolder;
   protected $fieldsConfigurable;
@@ -64,6 +65,7 @@ class Crud extends \CodeIgniter\Controller {
 		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
     $this->crudModelsBaseFolder 			= $this->crudBaseFolder."Models".DS;
 		$this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
+    $this->crudValidationFolder 		  = $this->crudBaseFolder."Validation".DS;
 
     $this->controllersFolder 					= APPPATH."Controllers".DS;
 		$this->modelsFolder 							= APPPATH."Models".DS;
@@ -85,6 +87,7 @@ class Crud extends \CodeIgniter\Controller {
 		if (!is_dir($this->crudControllersBaseFolder))	{ mkdir($this->crudControllersBaseFolder); }
 		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
 		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
+    if (!is_dir($this->crudValidationFolder))	{ mkdir($this->crudValidationFolder); }
 
     /**
      * Publish Ci4toolsadmin Module
@@ -443,7 +446,10 @@ class Crud extends \CodeIgniter\Controller {
 			echo "Making Controller files"."\r\n";
 			$this->makeControllerFiles();
 
-			echo "Making Model files"."\r\n";
+			echo "Making Validation files"."\r\n";
+			$this->makeValidationFiles();
+
+      echo "Making Model files"."\r\n";
 			$this->makeModelFiles();
 
 			echo "Making View List files"."\r\n";
@@ -910,6 +916,14 @@ class Crud extends \CodeIgniter\Controller {
 		if (!file_exists($this->modelsFolder.$modelFileName)) {
 			file_put_contents($this->modelsFolder.$modelFileName, $newModelContent);
 		}
+	}
+
+  protected function makeValidationFiles()
+	{
+		$validationContent = file_get_contents($this->crudTemplatesFolder."Validation.tpl");
+    $newValidationContent = $this->parser->render($validationContent, $this->templateVars);
+		$validationFileName = ucfirst($this->table)."Validation.php";
+		file_put_contents($this->crudValidationFolder.$validationFileName, $newValidationContent);
 	}
 
   protected function makeViewListFiles()

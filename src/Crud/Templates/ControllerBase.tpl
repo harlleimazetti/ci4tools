@@ -296,4 +296,4 @@ class {class_name}Base extends MainController {
 }
 
 /* End of File {class_name}Base.php */
-/* Path: ./Ci4toolsadmin/CrudBase/Controllers/{class_name}Base.php */
+/* Path: ./App/CrudBase/Controllers/{class_name}Base.php */

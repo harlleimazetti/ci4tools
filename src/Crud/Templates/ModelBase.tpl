@@ -2,6 +2,7 @@
 
 use CodeIgniter\Model;
 use App\Entities\{class_name};
+use App\Crudbase\Validation\{class_name}Validation;
 use Harlleimazetti\Ci4tools\Relation\Relation;
 
 class {class_name}ModelBase extends Model
@@ -23,7 +24,7 @@ class {class_name}ModelBase extends Model
 	protected $deletedField       = 'deleted_at';
 	protected $updatedField       = 'updated_at';
 	protected $skipValidation     = false;
-	protected $validationRules    = '{table}ModelValidation';
+	protected $validationRules    = [];
 	//protected $validationMessages = [];
 	protected $allowedFields      = [{record_allowed_fields}];
 
@@ -32,8 +33,12 @@ class {class_name}ModelBase extends Model
 	function __construct() {
 		parent::__construct();
 		//$this->fields = array_fill_keys($this->db->list_fields("{table}"), '');
+
 		$database = \Config\Database::connect();
 		$this->db	= $database->table('{table}');
+
+    ${table}Validation = new {class_name}Validation();
+    $this->validationRules = ${table}Validation->getRules();
 	}
 
   protected function findRelations(array $data)
@@ -226,7 +231,20 @@ class {class_name}ModelBase extends Model
   function store($data) {
     ${table} = new \App\Entities\{class_name}();
     ${table}->fill($data);
-    $this->save(${table});
+
+    if (!$this->save(${table})) {
+      $this->result['success'] = false;
+      $this->result['message'][] = 'Problemas na gravação do registro';
+      $this->result['errors'] = $this->errors();
+      
+      return $this->result;
+    }
+
+    $this->result['success'] = true;
+    $this->result['message'][] = 'Registro salvo com sucesso';
+    $this->result['errors'] = [];
+
+    return $this->result;
   }
 
 	function store_backup($registro, $id, $operacao_bd)
@@ -260,4 +278,4 @@ class {class_name}ModelBase extends Model
 }
 
 /* End of File {class_name}ModelBase.php */
-/* Path: ./Ci4toolsadmin/CrudBase/Models/{class_name}ModelBase.php */
+/* Path: ./App/CrudBase/Models/{class_name}ModelBase.php */
