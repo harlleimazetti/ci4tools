@@ -1,8 +1,7 @@
 <?php namespace Harlleimazetti\Ci4tools\Crud;
 
 use \CodeIgniter\CLI\CLI;
-use \Mustache_Engine as Mustache;
-use Templateparser\TemplateParser;
+use \Harlleimazetti\Ci4tools\Templateparser\TemplateParser;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
@@ -45,14 +44,12 @@ class Crud extends \CodeIgniter\Controller {
   protected $formVisibleFields;
   protected $formVisibleFieldsLabel;
   protected $formVisibleFieldsConfig;
-  protected $mustache;
   protected $parser;
 
 	function __construct()
 	{
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
-    $this->mustache = new Mustache();
     $this->parser = new TemplateParser();
 
     $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
@@ -344,6 +341,11 @@ class Crud extends \CodeIgniter\Controller {
           "nullable"		        => $field->nullable,
           "required"		        => !$field->nullable,
           "default"		          => $field->default,
+          "placeholder"         => $field->name,
+          "value"               => '',
+          "min"                 => '',
+          "max"                 => '',
+          "increment"           => '',
 					"order"				        => $n,
 					"show"				        => $show,
           "show_on_list"        => $show_on_list,
@@ -352,9 +354,10 @@ class Crud extends \CodeIgniter\Controller {
 					"allowed"			        => $allowed,
           "foreign_table_name"  => !empty($fk) ? $fk->foreign_table_name : '',
           "foreign_column_name" => !empty($fk) ? $fk->foreign_column_name : '',
+          "foreign_column_show" => [],
+          "options" 		        => [],
           "relation_type"       => "",
 					"multiple"		        => "N",
-          "options" 		        => [],
 					"field_class"         => "form-control",
 					"label_class"         => "col-sm-2 control-label"
 				);
@@ -711,123 +714,131 @@ class Crud extends \CodeIgniter\Controller {
 
 		foreach ($formVisibleFieldsConfig as $fieldConfig)
 		{
-      $recordFormFields .= $this->makeFormField($table, $fieldConfig);
+      $recordFormFields .= $this->makeFormField($fieldConfig);
 		}
 
+    $recordFormFields .= $this->makeFormFieldSubmit();
+
     return $recordFormFields;
-
-      /*
-			if ($config->type =='hidden') {
-			  $type = 'hidden';
-			  $label = '';
-			} else {
-			  $type = 'text';
-			  $label = $config->label;
-			}
-
-			if ($config->type == 'text') {
-			  $formFields .= custom_form_text($table, $config);
-			} else if ($config->type == 'password') {
-			  $formFields .= custom_form_password($table, $config);
-      } else if ($config->type == 'textarea') {
-			  $formFields .= custom_form_textarea($table, $config);
-      } else if ($config->type == 'select') {
-			  $formFields .= custom_form_select($table, $config, $relation);
-			} else if ($config->type == 'checkbox') {
-			  $formFields .= custom_form_checkbox($table, $config);
-			} else if ($config->type == 'radio') {
-			  $formFields .= custom_form_radio($table, $config, $relation);
-			} else if ($config->type == 'file') {
-			  $formFields .= custom_form_file($table, $config);
-			} else if ($config->type == 'hidden') {
-			  $formFields .= custom_form_hidden($table, $config);
-			} else {
-			  $formFields .= custom_form_text($table, $config);
-			}
-
-      $formFields .= str_repeat("\t", 8).'<div class="form-group">'."\r\n";
-      $formFields .= str_repeat("\t", 9).'<label class="col-md-3 control-label"></label>'."\r\n";
-      $formFields .= str_repeat("\t", 9).'<div class="col-md-9">'."\r\n";
-      $formFields .= str_repeat("\t", 10).'<button type="submit" class="btn btn-sm btn-success">Salvar</button> <a href="<?php echo base_url() ?>'.$table.'"><button type="button" class="btn btn-sm btn-warning">Voltar</button></a>'."\r\n";
-      $formFields .= str_repeat("\t", 9).'</div>'."\r\n";
-      $formFields .= str_repeat("\t", 8).'</div>'."\r\n";
-
-      */
 	}
 
-  protected function makeFormField($table, $fieldConfig) {
+  protected function makeFormField($fieldConfig) {
     $fieldHtml = '';
 
     switch ($fieldConfig->type) {
       case "text":
-        $fieldHtml = $this->makeFormFieldText($table, $fieldConfig);
+        $fieldHtml = $this->makeFormFieldText($fieldConfig);
         break;
       case "password":
-        $fieldHtml = $this->makeFormFieldPassword($table, $fieldConfig);
+        $fieldHtml = $this->makeFormFieldPassword($fieldConfig);
         break;
       case "textarea":
-        $fieldHtml = $this->makeFormFieldTextarea($table, $fieldConfig);
+        $fieldHtml = $this->makeFormFieldTextarea($fieldConfig);
         break;
       case "select":
-        $fieldHtml = $this->makeFormFieldSelect($table, $fieldConfig);
+        $fieldHtml = $this->makeFormFieldSelect($fieldConfig);
         break;
       case "checkbox":
-        $fieldHtml = $this->makeFormFieldCheckbox($table, $fieldConfig);
+        $fieldHtml = $this->makeFormFieldCheckbox($fieldConfig);
         break;
       case "radio":
+        $fieldHtml = $this->makeFormFieldRadio($fieldConfig);
         break;
       case "file":
+        $fieldHtml = $this->makeFormFieldFile($fieldConfig);
         break;
       case "hidden":
-        $fieldHtml = $this->makeFormFieldHidden($table, $fieldConfig);
+        $fieldHtml = $this->makeFormFieldHidden($fieldConfig);
         break;
       default:
-        $fieldHtml = $this->makeFormFieldText($table, $fieldConfig);
+        $fieldHtml = $this->makeFormFieldText($fieldConfig);
         break;
     }
 
     return $fieldHtml;
   }
 
-  protected function makeFormFieldText($table, $fieldConfig) {
-    $fieldConfig->table = $table;
+  protected function makeFormFieldText($fieldConfig) {
 		$content = file_get_contents($this->crudTemplatesFolder."FormInputText.tpl");
-    $newContent = $this->mustache->render($content, $fieldConfig);
+    $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldPassword($table, $fieldConfig) {
-    $fieldConfig->table = $table;
+  protected function makeFormFieldPassword($fieldConfig) {
 		$content = file_get_contents($this->crudTemplatesFolder."FormInputPassword.tpl");
-    $newContent = $this->mustache->render($content, $fieldConfig);
+    $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldTextarea($table, $fieldConfig) {
-    $fieldConfig->table = $table;
+  protected function makeFormFieldTextarea($fieldConfig) {
 		$content = file_get_contents($this->crudTemplatesFolder."FormTextarea.tpl");
-    $newContent = $this->mustache->render($content, $fieldConfig);
+    $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldHidden($table, $fieldConfig) {
-    $fieldConfig->table = $table;
-		$content = file_get_contents($this->crudTemplatesFolder."FormInputHidden.tpl");
-    $newContent = $this->mustache->render($content, $fieldConfig);
-		return $newContent;
-  }
-
-  protected function makeFormFieldCheckbox($table, $fieldConfig) {
-    $fieldConfig->table = $table;
+  protected function makeFormFieldCheckbox($fieldConfig) {
+    if (empty($fieldConfig->options)) {
+      if (!empty($fieldConfig->foreign_table_name)) {
+        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+        $foreignModel = model("App\\Models\\".$modelName);
+        $foreignRecords = $foreignModel->findAll();
+        foreach ($foreignRecords as $record) {
+          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
+        }
+      }
+    }
 		$content = file_get_contents($this->crudTemplatesFolder."FormCheckbox.tpl");
-    $newContent = $this->mustache->render($content, $fieldConfig);
+    $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldSelect($table, $fieldConfig) {
-    $fieldConfig->table = $table;
+  protected function makeFormFieldRadio($fieldConfig) {
+    if (empty($fieldConfig->options)) {
+      if (!empty($fieldConfig->foreign_table_name)) {
+        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+        $foreignModel = model("App\\Models\\".$modelName);
+        $foreignRecords = $foreignModel->findAll();
+        foreach ($foreignRecords as $record) {
+          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
+        }
+      }
+    }
+		$content = file_get_contents($this->crudTemplatesFolder."FormRadio.tpl");
+    $newContent = $this->parser->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldSelect($fieldConfig) {
+    if (empty($fieldConfig->options)) {
+      if (!empty($fieldConfig->foreign_table_name)) {
+        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+        $foreignModel = model("App\\Models\\".$modelName);
+        $foreignRecords = $foreignModel->findAll();
+        foreach ($foreignRecords as $record) {
+          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
+        }
+      }
+    }
 		$content = file_get_contents($this->crudTemplatesFolder."FormSelect.tpl");
-    $newContent = $this->mustache->render($content, $fieldConfig);
+    $newContent = $this->parser->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldFile($fieldConfig) {
+		$content = file_get_contents($this->crudTemplatesFolder."FormInputFile.tpl");
+    $newContent = $this->parser->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldHidden($fieldConfig) {
+		$content = file_get_contents($this->crudTemplatesFolder."FormInputHidden.tpl");
+    $newContent = $this->parser->render($content, $fieldConfig);
+		return $newContent;
+  }
+
+  protected function makeFormFieldSubmit() {
+		$content = file_get_contents($this->crudTemplatesFolder."FormSubmitButton.tpl");
+    $newContent = $this->parser->render($content, array('label' => 'Salvar'));
 		return $newContent;
   }
 
@@ -904,7 +915,7 @@ class Crud extends \CodeIgniter\Controller {
   protected function makeViewListFiles()
 	{
 		$listContent = file_get_contents($this->crudTemplatesFolder."List.tpl");
-    $newListContent = $this->mustache->render($listContent, $this->templateVars);
+    $newListContent = $this->parser->render($listContent, $this->templateVars);
 		$listFileName = ucfirst($this->table)."List.php";
 		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
 	}
@@ -912,7 +923,7 @@ class Crud extends \CodeIgniter\Controller {
   protected function makeViewFormFiles()
 	{
 		$formContent = file_get_contents($this->crudTemplatesFolder."Form.tpl");
-    $newFormContent = $this->mustache->render($formContent, $this->templateVars);
+    $newFormContent = $this->parser->render($formContent, $this->templateVars);
 		$formFileName = ucfirst($this->table)."Form.php";
 		file_put_contents($this->viewsFolder.$formFileName, $newFormContent);
 	}

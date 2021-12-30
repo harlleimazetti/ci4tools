@@ -223,7 +223,13 @@ class {class_name}ModelBase extends Model
 		}
 	}
 
-	function store($registro, $id, $operacao_bd)
+  function store($data) {
+    ${table} = new \App\Entities\{class_name}();
+    ${table}->fill($data);
+    $this->save(${table});
+  }
+
+	function store_backup($registro, $id, $operacao_bd)
 	{
 		$resultado = array();
 		$registro	= $this->relation->set_record_to_save('{table}', $registro);

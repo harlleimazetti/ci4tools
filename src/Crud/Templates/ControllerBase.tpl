@@ -289,7 +289,6 @@ class {class_name}Base extends MainController {
 
 	public function store()
 	{
-		$this->permissao->resultado($this->permissao->verifica($this->router->class, $this->router->method));
 		${table}Model = new \App\Models\{model_name}Model();
 		$this->result = ${table}Model->store($this->request->getPost());
 		echo json_encode($this->result);

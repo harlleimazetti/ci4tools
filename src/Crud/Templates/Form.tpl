@@ -18,7 +18,7 @@
             </div>
             -->
             <!-- Record form start -->
-            <form method="post" action="<?php echo base_url(); ?>/{{table}}/store" class="form-record">
+            <form method="post" action="<?php echo base_url(); ?>/{{table}}/store" class="form-record" enctype="multipart/form-data">
               <input type="hidden" id="id" name="id" value="<?php echo ${{table}}->id ?>">
               
               {{{record_form_fields}}}

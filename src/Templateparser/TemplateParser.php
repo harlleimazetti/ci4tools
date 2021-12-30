@@ -12,7 +12,6 @@ class TemplateParser
   }
 
   public function render($template, $vars) {
-    return "Harllei";
     return $this->renderer->render($template, $vars);
   }
 }
