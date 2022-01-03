@@ -14,6 +14,7 @@ class {class_name}ModelBase extends Model
 	protected $countAllRecords;
 	protected $countResultsRecords;
   protected $relations = [];
+  protected $result = [];
 
 	protected $table              = '{table}';
 	protected $primaryKey         = 'id';
@@ -234,17 +235,17 @@ class {class_name}ModelBase extends Model
 
     if (!$this->save(${table})) {
       $this->result['success'] = false;
-      $this->result['message'][] = 'Problemas na gravação do registro';
+      $this->result['messages'][] = 'Problemas na gravação do registro';
       $this->result['errors'] = $this->errors();
       
-      return $this->result;
+      return (object)$this->result;
     }
 
     $this->result['success'] = true;
-    $this->result['message'][] = 'Registro salvo com sucesso';
+    $this->result['messages'][] = 'Registro salvo com sucesso';
     $this->result['errors'] = [];
 
-    return $this->result;
+    return (object)$this->result;
   }
 
 	function store_backup($registro, $id, $operacao_bd)

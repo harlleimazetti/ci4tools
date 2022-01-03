@@ -7,7 +7,7 @@
                         Example <span class="fw-300"><i>Table</i></span>
                     </h2>
                     <div class="panel-toolbar">
-                        <button class="btn btn-primary btn-sm" data-toggle="dropdown">Table Style</button>
+                        <!--<button class="btn btn-primary btn-sm" data-toggle="dropdown">Table Style</button>-->
                         <div class="dropdown-menu dropdown-menu-animated dropdown-menu-right position-absolute pos-top">
                             <button class="dropdown-item active" data-action="toggle" data-class="table-bordered" data-target="#dt-basic-example"> Bordered Table </button>
                             <button class="dropdown-item" data-action="toggle" data-class="table-sm" data-target="#dt-basic-example"> Smaller Table </button>
@@ -154,7 +154,7 @@
                         </div>
                         -->
                         <!-- datatable start -->
-                        <table id="dt-basic-example" class="table table-bordered table-hover table-striped table-sm w-100">
+                        <table id="table-list-{{table}}" data-url="<?php echo base_url() ?>/{{table}}" data-tablename="{{table}}" class="table table-bordered table-hover table-striped table-sm w-100 table-records">
                           <thead>
                             <tr>
                               <th class="text-center" width="30">ID</th>
@@ -182,10 +182,9 @@
                                     <i class="fal fa-ellipsis-v"></i>
                                   </button>
                                   <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="javascript:void(0)">Visualizar</a>
-                                    <a class="dropdown-item" href="javascript:void(0)">Editar</a>
+                                    <a class="dropdown-item" href="<?php echo base_url() ?>/{{table}}/edit/<?php echo ${{table}}->id ?>"><i class="fal fa-edit mr-2"></i> Editar</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="javascript:void(0)">Excluir</a>
+                                    <a class="dropdown-item" href="javascript:void(0)"><i class="fal fa-times-circle mr-2"></i> Excluir</a>
                                   </div>
                                 </div>
                               </td>

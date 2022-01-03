@@ -46,6 +46,7 @@ class Crud extends \CodeIgniter\Controller {
   protected $formVisibleFieldsLabel;
   protected $formVisibleFieldsConfig;
   protected $parser;
+  protected $result;
 
 	function __construct()
 	{
@@ -555,7 +556,18 @@ class Crud extends \CodeIgniter\Controller {
     $tableConfig = $this->indent($tableConfig);
     $fileConfigPath = $this->crudConfigFolder.$table.".json";
 
-    file_put_contents($fileConfigPath, $tableConfig);
+    try {
+      file_put_contents($fileConfigPath, $tableConfig);
+      $this->result['success'] = true;
+      $this->result['messages'][] = 'Dados salvos com sucesso';
+      $this->result['errors'] = [];
+    } catch (Exception $e) {
+      $this->result['success'] = false;
+      $this->result['messages'][] = 'Problemas na gravação do dados';
+      $this->result['errors'] = $e->getMessage();
+    }
+    
+    return (object)$this->result;
   }
 
 	protected function loadVisibleFields($table = "")
@@ -923,7 +935,9 @@ class Crud extends \CodeIgniter\Controller {
 		$validationContent = file_get_contents($this->crudTemplatesFolder."Validation.tpl");
     $newValidationContent = $this->parser->render($validationContent, $this->templateVars);
 		$validationFileName = ucfirst($this->table)."Validation.php";
-		file_put_contents($this->crudValidationFolder.$validationFileName, $newValidationContent);
+    if (!file_exists($this->crudValidationFolder.$validationFileName)) {
+		  file_put_contents($this->crudValidationFolder.$validationFileName, $newValidationContent);
+    }
 	}
 
   protected function makeViewListFiles()

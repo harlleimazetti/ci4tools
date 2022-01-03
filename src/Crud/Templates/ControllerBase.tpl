@@ -1,9 +1,13 @@
 <?php namespace App\Crudbase\Controllers;
 
+use CodeIgniter\API\ResponseTrait;
 use App\Crudbase\Controllers\MainController;
 use Harlleimazetti\Ci4tools\Crud\Crud;
 
 class {class_name}Base extends MainController {
+
+  use ResponseTrait;
+
 	private $result;
 	private $relations;
   private $visibleFields;
@@ -291,7 +295,11 @@ class {class_name}Base extends MainController {
 	{
 		${table}Model = new \App\Models\{model_name}Model();
 		$this->result = ${table}Model->store($this->request->getPost());
-		echo json_encode($this->result);
+    if ($this->result->success === false) {
+       return $this->fail($this->result, 400);
+    }
+
+		return $this->respond($this->result, 200);
 	}
 }
 

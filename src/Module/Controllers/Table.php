@@ -1,13 +1,15 @@
-<?php
+<?php namespace Ci4toolsadmin\Controllers;
 
-namespace Ci4toolsadmin\Controllers;
-
+use CodeIgniter\API\ResponseTrait;
 use \Harlleimazetti\Ci4tools\Crud\Crud;
 
 class Table extends \Ci4toolsadmin\Controllers\BaseController
 {
+  use ResponseTrait;
+
   protected $data;
   protected $crud;
+  protected $result = [];
 
   function __construct()
   {
@@ -56,6 +58,12 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
     
     $this->crud->setTable($table);
 
-    $this->crud->saveTableConfig($table, $options);
+    $this->result = $this->crud->saveTableConfig($table, $options);
+
+    if ($this->result->success === false) {
+       return $this->fail($this->result, 400);
+    }
+
+		return $this->respond($this->result, 200);
   }
 }
