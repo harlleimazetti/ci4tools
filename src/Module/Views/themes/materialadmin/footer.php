@@ -56,6 +56,7 @@
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/select2/js/select2.full.min.js"></script>
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/sortable/Sortable.min.js"></script>
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/jquery-serializejson/jquery.serializejson.js"></script>
+<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/vendors/bootstrap-notify/bootstrap-notify.min.js"></script>
 
 <!--<script src="https://raw.githack.com/SortableJS/Sortable/master/Sortable.js"></script>-->
 
@@ -71,6 +72,7 @@
 
 <!-- App functions and actions -->
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/app.min.js"></script>
-<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/javascripts.js"></script>
+<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/axios.min.js" type="module"></script>
+<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/javascripts.js" type="module"></script>
 </body>
 </html>
