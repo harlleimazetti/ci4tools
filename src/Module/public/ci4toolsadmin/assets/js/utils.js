@@ -1,16 +1,13 @@
 export function notify(messages, type) {
   switch (type) {
     case 'info':
-      $.notify("Hello World");
-      //toastr.info(messages);;
+      $.notify(messages.join(), {type: 'info', align:"left", verticalAlign:"bottom"});
       break;
     case 'error':
-      $.notify("Hello World");
-      //toastr.error(messages);
+      $.notify(messages.join(), {type: 'danger', align:"right", verticalAlign:"top"});
       break;
     default:
-      $.notify("Hello World");
-      //toastr.info(messages);
+      $.notify(messages.join(), {type: 'info', align:"left", verticalAlign:"top"});
   }
 }
 

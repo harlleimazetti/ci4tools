@@ -52,10 +52,22 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
     );
   }
 
+  public function createconfig() {
+    $table = $this->request->getPost('table');
+
+    $this->result = $this->crud->create($table);
+
+    if ($this->result->success === false) {
+       return $this->fail($this->result, 400);
+    }
+
+		return $this->respond($this->result, 200);
+  }
+
   public function saveconfig() {
     $table = $this->request->getPost('table');
     $options = $this->request->getPost();
-    
+
     $this->crud->setTable($table);
 
     $this->result = $this->crud->saveTableConfig($table, $options);

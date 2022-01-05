@@ -7,34 +7,34 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Crud extends \CodeIgniter\Controller {
-	protected $db;
-	protected $tables;
-	protected $table;
-	protected $fields;
-	protected $keys;
-	protected $indexes;
+class Crud {
+  protected $db;
+  protected $tables;
+  protected $table;
+  protected $fields;
+  protected $keys;
+  protected $indexes;
   protected $tableConfig;
-	protected $recordFields;
-	protected $recordAllowedFields;
+  protected $recordFields;
+  protected $recordAllowedFields;
   protected $recordFormFields;
-	protected $formFields;
-	protected $tableHeader;
-	protected $templateVars;
+  protected $formFields;
+  protected $tableHeader;
+  protected $templateVars;
   protected $vendorFolder;
   protected $moduleFolder;
   protected $crudBaseFolder;
-	protected $controllersFolder;
-	protected $modelsFolder;
-	protected $viewsFolder;
-	protected $entitiesFolder;
-	protected $crudControllersBaseFolder;
-	protected $crudModelsBaseFolder;
-	protected $crudViewsBaseFolder;
-	protected $crudEntitiesBaseFolder;
+  protected $controllersFolder;
+  protected $modelsFolder;
+  protected $viewsFolder;
+  protected $entitiesFolder;
+  protected $crudControllersBaseFolder;
+  protected $crudModelsBaseFolder;
+  protected $crudViewsBaseFolder;
+  protected $crudEntitiesBaseFolder;
   protected $crudValidationFolder;
   protected $crudConfigFolder;
-	protected $crudTemplatesFolder;
+  protected $crudTemplatesFolder;
   protected $fieldsConfigurable;
   protected $fieldsNotConfigurable;
   protected $fieldOptionsNotConfigurable;
@@ -100,7 +100,7 @@ class Crud extends \CodeIgniter\Controller {
     $publisher->addPath('Entities');
     $publisher->addPath('Models');
     $publisher->addPath('Views');
-    $publisher->merge(false);
+    $publisher->merge(true);
 
     /**
      * Publish Ci4toolsadmin Module Assets
@@ -109,7 +109,7 @@ class Crud extends \CodeIgniter\Controller {
     $destinationAssets = FCPATH;
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     $publisherAssets->addPath('ci4toolsadmin');
-    $publisherAssets->merge(false);
+    $publisherAssets->merge(true);
 
     /**
      * Publish Crudbase Main Controller
@@ -123,11 +123,11 @@ class Crud extends \CodeIgniter\Controller {
 
   public function setTable($table = "") {
 		if (empty($table)) {
-      throw new Exception('Table name can`t be null');
+      //throw new Exception('Table name can`t be null');
 		}
 
     if (!$this->db->tableExists($table)) {
-			throw new Exception('Table not found');
+			//throw new Exception('Table not found');
 		}
 
     $this->setTableInfo($table);
@@ -293,10 +293,33 @@ class Crud extends \CodeIgniter\Controller {
 			}
 
 			$this->setTableInfo($table);
-			$tableConfig = array();
-			$n = 0;
 
       $tableKeys = json_decode(json_encode($this->keys), true);
+
+      $tableConfig = array();
+
+      $n = 0;
+
+      $tableConfig = [
+        "table"				          => $table,
+        'tableLabel'						=> ucfirst($this->table),
+        'tableDescription'			=> ucfirst($this->table),
+        'tableListTitle'				=> ucfirst($this->table),
+        'tableFormTitle'				=> ucfirst($this->table),
+        'tableEditTitle'				=> ucfirst($this->table).' - Atualizar registro',
+        'tableNewTitle'					=> ucfirst($this->table).' - Novo registro',
+        'tableViewTitle'				=> ucfirst($this->table).' - Visualizar registro',
+        'tableListSubtitle'			=> 'Listagem de registros',
+        'tableFormSubtitle'			=> 'Formulário de edição do registro',
+        'tableEditSubtitle'			=> 'Editar registro',
+        'tableNewSubtitle'			=> 'Novo registro',
+        'tableViewSubtitle'			=> 'Detalhes do registro',
+        'tableListDescription'	=> 'Para atualizar ou visualizar os detalhes do registro selecione a opção desejada no menu ao final da linha do registro',
+        'tableFormDescription'	=> 'Os campos com * são obrigatórios',
+        'tableEditDescription'	=> 'Os campos com * são obrigatórios',
+        'tableNewDescription'		=> 'Os campos com * são obrigatórios',
+        'tableViewDescription'  => 'Os campos com * são obrigatórios',
+      ];
 
 			foreach ($this->fields as $field)
 			{
@@ -338,33 +361,34 @@ class Crud extends \CodeIgniter\Controller {
           $fk = NULL;
         }
 
-				$tableConfig[] = array(
-					"table"				        => $table,
-          "name"				        => $field->name,
-					"label"				        => $field->name,
-          "nullable"		        => $field->nullable,
-          "required"		        => !$field->nullable,
-          "default"		          => $field->default,
-          "placeholder"         => $field->name,
-          "value"               => '',
-          "min"                 => '',
-          "max"                 => '',
-          "increment"           => '',
-					"order"				        => $n,
-					"show"				        => $show,
-          "show_on_list"        => $show_on_list,
-          "show_on_form"        => $show_on_form,
-					"type"				        => $type,
-					"allowed"			        => $allowed,
-          "foreign_table_name"  => !empty($fk) ? $fk->foreign_table_name : '',
-          "foreign_column_name" => !empty($fk) ? $fk->foreign_column_name : '',
-          "foreign_column_show" => [],
-          "options" 		        => [],
-          "relation_type"       => "",
-					"multiple"		        => "N",
-					"field_class"         => "form-control",
-					"label_class"         => "col-sm-2 control-label"
-				);
+        $tableConfig['fields'][] = [
+					"table"				          => $table,
+          "name"				          => $field->name,
+					"label"				          => $field->name,
+          "nullable"		          => $field->nullable,
+          "required"		          => !$field->nullable,
+          "default"		            => $field->default,
+          "placeholder"           => $field->name,
+          "value"                 => '',
+          "min"                   => '',
+          "max"                   => '',
+          "increment"             => '',
+					"order"				          => $n,
+					"show"				          => $show,
+          "show_on_list"          => $show_on_list,
+          "show_on_form"          => $show_on_form,
+					"type"				          => $type,
+					"allowed"			          => $allowed,
+          "foreign_table_name"    => !empty($fk) ? $fk->foreign_table_name : '',
+          "foreign_column_name"   => !empty($fk) ? $fk->foreign_column_name : '',
+          "foreign_column_show"   => [],
+          "options" 		          => [],
+          "relation_type"         => "",
+					"multiple"		          => "N",
+					"field_class"           => "form-control",
+					"label_class"           => "col-sm-2 control-label"
+        ];
+
 				$n++;
 			}
 
@@ -502,23 +526,23 @@ class Crud extends \CodeIgniter\Controller {
 			$this->tableConfig = json_decode(file_get_contents($fileConfigPath));
 
       $tableConfig = json_decode(json_encode($this->tableConfig), true);
-      $tableFields = array_column($tableConfig, 'name');
+      $tableFields = array_column($tableConfig['fields'], 'name');
       $tableFields = array_diff($tableFields, $this->fieldsNotConfigurable);
 
       $selectedField = CLI::promptByKey("Selecione o campo que deseja configurar", $tableFields);
       
-      $configOptions = array_keys($tableConfig[$selectedField]);
+      $configOptions = array_keys($tableConfig['fields'][$selectedField]);
       $configOptions = array_diff($configOptions, $this->fieldOptionsNotConfigurable);
       
       foreach($configOptions as $i => $option)
       {
-        $promptOptions = $tableConfig[$selectedField][$option];
+        $promptOptions = $tableConfig['fields'][$selectedField][$option];
 
         if ($option === 'multiple' || $option === 'show' || $option === 'allowed') {
           $promptOptions = ['Y' => 'Yes', 'N' => 'No'];
-          $tableConfig[$selectedField][$option] = CLI::promptByKey($option, $promptOptions);
+          $tableConfig['fields'][$selectedField][$option] = CLI::promptByKey($option, $promptOptions);
         } else {
-          $tableConfig[$selectedField][$option] = CLI::prompt($option, $promptOptions);
+          $tableConfig['fields'][$selectedField][$option] = CLI::prompt($option, $promptOptions);
         }
       }
 
@@ -544,10 +568,10 @@ class Crud extends \CodeIgniter\Controller {
     $tableConfig = $this->getTableConfig();
     $tableConfig = json_decode(json_encode($tableConfig), true);
 
-    foreach($tableConfig as $key => $config) {
+    foreach($tableConfig['fields'] as $key => $config) {
       foreach($newConf as $newConfig) {
         if ($config['name'] == $newConfig['name']) {
-          $tableConfig[$key] = array_merge($config, $newConfig);
+          $tableConfig['fields'][$key] = array_merge($config, $newConfig);
         }
       }
     }
@@ -556,17 +580,17 @@ class Crud extends \CodeIgniter\Controller {
     $tableConfig = $this->indent($tableConfig);
     $fileConfigPath = $this->crudConfigFolder.$table.".json";
 
-    try {
-      file_put_contents($fileConfigPath, $tableConfig);
-      $this->result['success'] = true;
-      $this->result['messages'][] = 'Dados salvos com sucesso';
-      $this->result['errors'] = [];
-    } catch (Exception $e) {
+    if (!file_put_contents($fileConfigPath, $tableConfig)) {
+      //throw new Exception('Erro ao gravar arquivo de configurção');
       $this->result['success'] = false;
-      $this->result['messages'][] = 'Problemas na gravação do dados';
+      $this->result['messages'][] = 'Problemas na gravação dos dados';
       $this->result['errors'] = $e->getMessage();
+      return (object)$this->result;
     }
-    
+
+    $this->result['success'] = true;
+    $this->result['messages'][] = 'Dados salvos com sucesso';
+    $this->result['errors'] = [];
     return (object)$this->result;
   }
 
@@ -598,10 +622,10 @@ class Crud extends \CodeIgniter\Controller {
     $tableConfig = json_decode(json_encode($this->tableConfig), true);
 
     /* Find fields that area displayable: show = Y */
-    $displayableFields = array_keys(array_column($tableConfig, 'show'), 'Y');
+    $displayableFields = array_keys(array_column($tableConfig['fields'], 'show'), 'Y');
 
     /* Intersect displyable fields to filter $tableConfig array */
-    $b = array_intersect_key($tableConfig, array_flip($displayableFields));
+    $b = array_intersect_key($tableConfig['fields'], array_flip($displayableFields));
 
     /* Retrieve array with fields names and filter for return only configurable fields */
     $tableFields  = array_column($b, 'name');
@@ -622,10 +646,10 @@ class Crud extends \CodeIgniter\Controller {
     }
 
     /* Find fields that area displayable: show = Y */
-    $displayableFields = array_keys(array_column($tableConfig, 'show'), 'Y');
+    $displayableFields = array_keys(array_column($tableConfig['fields'], 'show'), 'Y');
 
     /* Intersect displyable fields to filter $this->tableConfig array */
-    $listVisibleFieldsConfig = array_intersect_key($this->tableConfig, array_flip($displayableFields));
+    $listVisibleFieldsConfig = array_intersect_key($tableConfig['fields'], array_flip($displayableFields));
 
     return $listVisibleFieldsConfig;
   }
@@ -642,10 +666,10 @@ class Crud extends \CodeIgniter\Controller {
     }
 
     /* Find fields that area displayable: show_on_form = Y */
-    $displayableFields = array_keys(array_column($tableConfig, 'show_on_form'), 'Y');
+    $displayableFields = array_keys(array_column($tableConfig['fields'], 'show_on_form'), 'Y');
 
     /* Intersect displyable fields to filter $this->tableConfig array */
-    $formVisibleFieldsConfig = array_intersect_key($this->tableConfig, array_flip($displayableFields));
+    $formVisibleFieldsConfig = array_intersect_key($tableConfig['fields'], array_flip($displayableFields));
 
     return $formVisibleFieldsConfig;
   }
@@ -687,7 +711,7 @@ class Crud extends \CodeIgniter\Controller {
 	protected function makeRecordAllowedFieldsString() {
 		$recordAllowedFields = "";
 		$tableConfig = $this->tableConfig;
-		foreach ($tableConfig as $field)
+		foreach ($tableConfig->fields as $field)
 		{
 			if ($field->allowed) {
 				$recordAllowedFields .= "'".$field->name."', ";
@@ -703,7 +727,7 @@ class Crud extends \CodeIgniter\Controller {
 		$tableHeader  = str_repeat("\t", 3).'<thead>'."\r\n";
 		$tableHeader .= str_repeat("\t", 4)."<tr>"."\r\n";
 
-		foreach ($tableConfig as $config)
+		foreach ($tableConfig->fields as $config)
 		{
 			if ($config->show == 'Y') {
 				if ($config->name == 'id') {
@@ -732,10 +756,11 @@ class Crud extends \CodeIgniter\Controller {
 
 		foreach ($formVisibleFieldsConfig as $fieldConfig)
 		{
-      $recordFormFields .= $this->makeFormField($fieldConfig);
+      $recordFormFields .= $this->makeFormField((object)$fieldConfig);
 		}
 
-    $recordFormFields .= $this->makeFormFieldSubmit();
+    $recordFormFields .= $this->makeFormBack();
+    $recordFormFields .= $this->makeFormSubmit();
 
     return $recordFormFields;
 	}
@@ -854,9 +879,15 @@ class Crud extends \CodeIgniter\Controller {
 		return $newContent;
   }
 
-  protected function makeFormFieldSubmit() {
+  protected function makeFormSubmit() {
 		$content = file_get_contents($this->crudTemplatesFolder."FormSubmitButton.tpl");
     $newContent = $this->parser->render($content, array('label' => 'Salvar'));
+		return $newContent;
+  }
+
+  protected function makeFormBack() {
+		$content = file_get_contents($this->crudTemplatesFolder."FormBackButton.tpl");
+    $newContent = $this->parser->render($content, array('label' => 'Voltar'));
 		return $newContent;
   }
 

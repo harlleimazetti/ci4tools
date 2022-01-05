@@ -72,7 +72,7 @@
 
 <!-- App functions and actions -->
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/app.min.js"></script>
-<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/axios.min.js" type="module"></script>
+<script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/axios.min.js"></script>
 <script src="<?php echo base_url() ?>/ci4toolsadmin/assets/js/javascripts.js" type="module"></script>
 </body>
 </html>

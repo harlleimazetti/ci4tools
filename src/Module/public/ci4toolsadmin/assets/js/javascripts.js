@@ -6,16 +6,19 @@ $(document).ready(function() {
   var el = document.getElementById('table-config');
   var sortable = Sortable.create(el);
 
-  /*
   $(".form-record").submit(function(event) {
     var data = $(this).serializeJSON({checkboxUncheckedValue: "false"});
     console.log(data);
     $.post($(this).attr('action'), data, function(result) {
       console.log(result);
+      if (result.success === true) {
+        notify(result.messages, 'info');
+      } else {
+        notify(result.messages, 'error');
+      }
     });
     event.preventDefault();
   });
-  */
  
   $(function() {
     $('.select2').select2();
@@ -24,14 +27,18 @@ $(document).ready(function() {
   var tableRecords = initializeTableRecords();
 
   //console.log(tableRecords);
-
+  
+  /*
   $(".form-record").submit(function(event) {
     event.preventDefault();
 
     unHighlightFieldsError();
 
     var url = $(this).attr('action');
-    var formData = new FormData(this);
+    //var formData = new FormData(this);
+    var formData = $(this).serializeJSON({checkboxUncheckedValue: "false"});
+
+    console.log(formData);
 
     serverAdmin.post(url, formData)
       .then(response => {
@@ -60,7 +67,8 @@ $(document).ready(function() {
 
     return false;
   });
-  
+  */
+  /*
   $('.file-upload').on('click', function() {
     //console.log('clicou');
     //$('#file-upload-status').hide();
@@ -88,6 +96,7 @@ $(document).ready(function() {
       $('#file-upload-progress .progress-bar').css('width', progress + '%');
     },
     */
+    /*
     stop: function (e) {
       $('#file-upload-status').html(' <i class="fa fa-check"></i> Concluído').show();
       $('#file-upload-progress').hide();
@@ -102,4 +111,5 @@ $(document).ready(function() {
       }
     }
   });
+  */
 });
