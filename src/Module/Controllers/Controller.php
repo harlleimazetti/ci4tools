@@ -3,7 +3,7 @@
 use CodeIgniter\API\ResponseTrait;
 use \Harlleimazetti\Ci4tools\Crud\Crud;
 
-class Table extends \Ci4toolsadmin\Controllers\BaseController
+class Controller extends \Ci4toolsadmin\Controllers\BaseController
 {
   use ResponseTrait;
 
@@ -23,9 +23,9 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
     $tableFields = $this->crud->getFieldsConfigurable();
     $tableConfig = $this->crud->getTableConfig();
 
-    $this->data['page_title']       = 'Tabelas';
-    $this->data['page_subtitle']    = 'Configuração das tabelas do banco de dados';
-    $this->data['page_description'] = 'Parametrização de campos, relacionamentos, labels e formato das colunas da tabela';
+    $this->data['page_title']       = 'Controladores (Controllers)';
+    $this->data['page_subtitle']    = 'Configuração dos Controladores do sistema';
+    $this->data['page_description'] = 'Parametrização das informações de identificação (labels, descrição) dos Controllers e seus métodos';
     $this->data['page_icon']        = 'fal fa-globe';
     $this->data['body_id']          = 'body_table';
     $this->data['system_area']      = 'Tabelas';
@@ -42,7 +42,7 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
       'show_footer' => true,
     ];
 
-    $contents = array('Table');
+    $contents = array('ControllerList');
 
     echo $this->showView(
       $theme_name     = $this->themeConfig->themeAdminName,
@@ -50,18 +50,6 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
       $contents       = $contents,
       $data           = $this->data,
     );
-  }
-
-  public function createconfig() {
-    $table = $this->request->getPost('table');
-
-    $this->result = $this->crud->create($table);
-
-    if ($this->result->success === false) {
-       return $this->fail($this->result, 400);
-    }
-
-		return $this->respond($this->result, 200);
   }
 
   public function saveconfig() {

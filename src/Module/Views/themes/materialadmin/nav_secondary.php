@@ -20,19 +20,18 @@
                         <li class="navigation__active"><a href="<?php echo base_url() ?>/admin/dashboard"><i class="zmdi zmdi-home"></i> Home</a></li>
 
                         <li class="navigation__sub">
-                            <a href=""><i class="zmdi zmdi-view-list"></i> Tabelas</a>
+                            <a href=""><i class="zmdi zmdi-view-list"></i> Tables</a>
 
                             <ul>
                                 <li><a href="<?php echo base_url() ?>/admin/table/place">Place</a></li>
-                                <li><a href="boxed-layout.html">Boxed Layout</a></li>
-                                <li><a href="hidden-sidebar-boxed-layout.html">Boxed Layout with Hidden Sidebar</a></li>
-                                <li><a href="top-navigation.html">Top Navigation</a></li>
                             </ul>
                         </li>
 
-                        <li><a href="typography.html"><i class="zmdi zmdi-accounts"></i> Usuários</a></li>
+                        <li><a href="widgets.html"><i class="zmdi zmdi-menu"></i> Controllers</a></li>
 
                         <li><a href="widgets.html"><i class="zmdi zmdi-menu"></i> Menus</a></li>
+
+                        <li><a href="typography.html"><i class="zmdi zmdi-accounts"></i> Users</a></li>
 
                     </ul>
                 </div>

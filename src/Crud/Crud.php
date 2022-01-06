@@ -7,7 +7,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Crud {
+class Crud extends \CodeIgniter\Controller {
   protected $db;
   protected $tables;
   protected $table;
@@ -45,8 +45,8 @@ class Crud {
   protected $formVisibleFields;
   protected $formVisibleFieldsLabel;
   protected $formVisibleFieldsConfig;
+  protected $result = [];
   protected $parser;
-  protected $result;
 
 	function __construct()
 	{
@@ -100,7 +100,7 @@ class Crud {
     $publisher->addPath('Entities');
     $publisher->addPath('Models');
     $publisher->addPath('Views');
-    $publisher->merge(true);
+    $publisher->merge(false);
 
     /**
      * Publish Ci4toolsadmin Module Assets
@@ -109,7 +109,7 @@ class Crud {
     $destinationAssets = FCPATH;
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     $publisherAssets->addPath('ci4toolsadmin');
-    $publisherAssets->merge(true);
+    $publisherAssets->merge(false);
 
     /**
      * Publish Crudbase Main Controller
@@ -123,14 +123,17 @@ class Crud {
 
   public function setTable($table = "") {
 		if (empty($table)) {
-      //throw new Exception('Table name can`t be null');
+      throw new \Exception('Table name can`t be null');
+      return null;
 		}
 
     if (!$this->db->tableExists($table)) {
-			//throw new Exception('Table not found');
+			throw new \Exception('Table not found');
+      return null;
 		}
 
     $this->setTableInfo($table);
+    $this->setTableConfig($table);
   }
 
 	protected function setTableInfo($table) {
@@ -138,14 +141,13 @@ class Crud {
 		$this->fields		      = $this->db->getFieldData($this->table);
 		$this->keys			      = $this->db->getForeignKeyData($this->table);
 		$this->indexes        = $this->db->getIndexData($this->table);
-    
-    $this->setTableConfig($this->table);
 	}
 
   protected function setTableConfig($table) {
     $fileConfigPath = $this->crudConfigFolder.$table.".json";
 
     if (!file_exists($fileConfigPath)) {
+      throw new \Exception('Config file not found');
       return null;
     }
 
@@ -157,7 +159,6 @@ class Crud {
 
     $this->listVisibleFields = $this->loadVisibleFields($this->table);
     $listVisibleFieldsConfig = $this->loadListVisibleFieldsConfig($this->table);
-
     if (!empty($listVisibleFieldsConfig)) {
       $this->listVisibleFieldsConfig = array_values($listVisibleFieldsConfig);
       $this->listVisibleFieldsLabel = array_column($this->listVisibleFieldsConfig, 'label');
@@ -165,7 +166,6 @@ class Crud {
 
     $this->formVisibleFields = $this->loadVisibleFields($this->table);
     $formVisibleFieldsConfig = $this->loadFormVisibleFieldsConfig($this->table);
-
     if (!empty($formVisibleFieldsConfig)) {
       $this->formVisibleFieldsConfig = array_values($formVisibleFieldsConfig);
       $this->formVisibleFieldsLabel = array_column($this->formVisibleFieldsConfig, 'label');
@@ -270,6 +270,8 @@ class Crud {
 	}
 
 	public function create($tables = "") {
+    $this->result['success'] = true;
+        
 		if (!empty($tables))
 		{
 			$pos = strpos($tables, ",");
@@ -287,9 +289,11 @@ class Crud {
 		{
 			if (!$this->db->tableExists($table))
 			{
-				echo $this->color("ERROR: TABLE NOT FOUND - ", "red").$table;
-				echo "\r\n";
-				break;
+        CLI::error("CREATE (ERROR): Table not found: ". CLI::color($table, 'green'));
+        $this->result['success'] = false;
+        $this->result['messages'][] = 'Table not found: '.$table;
+        $this->result['errors'][] = 'Table not found: '.$table;
+				continue;
 			}
 
 			$this->setTableInfo($table);
@@ -394,100 +398,104 @@ class Crud {
 
       //print_r($tableConfig); exit;
 
-			echo $this->color("CREATING CONFIG FILE - ", "green").$table.".json";
-			echo "\r\n";
+      CLI::write("CREATE (INFO): Creating config file: ". CLI::color($table.".json", 'green'), 'white');
 
 			$tableConfig = json_encode($tableConfig);
 			$tableConfig = $this->indent($tableConfig);
 			$fileConfigPath = $this->crudConfigFolder.$table.".json";
 
-			if (!file_exists($fileConfigPath)) {
-				file_put_contents($fileConfigPath, $tableConfig);
+			if (file_exists($fileConfigPath)) {
+        CLI::error("CREATE (ERROR): Config file already exists: ". CLI::color($table.".json", 'green'));
+        $this->result['success'] = false;
+        $this->result['messages'][] = 'Config file not created: '.$table.".json";
+        $this->result['errors'][] = 'Config file already exists: '.$table.".json";
+				continue;
 			}
+
+      file_put_contents($fileConfigPath, $tableConfig);
+      CLI::write("CREATE (INFO): Config file successfuly created: ". CLI::color($table.".json", 'green'), 'white');
+
+      $this->result['messages'][] = 'Config file successfuly created: '.$table.".json";
+      $this->result['errors'] = [];
 		}
+
+    return (object)$this->result;
 	}
 
 	public function make($tables = "")
 	{
+    $this->result['success'] = true;
+
 		if (!empty($tables))
 		{
 			$pos = strpos($tables, ",");
-			if ($pos === false)
-			{
-				$this->tables = array($tables);
-			}
-			else
-			{
-				$this->tables = array_map('trim', explode(',', $tables));
-			}
+			$this->tables = $pos === false ? array($tables) : array_map('trim', explode(',', $tables));
 		}
 
 		if (!is_dir($this->crudConfigFolder))
 		{
-			echo $this->color("ERROR: CONFIG/CRUD FOLDER NOT FOUND", "red");
-			echo "\r\n";
+      CLI::error("MAKE (ERROR): CONFIG/CRUD Folder not found: ". CLI::color($this->crudConfigFolder, 'white'));
 			exit;
 		}
 
 		foreach ($this->tables as $table)
 		{
-			if (!$this->db->tableExists($table))
-			{
-				echo $this->color("ERROR: TABLE NOT FOUND - ", "red").$table;
-				echo "\r\n";
-				break;
-			}
+      CLI::write(" ");
 
-			echo "Making CRUD for table (".$table.")"."\r\n";
+      try {
+        CLI::write("MAKE (INFO): Making CRUD for table: ". CLI::color($table, 'green'), 'white');
 
-			echo "Setting table info"."\r\n";
-			$this->setTableInfo($table);
+        CLI::write("MAKE (INFO): Setting table info", 'white');
+        $this->setTable($table);
 
-			echo "Retrieving table config"."\r\n";
+        CLI::write("MAKE (INFO): Retrieving table config", 'white');
+        $fileConfigPath = $this->crudConfigFolder.$table.".json";
 
-			$fileConfigPath = $this->crudConfigFolder.$table.".json";
+        CLI::write("MAKE (INFO): Making record fields list", 'white');
+        $this->recordFields	= $this->makeRecordFieldsString();
 
-			if (!file_exists($fileConfigPath)) {
-				echo $this->color("ERROR: CONFIG FILE NOT FOUND - ", "red").$table;
-				echo "\r\n";
-				break;
-			}
+        CLI::write("MAKE (INFO): Making record allowed fields list", 'white');
+        $this->recordAllowedFields	= $this->makeRecordAllowedFieldsString();
 
-			echo "Making record fields list"."\r\n";
-			$this->recordFields	= $this->makeRecordFieldsString();
+        CLI::write("MAKE (INFO): Making record table header", 'white');
+        $this->tableHeader	= $this->makeRecordHtmlTableHeader();
 
-			echo "Making record allowed fields list"."\r\n";
-			$this->recordAllowedFields	= $this->makeRecordAllowedFieldsString();
+        CLI::write("MAKE (INFO): Making record HTML form fields", 'white');
+        $this->recordFormFields = $this->makeRecordFormFields();
 
-			echo "Making record table header"."\r\n";
-			$this->tableHeader	= $this->makeRecordHtmlTableHeader();
+        CLI::write("MAKE (INFO): Setting template vars", 'white');
+        $this->templateVars = $this->setTemplateVars();
 
-      echo "Making record HTML form fields"."\r\n";
-			$this->recordFormFields = $this->makeRecordFormFields();
+        CLI::write("MAKE (INFO): Making Controller files", 'white');
+        $this->makeControllerFiles();
 
-			echo "Setting template vars"."\r\n";
-			$this->templateVars = $this->setTemplateVars();
+        CLI::write("MAKE (INFO): Making Validation files", 'white');
+        $this->makeValidationFiles();
 
-			echo "Making Controller files"."\r\n";
-			$this->makeControllerFiles();
+        CLI::write("MAKE (INFO): Making Model files", 'white');
+        $this->makeModelFiles();
 
-			echo "Making Validation files"."\r\n";
-			$this->makeValidationFiles();
+        CLI::write("MAKE (INFO): Making View List files", 'white');
+        $this->makeViewListFiles();
 
-      echo "Making Model files"."\r\n";
-			$this->makeModelFiles();
+        CLI::write("MAKE (INFO): Making View Form files", 'white');
+        $this->makeViewFormFiles();
 
-			echo "Making View List files"."\r\n";
-			$this->makeViewListFiles();
+      } catch (\Exception $e) {
+        CLI::error("MAKE (ERROR): ".$e->getMessage().": ". CLI::color($table, 'green'));
+        
+        $this->result['messages'][] = 'MAKE (ERROR): Problems ocurred during CRUD Making of table: '.$table;
+        $this->result['errors'][] = $e->getMessage().": ".$table;
 
-      echo "Making View Form files"."\r\n";
-			$this->makeViewFormFiles();
+        continue;
+      }
 
-			echo "End of table config"."\r\n";
-			echo ".:."."\r\n";
+      CLI::write("MAKE (INFO): End of CRUD Making for table: ".CLI::color($table, 'green'), 'white');
 
-			//exit;
+      $this->result['messages'][] = 'MAKE (INFO): CRUD successfuly created for table: '.$table;
 		}
+
+    return (object)$this->result;
 	}
 
 	public function config($tables = "")
