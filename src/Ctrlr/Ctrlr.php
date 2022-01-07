@@ -1,61 +1,18 @@
-<?php namespace Harlleimazetti\Ci4tools\Crud;
+<?php namespace Ci4tools\Ctrlr;
 
 use \CodeIgniter\CLI\CLI;
-use \Harlleimazetti\Ci4tools\Templateparser\TemplateParser;
 use CodeIgniter\Config\Factories;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Crud extends \CodeIgniter\Controller {
-  protected $db;
-  protected $tables;
-  protected $table;
-  protected $fields;
-  protected $keys;
-  protected $indexes;
-  protected $tableConfig;
-  protected $recordFields;
-  protected $recordAllowedFields;
-  protected $recordFormFields;
-  protected $formFields;
-  protected $tableHeader;
-  protected $templateVars;
-  protected $vendorFolder;
-  protected $moduleFolder;
-  protected $crudBaseFolder;
-  protected $controllersFolder;
-  protected $modelsFolder;
-  protected $viewsFolder;
-  protected $entitiesFolder;
-  protected $crudControllersBaseFolder;
-  protected $crudModelsBaseFolder;
-  protected $crudViewsBaseFolder;
-  protected $crudEntitiesBaseFolder;
-  protected $crudValidationFolder;
-  protected $crudConfigFolder;
-  protected $crudTemplatesFolder;
-  protected $fieldsConfigurable;
-  protected $fieldsNotConfigurable;
-  protected $fieldOptionsNotConfigurable;
-  protected $visibleFields;
-  protected $listVisibleFields;
-  protected $listVisibleFieldsLabel;
-  protected $listVisibleFieldsConfig;
-  protected $formVisibleFields;
-  protected $formVisibleFieldsLabel;
-  protected $formVisibleFieldsConfig;
+class Ctrlr {
   protected $result = [];
   protected $controllers = [];
-  protected $parser;
 
 	function __construct()
 	{
-		$this->db = \Config\Database::connect();
-		$this->tables = $this->db->listTables();
-    $this->parser = new TemplateParser();
-
     $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
 
     $this->moduleFolder 						  = ROOTPATH."ci4toolsadmin".DS;
@@ -81,147 +38,51 @@ class Crud extends \CodeIgniter\Controller {
 
   public function install()
   {
-		if (!is_dir($this->moduleFolder))	{ mkdir($this->moduleFolder); }
-    if (!is_dir($this->crudBaseFolder))	{ mkdir($this->crudBaseFolder); }
-		if (!is_dir($this->crudConfigFolder))	{ mkdir($this->crudConfigFolder); }
-		if (!is_dir($this->crudControllersBaseFolder))	{ mkdir($this->crudControllersBaseFolder); }
-		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
-		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
-    if (!is_dir($this->crudValidationFolder))	{ mkdir($this->crudValidationFolder); }
 
-    /**
-     * Publish Ci4toolsadmin Module
-     */
-    $source = $this->vendorFolder."Module";
-    $destinationModule = $this->moduleFolder;
-    $publisher = new \CodeIgniter\Publisher\Publisher($source, $destinationModule);
-    $publisher->addPath('Controllers');
-    $publisher->addPath('Entities');
-    $publisher->addPath('Models');
-    $publisher->addPath('Views');
-    $publisher->merge(true);
-
-    /**
-     * Publish Ci4toolsadmin Module Assets
-     */
-    $sourceAssets = $this->vendorFolder."Module".DS."public";
-    $destinationAssets = FCPATH;
-    $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
-    $publisherAssets->addPath('ci4toolsadmin');
-    $publisherAssets->merge(true);
-
-    /**
-     * Publish Crudbase Main Controller
-     */
-    $sourceMainController = $this->vendorFolder."Crud";
-    $destinationMainController = $this->crudControllersBaseFolder;
-    $publisherMainController = new \CodeIgniter\Publisher\Publisher($sourceMainController, $destinationMainController);
-    $publisherMainController->addPath('MainController.php');
-    $publisherMainController->merge(true);
   }
 
-  public function setTable($table = "") {
-		if (empty($table)) {
-      throw new \Exception('Table name can`t be null');
+  public function setController($controller = "") {
+		if (empty($controller)) {
+      throw new \Exception('Controller name can`t be null');
       return null;
 		}
 
-    if (!$this->db->tableExists($table)) {
-			throw new \Exception('Table not found');
-      return null;
-		}
-
-    $this->setTableInfo($table);
-    $this->setTableConfig($table);
+    //$this->setControllerInfo($controller);
+    $this->setControllerConfig($controller);
   }
 
-	protected function setTableInfo($table) {
-		$this->table		      = $table;
-		$this->fields		      = $this->db->getFieldData($this->table);
-		$this->keys			      = $this->db->getForeignKeyData($this->table);
-		$this->indexes        = $this->db->getIndexData($this->table);
+	protected function setControllerInfo($controller) {
+		$this->controller		  = $controller;
+		$this->fields		      = $this->db->getFieldData($this->controller);
+		$this->keys			      = $this->db->getForeignKeyData($this->controller);
+		$this->indexes        = $this->db->getIndexData($this->controller);
 	}
 
-  protected function setTableConfig($table) {
-    $fileConfigPath = $this->crudConfigFolder.$table.".json";
+  protected function setControllerConfig($controller) {
+    $fileConfigPath = $this->controllerConfigFolder.$controller.".json";
 
     if (!file_exists($fileConfigPath)) {
       throw new \Exception('Config file not found');
       return null;
     }
 
-    $this->tableConfig = json_decode(file_get_contents($fileConfigPath));
-
-    $this->setFieldsConfigurable();
-
-    $this->visibleFields = $this->loadVisibleFields($this->table);
-
-    $this->listVisibleFields = $this->loadVisibleFields($this->table);
-    $listVisibleFieldsConfig = $this->loadListVisibleFieldsConfig($this->table);
-    if (!empty($listVisibleFieldsConfig)) {
-      $this->listVisibleFieldsConfig = array_values($listVisibleFieldsConfig);
-      $this->listVisibleFieldsLabel = array_column($this->listVisibleFieldsConfig, 'label');
-    }
-
-    $this->formVisibleFields = $this->loadVisibleFields($this->table);
-    $formVisibleFieldsConfig = $this->loadFormVisibleFieldsConfig($this->table);
-    if (!empty($formVisibleFieldsConfig)) {
-      $this->formVisibleFieldsConfig = array_values($formVisibleFieldsConfig);
-      $this->formVisibleFieldsLabel = array_column($this->formVisibleFieldsConfig, 'label');
-    }
+    $this->controllerConfig = json_decode(file_get_contents($fileConfigPath));
   }
 
-  protected function setFieldsConfigurable() {
-    $fields = json_decode(json_encode($this->fields), true);
-    $fieldsConfigurable = array_column($fields, 'name');
-    $fieldsConfigurable = array_diff($fieldsConfigurable, $this->fieldsNotConfigurable);
-    $fieldsConfigurable = array_intersect_key($this->fields, $fieldsConfigurable);
-    $this->fieldsConfigurable  = $fieldsConfigurable;
+  public function getControllerConfig() {
+    return $this->controllerConfig;
   }
 
-  public function getTableConfig() {
-    return $this->tableConfig;
-  }
-
-  public function getFields() {
-    return $this->fields;
-  }
-
-  public function getVisibleFields() {
-    return $this->visibleFields;
-  }
-
-  public function getListVisibleFields() {
-    return $this->listVisibleFields;
-  }
-
-  public function getFormVisibleFields() {
-    return $this->formVisibleFields;
-  }
-
-  public function getFieldsNotConfigurable() {
-    return $this->fieldsNotConfigurable;
-  }
-
-  public function getFieldsConfigurable() {
-    return $this->fieldsConfigurable;
-  }
-
-	public function tableinfo($table = "") {
-		if (empty($table)) {
-			CLI::error("TABLEINFO (ERROR): Please, type a table name.");
-			exit;
-		}
-		
-		if (!$this->db->tableExists($table)) {
-			CLI::error("TABLEINFO (ERROR): Table not found: ". CLI::color($table, 'white'));
+	public function controllerinfo($controller = "") {
+		if (empty($controller)) {
+			CLI::error("CONTROLLERINFO (ERROR): Please, type a controller name.");
 			exit;
 		}
 
-		$this->setTableInfo($table);
+		$this->setControllerInfo($controller);
 
 		echo "\r\n";
-		echo "> TABLE NAME: ".$this->color($this->table, "green")."\r\n";
+		echo "> TABLE NAME: ".$this->color($this->controller, "green")."\r\n";
 		echo "\r\n\r\n";
 
 		echo "> FIELDS \r\n";
@@ -238,7 +99,7 @@ class Crud extends \CodeIgniter\Controller {
 				$k = array_search($field->name, array_column($this->keys, 'column_name'));
 				if (is_numeric($k)) {
 					echo $this->color(STR_PAD("FOREIGN KEY", 20), "orange");
-					echo $this->color(STR_PAD($this->keys[$k]->foreign_table_name,20), "green");
+					echo $this->color(STR_PAD($this->keys[$k]->foreign_controller_name,20), "green");
 					echo $this->color(STR_PAD($this->keys[$k]->foreign_column_name,20), "blue");
 				}	else {
 					echo STR_PAD("-", 20);
@@ -268,167 +129,97 @@ class Crud extends \CodeIgniter\Controller {
 		}
 	}
 
-	public function create($tables = "") {
+	public function create($controller = "") {
     $this->result['success'] = true;
         
-		if (!empty($tables))
+		if (!empty($controller))
 		{
-			$pos = strpos($tables, ",");
-			if ($pos === false)
-			{
-				$this->tables = array($tables);
-			}
-			else
-			{
-				$this->tables = array_map('trim', explode(',', $tables));
-			}
-		}
+			$this->controller = $controllers;
+    }
 
-		foreach ($this->tables as $table)
-		{
-			if (!$this->db->tableExists($table))
-			{
-        CLI::error("CREATE (ERROR): Table not found: ". CLI::color($table, 'green'));
-        $this->result['success'] = false;
-        $this->result['messages'][] = 'Table not found: '.$table;
-        $this->result['errors'][] = 'Table not found: '.$table;
-				continue;
-			}
+		$this->setControllerInfo($controller);
 
-			$this->setTableInfo($table);
+    $controllerConfig = [
+      "controller"				          => $controller,
+      'controllerLabel'						=> ucfirst($this->controller),
+      'controllerDescription'			=> ucfirst($this->controller),
+      'controllerListTitle'				=> ucfirst($this->controller),
+      'controllerFormTitle'				=> ucfirst($this->controller),
+      'controllerEditTitle'				=> ucfirst($this->controller).' - Atualizar registro',
+      'controllerNewTitle'					=> ucfirst($this->controller).' - Novo registro',
+      'controllerViewTitle'				=> ucfirst($this->controller).' - Visualizar registro',
+      'controllerListSubtitle'			=> 'Listagem de registros',
+      'controllerFormSubtitle'			=> 'Formulário de edição do registro',
+      'controllerEditSubtitle'			=> 'Editar registro',
+      'controllerNewSubtitle'			=> 'Novo registro',
+      'controllerViewSubtitle'			=> 'Detalhes do registro',
+      'controllerListDescription'	=> 'Para atualizar ou visualizar os detalhes do registro selecione a opção desejada no menu ao final da linha do registro',
+      'controllerFormDescription'	=> 'Os campos com * são obrigatórios',
+      'controllerEditDescription'	=> 'Os campos com * são obrigatórios',
+      'controllerNewDescription'		=> 'Os campos com * são obrigatórios',
+      'controllerViewDescription'  => 'Os campos com * são obrigatórios',
+    ];
 
-      $tableKeys = json_decode(json_encode($this->keys), true);
+    $controllerConfig['fields'][] = [
+      "controller"				          => $controller,
+      "name"				          => $field->name,
+      "label"				          => $field->name,
+      "nullable"		          => $field->nullable,
+      "required"		          => !$field->nullable,
+      "default"		            => $field->default,
+      "placeholder"           => $field->name,
+      "value"                 => '',
+      "min"                   => '',
+      "max"                   => '',
+      "increment"             => '',
+      "order"				          => $n,
+      "show"				          => $show,
+      "show_on_list"          => $show_on_list,
+      "show_on_form"          => $show_on_form,
+      "type"				          => $type,
+      "allowed"			          => $allowed,
+      "foreign_controller_name"    => !empty($fk) ? $fk->foreign_controller_name : '',
+      "foreign_column_name"   => !empty($fk) ? $fk->foreign_column_name : '',
+      "foreign_column_show"   => [],
+      "options" 		          => [],
+      "relation_type"         => "",
+      "multiple"		          => "N",
+      "field_class"           => "form-control",
+      "label_class"           => "col-sm-2 control-label"
+    ];
 
-      $tableConfig = array();
+    //print_r($controllerConfig); exit;
 
-      $n = 0;
+    CLI::write("CREATE (INFO): Creating config file: ". CLI::color($controller.".json", 'green'), 'white');
 
-      $tableConfig = [
-        "table"				          => $table,
-        'tableLabel'						=> ucfirst($this->table),
-        'tableDescription'			=> ucfirst($this->table),
-        'tableListTitle'				=> ucfirst($this->table),
-        'tableFormTitle'				=> ucfirst($this->table),
-        'tableEditTitle'				=> ucfirst($this->table).' - Atualizar registro',
-        'tableNewTitle'					=> ucfirst($this->table).' - Novo registro',
-        'tableViewTitle'				=> ucfirst($this->table).' - Visualizar registro',
-        'tableListSubtitle'			=> 'Listagem de registros',
-        'tableFormSubtitle'			=> 'Formulário de edição do registro',
-        'tableEditSubtitle'			=> 'Editar registro',
-        'tableNewSubtitle'			=> 'Novo registro',
-        'tableViewSubtitle'			=> 'Detalhes do registro',
-        'tableListDescription'	=> 'Para atualizar ou visualizar os detalhes do registro selecione a opção desejada no menu ao final da linha do registro',
-        'tableFormDescription'	=> 'Os campos com * são obrigatórios',
-        'tableEditDescription'	=> 'Os campos com * são obrigatórios',
-        'tableNewDescription'		=> 'Os campos com * são obrigatórios',
-        'tableViewDescription'  => 'Os campos com * são obrigatórios',
-      ];
+    $controllerConfig = json_encode($controllerConfig);
+    $controllerConfig = $this->indent($controllerConfig);
+    $fileConfigPath = $this->crudConfigFolder.$controller.".json";
 
-			foreach ($this->fields as $field)
-			{
-				$type			    = "text";
-				$show			    = "Y";
-        $show_on_list = "Y";
-        $show_on_form = "Y";
-				$allowed	    = "Y";
+    if (file_exists($fileConfigPath)) {
+      CLI::error("CREATE (ERROR): Config file already exists: ". CLI::color($controller.".json", 'green'));
+      $this->result['success'] = false;
+      $this->result['messages'][] = 'Config file not created: '.$controller.".json";
+      $this->result['errors'][] = 'Config file already exists: '.$controller.".json";
+    }
 
-				if ($field->name == "id") {
-					$type			    = "hidden";
-					$show			    = "Y";
-          $show_on_list = "Y";
-          $show_on_form = "Y";
-					$allowed	    = "Y";
-				}
+    file_put_contents($fileConfigPath, $controllerConfig);
+    CLI::write("CREATE (INFO): Config file successfuly created: ". CLI::color($controller.".json", 'green'), 'white');
 
-				if ($field->name == "created_at" || $field->name == "updated_at" || $field->name == "deleted_at") {
-					$type			    = "hidden";
-					$show			    = "N";
-          $show_on_list = "N";
-          $show_on_form = "N";
-					$allowed	    = "N";
-				}
-
-				if ($field->name == "password") {
-					$type			    = "hidden";
-					$show			    = "N";
-          $show_on_list = "N";
-          $show_on_form = "N";
-					$allowed	    = "N";
-				}
-
-        $key = array_search($field->name, array_column($tableKeys, 'column_name'));
-
-        if (!(empty($key) && $key !== 0)) {
-          $fk = $this->keys[$key];
-        } else {
-          $fk = NULL;
-        }
-
-        $tableConfig['fields'][] = [
-					"table"				          => $table,
-          "name"				          => $field->name,
-					"label"				          => $field->name,
-          "nullable"		          => $field->nullable,
-          "required"		          => !$field->nullable,
-          "default"		            => $field->default,
-          "placeholder"           => $field->name,
-          "value"                 => '',
-          "min"                   => '',
-          "max"                   => '',
-          "increment"             => '',
-					"order"				          => $n,
-					"show"				          => $show,
-          "show_on_list"          => $show_on_list,
-          "show_on_form"          => $show_on_form,
-					"type"				          => $type,
-					"allowed"			          => $allowed,
-          "foreign_table_name"    => !empty($fk) ? $fk->foreign_table_name : '',
-          "foreign_column_name"   => !empty($fk) ? $fk->foreign_column_name : '',
-          "foreign_column_show"   => [],
-          "options" 		          => [],
-          "relation_type"         => "",
-					"multiple"		          => "N",
-					"field_class"           => "form-control",
-					"label_class"           => "col-sm-2 control-label"
-        ];
-
-				$n++;
-			}
-
-      //print_r($tableConfig); exit;
-
-      CLI::write("CREATE (INFO): Creating config file: ". CLI::color($table.".json", 'green'), 'white');
-
-			$tableConfig = json_encode($tableConfig);
-			$tableConfig = $this->indent($tableConfig);
-			$fileConfigPath = $this->crudConfigFolder.$table.".json";
-
-			if (file_exists($fileConfigPath)) {
-        CLI::error("CREATE (ERROR): Config file already exists: ". CLI::color($table.".json", 'green'));
-        $this->result['success'] = false;
-        $this->result['messages'][] = 'Config file not created: '.$table.".json";
-        $this->result['errors'][] = 'Config file already exists: '.$table.".json";
-				continue;
-			}
-
-      file_put_contents($fileConfigPath, $tableConfig);
-      CLI::write("CREATE (INFO): Config file successfuly created: ". CLI::color($table.".json", 'green'), 'white');
-
-      $this->result['messages'][] = 'Config file successfuly created: '.$table.".json";
-      $this->result['errors'] = [];
-		}
-
+    $this->result['messages'][] = 'Config file successfuly created: '.$controller.".json";
+    $this->result['errors'] = [];
+	
     return (object)$this->result;
 	}
 
-	public function make($tables = "")
+	public function make($controllers = "")
 	{
     $this->result['success'] = true;
 
-		if (!empty($tables))
+		if (!empty($controllers))
 		{
-			$pos = strpos($tables, ",");
-			$this->tables = $pos === false ? array($tables) : array_map('trim', explode(',', $tables));
+			$pos = strpos($controllers, ",");
+			$this->controllers = $pos === false ? array($controllers) : array_map('trim', explode(',', $controllers));
 		}
 
 		if (!is_dir($this->crudConfigFolder))
@@ -437,18 +228,18 @@ class Crud extends \CodeIgniter\Controller {
 			exit;
 		}
 
-		foreach ($this->tables as $table)
+		foreach ($this->controllers as $controller)
 		{
       CLI::write(" ");
 
       try {
-        CLI::write("MAKE (INFO): Making CRUD for table: ". CLI::color($table, 'green'), 'white');
+        CLI::write("MAKE (INFO): Making CRUD for controller: ". CLI::color($controller, 'green'), 'white');
 
-        CLI::write("MAKE (INFO): Setting table info", 'white');
-        $this->setTable($table);
+        CLI::write("MAKE (INFO): Setting controller info", 'white');
+        $this->setController($controller);
 
-        CLI::write("MAKE (INFO): Retrieving table config", 'white');
-        $fileConfigPath = $this->crudConfigFolder.$table.".json";
+        CLI::write("MAKE (INFO): Retrieving controller config", 'white');
+        $fileConfigPath = $this->crudConfigFolder.$controller.".json";
 
         CLI::write("MAKE (INFO): Making record fields list", 'white');
         $this->recordFields	= $this->makeRecordFieldsString();
@@ -456,8 +247,8 @@ class Crud extends \CodeIgniter\Controller {
         CLI::write("MAKE (INFO): Making record allowed fields list", 'white');
         $this->recordAllowedFields	= $this->makeRecordAllowedFieldsString();
 
-        CLI::write("MAKE (INFO): Making record table header", 'white');
-        $this->tableHeader	= $this->makeRecordHtmlTableHeader();
+        CLI::write("MAKE (INFO): Making record controller header", 'white');
+        $this->controllerHeader	= $this->makeRecordHtmlControllerHeader();
 
         CLI::write("MAKE (INFO): Making record HTML form fields", 'white');
         $this->recordFormFields = $this->makeRecordFormFields();
@@ -481,30 +272,30 @@ class Crud extends \CodeIgniter\Controller {
         $this->makeViewFormFiles();
 
       } catch (\Exception $e) {
-        CLI::error("MAKE (ERROR): ".$e->getMessage().": ". CLI::color($table, 'green'));
+        CLI::error("MAKE (ERROR): ".$e->getMessage().": ". CLI::color($controller, 'green'));
         
-        $this->result['messages'][] = 'MAKE (ERROR): Problems ocurred during CRUD Making of table: '.$table;
-        $this->result['errors'][] = $e->getMessage().": ".$table;
+        $this->result['messages'][] = 'MAKE (ERROR): Problems ocurred during CRUD Making of controller: '.$controller;
+        $this->result['errors'][] = $e->getMessage().": ".$controller;
 
         continue;
       }
 
-      CLI::write("MAKE (INFO): End of CRUD Making for table: ".CLI::color($table, 'green'), 'white');
+      CLI::write("MAKE (INFO): End of CRUD Making for controller: ".CLI::color($controller, 'green'), 'white');
 
-      $this->result['messages'][] = 'MAKE (INFO): CRUD successfuly created for table: '.$table;
+      $this->result['messages'][] = 'MAKE (INFO): CRUD successfuly created for controller: '.$controller;
 		}
 
     return (object)$this->result;
 	}
 
-	public function config($tables = "")
+	public function config($controllers = "")
   {
-		if (!empty($tables)) {
-			$pos = strpos($tables, ",");
+		if (!empty($controllers)) {
+			$pos = strpos($controllers, ",");
 			if ($pos === false) {
-				$this->tables = array($tables);
+				$this->controllers = array($controllers);
 			} else {
-				$this->tables = array_map('trim', explode(',', $tables));
+				$this->controllers = array_map('trim', explode(',', $controllers));
 			}
 		}
 
@@ -513,57 +304,57 @@ class Crud extends \CodeIgniter\Controller {
 			exit;
 		}
 
-		foreach ($this->tables as $table)
+		foreach ($this->controllers as $controller)
     {
-			if (!$this->db->tableExists($table)) {
-        CLI::error("TABLE CONFIG (ERROR): Table not found: ". CLI::color($table, 'green'));
+			if (!$this->db->controllerExists($controller)) {
+        CLI::error("TABLE CONFIG (ERROR): Controller not found: ". CLI::color($controller, 'green'));
 				exit;
 			}
 
-      CLI::write("Edit CRUD Config file for table: ". CLI::color($table, 'green'), 'white');
+      CLI::write("Edit CRUD Config file for controller: ". CLI::color($controller, 'green'), 'white');
 
-      CLI::write("Retrieving table config");
-			$fileConfigPath = $this->crudConfigFolder.$table.".json";
+      CLI::write("Retrieving controller config");
+			$fileConfigPath = $this->crudConfigFolder.$controller.".json";
 
 			if (!file_exists($fileConfigPath)) {
-        CLI::error("ERROR: Config file not found: ". CLI::color($table, 'green'));
+        CLI::error("ERROR: Config file not found: ". CLI::color($controller, 'green'));
 				exit;
 			}
 			
-			$this->tableConfig = json_decode(file_get_contents($fileConfigPath));
+			$this->controllerConfig = json_decode(file_get_contents($fileConfigPath));
 
-      $tableConfig = json_decode(json_encode($this->tableConfig), true);
-      $tableFields = array_column($tableConfig['fields'], 'name');
-      $tableFields = array_diff($tableFields, $this->fieldsNotConfigurable);
+      $controllerConfig = json_decode(json_encode($this->controllerConfig), true);
+      $controllerFields = array_column($controllerConfig['fields'], 'name');
+      $controllerFields = array_diff($controllerFields, $this->fieldsNotConfigurable);
 
-      $selectedField = CLI::promptByKey("Selecione o campo que deseja configurar", $tableFields);
+      $selectedField = CLI::promptByKey("Selecione o campo que deseja configurar", $controllerFields);
       
-      $configOptions = array_keys($tableConfig['fields'][$selectedField]);
+      $configOptions = array_keys($controllerConfig['fields'][$selectedField]);
       $configOptions = array_diff($configOptions, $this->fieldOptionsNotConfigurable);
       
       foreach($configOptions as $i => $option)
       {
-        $promptOptions = $tableConfig['fields'][$selectedField][$option];
+        $promptOptions = $controllerConfig['fields'][$selectedField][$option];
 
         if ($option === 'multiple' || $option === 'show' || $option === 'allowed') {
           $promptOptions = ['Y' => 'Yes', 'N' => 'No'];
-          $tableConfig['fields'][$selectedField][$option] = CLI::promptByKey($option, $promptOptions);
+          $controllerConfig['fields'][$selectedField][$option] = CLI::promptByKey($option, $promptOptions);
         } else {
-          $tableConfig['fields'][$selectedField][$option] = CLI::prompt($option, $promptOptions);
+          $controllerConfig['fields'][$selectedField][$option] = CLI::prompt($option, $promptOptions);
         }
       }
 
-			$tableConfig = json_encode($tableConfig);
-			$tableConfig = $this->indent($tableConfig);
-			$fileConfigPath = $this->crudConfigFolder.$table.".json";
+			$controllerConfig = json_encode($controllerConfig);
+			$controllerConfig = $this->indent($controllerConfig);
+			$fileConfigPath = $this->crudConfigFolder.$controller.".json";
 
-			file_put_contents($fileConfigPath, $tableConfig);
+			file_put_contents($fileConfigPath, $controllerConfig);
     }
 	}
 
-  public function saveTableConfig($table, $options)
+  public function saveControllerConfig($controller, $options)
   {
-    unset($options['table']);
+    unset($options['controller']);
     
     $optionsKeys = array_keys($options);
     $countOptions = count($options['name']);
@@ -572,23 +363,23 @@ class Crud extends \CodeIgniter\Controller {
       $newConf[] = array_combine($optionsKeys, array_column($options, $i));
     }
     
-    //$tableFields = $this->crud->getFieldsConfigurable();
-    $tableConfig = $this->getTableConfig();
-    $tableConfig = json_decode(json_encode($tableConfig), true);
+    //$controllerFields = $this->crud->getFieldsConfigurable();
+    $controllerConfig = $this->getControllerConfig();
+    $controllerConfig = json_decode(json_encode($controllerConfig), true);
 
-    foreach($tableConfig['fields'] as $key => $config) {
+    foreach($controllerConfig['fields'] as $key => $config) {
       foreach($newConf as $newConfig) {
         if ($config['name'] == $newConfig['name']) {
-          $tableConfig['fields'][$key] = array_merge($config, $newConfig);
+          $controllerConfig['fields'][$key] = array_merge($config, $newConfig);
         }
       }
     }
 
-    $tableConfig = json_encode($tableConfig);
-    $tableConfig = $this->indent($tableConfig);
-    $fileConfigPath = $this->crudConfigFolder.$table.".json";
+    $controllerConfig = json_encode($controllerConfig);
+    $controllerConfig = $this->indent($controllerConfig);
+    $fileConfigPath = $this->crudConfigFolder.$controller.".json";
 
-    if (!file_put_contents($fileConfigPath, $tableConfig)) {
+    if (!file_put_contents($fileConfigPath, $controllerConfig)) {
       //throw new Exception('Erro ao gravar arquivo de configurção');
       $this->result['success'] = false;
       $this->result['messages'][] = 'Problemas na gravação dos dados';
@@ -636,9 +427,9 @@ class Crud extends \CodeIgniter\Controller {
     //print_r((object)$this->controllers);
   }
 
-	protected function loadVisibleFields($table = "")
+	protected function loadVisibleFields($controller = "")
   {
-		if (empty($table)) {
+		if (empty($controller)) {
       return null;
 		}
 
@@ -647,71 +438,71 @@ class Crud extends \CodeIgniter\Controller {
 			return null;
 		}
 
-    if (!$this->db->tableExists($table)) {
-      //CLI::error("TABLE CONFIG (ERROR): Table not found: ". CLI::color($table, 'green'));
+    if (!$this->db->controllerExists($controller)) {
+      //CLI::error("TABLE CONFIG (ERROR): Controller not found: ". CLI::color($controller, 'green'));
       return null;
     }
 
-    $fileConfigPath = $this->crudConfigFolder.$table.".json";
+    $fileConfigPath = $this->crudConfigFolder.$controller.".json";
 
     if (!file_exists($fileConfigPath)) {
-      //CLI::error("ERROR: Config file not found: ". CLI::color($table, 'green'));
+      //CLI::error("ERROR: Config file not found: ". CLI::color($controller, 'green'));
       return null;
     }
     
-    $this->tableConfig = json_decode(file_get_contents($fileConfigPath));
+    $this->controllerConfig = json_decode(file_get_contents($fileConfigPath));
 
-    $tableConfig = json_decode(json_encode($this->tableConfig), true);
+    $controllerConfig = json_decode(json_encode($this->controllerConfig), true);
 
     /* Find fields that area displayable: show = Y */
-    $displayableFields = array_keys(array_column($tableConfig['fields'], 'show'), 'Y');
+    $displayableFields = array_keys(array_column($controllerConfig['fields'], 'show'), 'Y');
 
-    /* Intersect displyable fields to filter $tableConfig array */
-    $b = array_intersect_key($tableConfig['fields'], array_flip($displayableFields));
+    /* Intersect displyable fields to filter $controllerConfig array */
+    $b = array_intersect_key($controllerConfig['fields'], array_flip($displayableFields));
 
     /* Retrieve array with fields names and filter for return only configurable fields */
-    $tableFields  = array_column($b, 'name');
-    $tableFields  = array_diff($tableFields, $this->fieldsNotConfigurable);
+    $controllerFields  = array_column($b, 'name');
+    $controllerFields  = array_diff($controllerFields, $this->fieldsNotConfigurable);
 
-    return $tableFields;
+    return $controllerFields;
 	}
 
-  protected function loadListVisibleFieldsConfig($table = "") {
-		if (empty($table)) {
+  protected function loadListVisibleFieldsConfig($controller = "") {
+		if (empty($controller)) {
       return null;
 		}
 
-    $tableConfig = json_decode(json_encode($this->tableConfig), true);
+    $controllerConfig = json_decode(json_encode($this->controllerConfig), true);
 
-    if (empty($tableConfig)) {
+    if (empty($controllerConfig)) {
       return null;
     }
 
     /* Find fields that area displayable: show = Y */
-    $displayableFields = array_keys(array_column($tableConfig['fields'], 'show'), 'Y');
+    $displayableFields = array_keys(array_column($controllerConfig['fields'], 'show'), 'Y');
 
-    /* Intersect displyable fields to filter $this->tableConfig array */
-    $listVisibleFieldsConfig = array_intersect_key($tableConfig['fields'], array_flip($displayableFields));
+    /* Intersect displyable fields to filter $this->controllerConfig array */
+    $listVisibleFieldsConfig = array_intersect_key($controllerConfig['fields'], array_flip($displayableFields));
 
     return $listVisibleFieldsConfig;
   }
 
-  protected function loadFormVisibleFieldsConfig($table = "") {
-		if (empty($table)) {
+  protected function loadFormVisibleFieldsConfig($controller = "") {
+		if (empty($controller)) {
       return null;
 		}
 
-    $tableConfig = json_decode(json_encode($this->tableConfig), true);
+    $controllerConfig = json_decode(json_encode($this->controllerConfig), true);
 
-    if (empty($tableConfig)) {
+    if (empty($controllerConfig)) {
       return null;
     }
 
     /* Find fields that area displayable: show_on_form = Y */
-    $displayableFields = array_keys(array_column($tableConfig['fields'], 'show_on_form'), 'Y');
+    $displayableFields = array_keys(array_column($controllerConfig['fields'], 'show_on_form'), 'Y');
 
-    /* Intersect displyable fields to filter $this->tableConfig array */
-    $formVisibleFieldsConfig = array_intersect_key($tableConfig['fields'], array_flip($displayableFields));
+    /* Intersect displyable fields to filter $this->controllerConfig array */
+    $formVisibleFieldsConfig = array_intersect_key($controllerConfig['fields'], array_flip($displayableFields));
 
     return $formVisibleFieldsConfig;
   }
@@ -752,8 +543,8 @@ class Crud extends \CodeIgniter\Controller {
 
 	protected function makeRecordAllowedFieldsString() {
 		$recordAllowedFields = "";
-		$tableConfig = $this->tableConfig;
-		foreach ($tableConfig->fields as $field)
+		$controllerConfig = $this->controllerConfig;
+		foreach ($controllerConfig->fields as $field)
 		{
 			if ($field->allowed) {
 				$recordAllowedFields .= "'".$field->name."', ";
@@ -763,13 +554,13 @@ class Crud extends \CodeIgniter\Controller {
 		return $recordAllowedFields;
 	}
 
-	protected function makeRecordHtmlTableHeader() {
-		$tableConfig = $this->tableConfig;
+	protected function makeRecordHtmlControllerHeader() {
+		$controllerConfig = $this->controllerConfig;
 
-		$tableHeader  = str_repeat("\t", 3).'<thead>'."\r\n";
-		$tableHeader .= str_repeat("\t", 4)."<tr>"."\r\n";
+		$controllerHeader  = str_repeat("\t", 3).'<thead>'."\r\n";
+		$controllerHeader .= str_repeat("\t", 4)."<tr>"."\r\n";
 
-		foreach ($tableConfig->fields as $config)
+		foreach ($controllerConfig->fields as $config)
 		{
 			if ($config->show == 'Y') {
 				if ($config->name == 'id') {
@@ -777,20 +568,20 @@ class Crud extends \CodeIgniter\Controller {
 				} else {
 					$width = "";
 				}
-				$tableHeader .= str_repeat("\t", 5).'<th width="'.$width.'">'.$config->label.'</th>'."\r\n";
+				$controllerHeader .= str_repeat("\t", 5).'<th width="'.$width.'">'.$config->label.'</th>'."\r\n";
 			}
 		}
 
-		$tableHeader .= str_repeat("\t", 5).'<th width="30">Ações</th>'."\r\n";
-		$tableHeader .= str_repeat("\t", 4).'</tr>'."\r\n";
-		$tableHeader .= str_repeat("\t", 3)."</thead>"."\r\n";
+		$controllerHeader .= str_repeat("\t", 5).'<th width="30">Ações</th>'."\r\n";
+		$controllerHeader .= str_repeat("\t", 4).'</tr>'."\r\n";
+		$controllerHeader .= str_repeat("\t", 3)."</thead>"."\r\n";
 
-		return $tableHeader;
+		return $controllerHeader;
 	}
 
 	protected function makeRecordFormFields() {
-		$table = $this->table;
-    $tableConfig = $this->tableConfig;
+		$controller = $this->controller;
+    $controllerConfig = $this->controllerConfig;
     $formVisibleFields = $this->formVisibleFields;
     $formVisibleFieldsConfig = $this->formVisibleFieldsConfig;
 
@@ -863,8 +654,8 @@ class Crud extends \CodeIgniter\Controller {
 
   protected function makeFormFieldCheckbox($fieldConfig) {
     if (empty($fieldConfig->options)) {
-      if (!empty($fieldConfig->foreign_table_name)) {
-        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+      if (!empty($fieldConfig->foreign_controller_name)) {
+        $modelName = ucfirst($fieldConfig->foreign_controller_name)."Model";
         $foreignModel = model("App\\Models\\".$modelName);
         $foreignRecords = $foreignModel->findAll();
         foreach ($foreignRecords as $record) {
@@ -879,8 +670,8 @@ class Crud extends \CodeIgniter\Controller {
 
   protected function makeFormFieldRadio($fieldConfig) {
     if (empty($fieldConfig->options)) {
-      if (!empty($fieldConfig->foreign_table_name)) {
-        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+      if (!empty($fieldConfig->foreign_controller_name)) {
+        $modelName = ucfirst($fieldConfig->foreign_controller_name)."Model";
         $foreignModel = model("App\\Models\\".$modelName);
         $foreignRecords = $foreignModel->findAll();
         foreach ($foreignRecords as $record) {
@@ -895,8 +686,8 @@ class Crud extends \CodeIgniter\Controller {
 
   protected function makeFormFieldSelect($fieldConfig) {
     if (empty($fieldConfig->options)) {
-      if (!empty($fieldConfig->foreign_table_name)) {
-        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+      if (!empty($fieldConfig->foreign_controller_name)) {
+        $modelName = ucfirst($fieldConfig->foreign_controller_name)."Model";
         $foreignModel = model("App\\Models\\".$modelName);
         $foreignRecords = $foreignModel->findAll();
         foreach ($foreignRecords as $record) {
@@ -936,29 +727,29 @@ class Crud extends \CodeIgniter\Controller {
 	protected function setTemplateVars()
 	{
 		 return array(
-			'class_name'												=> ucfirst($this->table),
-			'model_name'												=> ucfirst($this->table),
-			'controller_name'										=> ucfirst($this->table),
-			'view_name'													=> ucfirst($this->table),
-			'table'															=> $this->table,
-			'table_alias'												=> $this->table,
-			'record'														=> $this->table,
+			'class_name'												=> ucfirst($this->controller),
+			'model_name'												=> ucfirst($this->controller),
+			'controller_name'										=> ucfirst($this->controller),
+			'view_name'													=> ucfirst($this->controller),
+			'controller'															=> $this->controller,
+			'controller_alias'												=> $this->controller,
+			'record'														=> $this->controller,
 			'record_fields'											=> $this->recordFields,
 			'record_allowed_fields'							=> $this->recordAllowedFields,
-			'page_title_list'										=> ucfirst($this->table).' - Listagem',
-			'page_title_view'										=> ucfirst($this->table).' - Visualizar',
-			'page_title_new'										=> ucfirst($this->table).' - Novo',
-			'page_title_edit'										=> ucfirst($this->table).' - Editar',
-			'body_id_list'											=> 'body_'.$this->table.'_list',
-			'body_id_view'											=> 'body_'.$this->table.'_view',
-			'body_id_novo'											=> 'body_'.$this->table.'_new',
-			'body_id_editar'										=> 'body_'.$this->table.'_edit',
-			'system_area_title'									=> ucfirst($this->table),
+			'page_title_list'										=> ucfirst($this->controller).' - Listagem',
+			'page_title_view'										=> ucfirst($this->controller).' - Visualizar',
+			'page_title_new'										=> ucfirst($this->controller).' - Novo',
+			'page_title_edit'										=> ucfirst($this->controller).' - Editar',
+			'body_id_list'											=> 'body_'.$this->controller.'_list',
+			'body_id_view'											=> 'body_'.$this->controller.'_view',
+			'body_id_novo'											=> 'body_'.$this->controller.'_new',
+			'body_id_editar'										=> 'body_'.$this->controller.'_edit',
+			'system_area_title'									=> ucfirst($this->controller),
 			'system_area_list_description'			=> 'Listagem de registros',
 			'system_area_view_description'			=> 'Visualizar registro',
 			'system_area_new_description'				=> 'Novo registro',
 			'system_area_edit_description'			=> 'Editar registro',
-			'table_header'											=> $this->tableHeader,
+			'controller_header'											=> $this->controllerHeader,
       'list_header'												=> $this->listVisibleFieldsLabel,
       'list_visible_fields_config'			  => $this->listVisibleFieldsConfig,
 			'record_form_fields'								=> $this->recordFormFields
@@ -971,8 +762,8 @@ class Crud extends \CodeIgniter\Controller {
 		$controllerContent = file_get_contents($this->crudTemplatesFolder."Controller.tpl");
 		$newControllerBaseContent = $this->parse($controllerBaseContent, $this->templateVars);
 		$newControllerContent = $this->parse($controllerContent, $this->templateVars);
-		$controllerBaseFileName = ucfirst($this->table)."Base.php";
-		$controllerFileName = ucfirst($this->table).".php";
+		$controllerBaseFileName = ucfirst($this->controller)."Base.php";
+		$controllerFileName = ucfirst($this->controller).".php";
 		file_put_contents($this->crudControllersBaseFolder.$controllerBaseFileName, $newControllerBaseContent);
 		if (!file_exists($this->controllersFolder.$controllerFileName)) {
 			file_put_contents($this->controllersFolder.$controllerFileName, $newControllerContent);
@@ -989,10 +780,10 @@ class Crud extends \CodeIgniter\Controller {
 		$newEntityContent = $this->parse($entityContent, $this->templateVars);
 		$newModelBaseContent = $this->parse($modelBaseContent, $this->templateVars);
 		$newModelContent = $this->parse($modelContent, $this->templateVars);
-		$entityBaseFileName = ucfirst($this->table)."Base.php";
-		$entityFileName = ucfirst($this->table).".php";
-		$modelBaseFileName = ucfirst($this->table)."ModelBase.php";
-		$modelFileName = ucfirst($this->table)."Model.php";
+		$entityBaseFileName = ucfirst($this->controller)."Base.php";
+		$entityFileName = ucfirst($this->controller).".php";
+		$modelBaseFileName = ucfirst($this->controller)."ModelBase.php";
+		$modelFileName = ucfirst($this->controller)."Model.php";
 		file_put_contents($this->crudEntitiesBaseFolder.$entityBaseFileName, $newEntityBaseContent);
 		file_put_contents($this->crudModelsBaseFolder.$modelBaseFileName, $newModelBaseContent);
 		if (!file_exists($this->entitiesFolder.$entityFileName)) {
@@ -1007,7 +798,7 @@ class Crud extends \CodeIgniter\Controller {
 	{
 		$validationContent = file_get_contents($this->crudTemplatesFolder."Validation.tpl");
     $newValidationContent = $this->parser->render($validationContent, $this->templateVars);
-		$validationFileName = ucfirst($this->table)."Validation.php";
+		$validationFileName = ucfirst($this->controller)."Validation.php";
     if (!file_exists($this->crudValidationFolder.$validationFileName)) {
 		  file_put_contents($this->crudValidationFolder.$validationFileName, $newValidationContent);
     }
@@ -1017,7 +808,7 @@ class Crud extends \CodeIgniter\Controller {
 	{
 		$listContent = file_get_contents($this->crudTemplatesFolder."List.tpl");
     $newListContent = $this->parser->render($listContent, $this->templateVars);
-		$listFileName = ucfirst($this->table)."List.php";
+		$listFileName = ucfirst($this->controller)."List.php";
 		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
 	}
 
@@ -1025,7 +816,7 @@ class Crud extends \CodeIgniter\Controller {
 	{
 		$formContent = file_get_contents($this->crudTemplatesFolder."Form.tpl");
     $newFormContent = $this->parser->render($formContent, $this->templateVars);
-		$formFileName = ucfirst($this->table)."Form.php";
+		$formFileName = ucfirst($this->controller)."Form.php";
 		file_put_contents($this->viewsFolder.$formFileName, $newFormContent);
 	}
 
