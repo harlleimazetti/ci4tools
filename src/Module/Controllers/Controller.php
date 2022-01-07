@@ -18,6 +18,8 @@ class Controller extends \Ci4toolsadmin\Controllers\BaseController
 
   public function index($table = "")
   {
+    $controllers = $this->crud->loadControllers();
+
     $this->data['page_title']       = 'Controladores (Controllers)';
     $this->data['page_subtitle']    = 'Configuração dos Controladores do sistema';
     $this->data['page_description'] = 'Parametrização das informações de identificação (labels, descrição) dos Controllers e seus métodos';
@@ -27,6 +29,7 @@ class Controller extends \Ci4toolsadmin\Controllers\BaseController
     $this->data['menus']            = $this->menus;
 
     $this->data['table']            = $table;
+    $this->data['controllers']      = $controllers;
 
     $this->data['theme_options']    = [
       'show_header' => true,

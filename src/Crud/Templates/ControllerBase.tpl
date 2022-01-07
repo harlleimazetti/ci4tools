@@ -1,13 +1,10 @@
 <?php namespace App\Crudbase\Controllers;
 
-use CodeIgniter\API\ResponseTrait;
 use App\Crudbase\Controllers\MainController;
 use Harlleimazetti\Ci4tools\Crud\Crud;
 
-class {class_name}Base extends MainController {
-
-  use ResponseTrait;
-
+class {class_name}Base extends MainController
+{
 	private $result;
 	private $relations;
   private $visibleFields;

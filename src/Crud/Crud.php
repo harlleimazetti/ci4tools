@@ -2,6 +2,7 @@
 
 use \CodeIgniter\CLI\CLI;
 use \Harlleimazetti\Ci4tools\Templateparser\TemplateParser;
+use CodeIgniter\Config\Factories;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
@@ -602,7 +603,29 @@ class Crud extends \CodeIgniter\Controller {
   public function loadControllers() {
     $controllers = new \CodeIgniter\Files\FileCollection;
     $controllers->add($this->controllersFolder, true)->retainPattern('*.php');
-    print_r($files);
+    
+    foreach($controllers as $controller) {
+      $instance = Factories::controllers('Place');
+      //$methods = get_class_methods($instance);
+
+      $class = new \ReflectionClass($instance);
+      $methods = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
+
+      print_r($methods);
+      exit;
+      echo $controller;
+      //$controllerName = substr($controller->getBasename(), 0, -4);
+      //require_once($controller);
+      $controllerName = 'Place';
+      require_once('D:\xampp\htdocs\delidiet\appweb\app\Controllers\Place.php');
+      $instance = new \App\Controllers\Place;
+      $methods = get_class_methods($instance);
+      echo $controllerName;
+      print_r($methods);
+      //$content = file_get_contents($controller);
+      //preg_match_all('/(\$[a-z]+)/i', $str, $matches);
+      //print_r($instance);
+    }
   }
 
 	protected function loadVisibleFields($table = "")
