@@ -1,7 +1,8 @@
 <?php //print_r($tableConfig); exit; ?>
             <section class="content">
                 <div class="content__inner">
-                    <?php require_once('content_header.php') ?>
+                    
+                  <?php require_once('content_header.php') ?>
 
                     <div class="card">
 

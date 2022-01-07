@@ -75,9 +75,6 @@ class Crud extends \CodeIgniter\Controller {
 
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
-    
-		//$this->load->helper('form');
-		//$this->load->helper('custom_form');
 	}
 
   public function install()
@@ -600,6 +597,12 @@ class Crud extends \CodeIgniter\Controller {
     $this->result['messages'][] = 'Dados salvos com sucesso';
     $this->result['errors'] = [];
     return (object)$this->result;
+  }
+
+  public function loadControllers() {
+    $controllers = new \CodeIgniter\Files\FileCollection;
+    $controllers->add($this->controllersFolder, true)->retainPattern('*.php');
+    print_r($files);
   }
 
 	protected function loadVisibleFields($table = "")

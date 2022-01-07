@@ -27,7 +27,7 @@
                             </ul>
                         </li>
 
-                        <li><a href="widgets.html"><i class="zmdi zmdi-menu"></i> Controllers</a></li>
+                        <li><a href="<?php echo base_url() ?>/admin/controller"><i class="zmdi zmdi-menu"></i> Controllers</a></li>
 
                         <li><a href="widgets.html"><i class="zmdi zmdi-menu"></i> Menus</a></li>
 
