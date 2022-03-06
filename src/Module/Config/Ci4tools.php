@@ -2,7 +2,7 @@
 
 use CodeIgniter\Config\BaseConfig;
 
-class Theme extends BaseConfig
+class Ci4tools extends BaseConfig
 {
   public $themeName       = 'smartadmin';
   public $themeAdminName  = 'materialadmin';

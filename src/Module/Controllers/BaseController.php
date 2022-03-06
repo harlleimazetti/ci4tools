@@ -45,11 +45,11 @@ class BaseController extends Controller
   protected $menus;
 
   /**
-   * System Theme Configuration Options.
+   * System Configuration Options.
    *
-   * @var array themeConfig
+   * @var array config
    */
-  protected $themeConfig;
+  protected $config;
 
   /**
    * Module name.
@@ -74,7 +74,7 @@ class BaseController extends Controller
     date_default_timezone_set('America/Sao_Paulo');
 
     $this->moduleName = 'Ci4toolsadmin';
-    $this->themeConfig = $this->getThemeConfig();
+    $this->config = $this->getConfig();
     $this->menus = $this->mountMenu();
   }
 
@@ -128,8 +128,8 @@ class BaseController extends Controller
     return $menuArea;
   }
 
-  protected function getThemeConfig() {
-    $themeConfig = config('Theme');
-    return $themeConfig;
+  protected function getConfig() {
+    $config = config('Ci4tools');
+    return $config;
   }
 }

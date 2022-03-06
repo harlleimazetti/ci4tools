@@ -45,7 +45,7 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
     $contents = array('Table');
 
     echo $this->showView(
-      $theme_name     = $this->themeConfig->themeAdminName,
+      $theme_name     = $this->config->themeAdminName,
       $theme_options  = $this->data['theme_options'],
       $contents       = $contents,
       $data           = $this->data,
