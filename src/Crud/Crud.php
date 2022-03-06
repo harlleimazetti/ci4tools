@@ -87,7 +87,6 @@ class Crud extends \CodeIgniter\Controller {
 		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
 		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
     if (!is_dir($this->crudValidationFolder))	{ mkdir($this->crudValidationFolder); }
-    if (!is_dir($this->moduleAssetsFolder))	{ mkdir($this->moduleAssetsFolder); }
 
     /**
      * Publish Ci4toolsadmin Module
