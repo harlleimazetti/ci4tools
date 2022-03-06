@@ -36,6 +36,7 @@ class Crud extends \CodeIgniter\Controller {
   protected $crudValidationFolder;
   protected $crudConfigFolder;
   protected $crudTemplatesFolder;
+  protected $moduleAssetsFolder;
   protected $fieldsConfigurable;
   protected $fieldsNotConfigurable;
   protected $fieldOptionsNotConfigurable;
@@ -57,12 +58,10 @@ class Crud extends \CodeIgniter\Controller {
     $this->parser = new TemplateParser();
 
     $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
-
     $this->moduleFolder 						  = ROOTPATH."ci4toolsadmin".DS;
-
 		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
-		
     $this->crudBaseFolder 						= APPPATH."Crudbase".DS;
+    $this->moduleAssetsFolder					= FCPATH."ci4toolsadmin".DS;
 
 		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
 		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
@@ -88,6 +87,7 @@ class Crud extends \CodeIgniter\Controller {
 		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
 		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
     if (!is_dir($this->crudValidationFolder))	{ mkdir($this->crudValidationFolder); }
+    if (!is_dir($this->moduleAssetsFolder))	{ mkdir($this->moduleAssetsFolder); }
 
     /**
      * Publish Ci4toolsadmin Module
