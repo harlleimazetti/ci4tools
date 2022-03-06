@@ -5,6 +5,10 @@ namespace App\Commands;
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
+defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
+
 class Install extends BaseCommand
 {
   protected $group       = 'ci4tools';
@@ -95,5 +99,14 @@ class Install extends BaseCommand
     $publisherMainController = new \CodeIgniter\Publisher\Publisher($sourceMainController, $destinationMainController);
     $publisherMainController->addPath('MainController.php');
     $publisherMainController->merge(true);
+
+    /**
+     * Publish Ci4tools Config Files
+     */
+    $sourceConfigFiles = $this->vendorFolder."Module".DS."Config";
+    $destinationConfigFiles = APPPATH;
+    $publisherConfigFiles = new \CodeIgniter\Publisher\Publisher($sourceConfigFiles, $destinationConfigFiles);
+    $publisherConfigFiles->addPath('Theme.php');
+    $publisherConfigFiles->merge(true);
   }
 }

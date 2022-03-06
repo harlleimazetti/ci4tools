@@ -118,6 +118,15 @@ class Crud extends \CodeIgniter\Controller {
     $publisherMainController = new \CodeIgniter\Publisher\Publisher($sourceMainController, $destinationMainController);
     $publisherMainController->addPath('MainController.php');
     $publisherMainController->merge(true);
+
+    /**
+     * Publish Ci4tools Config Files
+     */
+    $sourceConfigFiles = $this->vendorFolder."Module".DS."Config";
+    $destinationConfigFiles = APPPATH;
+    $publisherConfigFiles = new \CodeIgniter\Publisher\Publisher($sourceConfigFiles, $destinationConfigFiles);
+    $publisherConfigFiles->addPath('Theme.php');
+    $publisherConfigFiles->merge(true);
   }
 
   public function setTable($table = "") {
