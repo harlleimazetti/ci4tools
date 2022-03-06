@@ -123,7 +123,7 @@ class Crud extends \CodeIgniter\Controller {
      * Publish Ci4tools Config Files
      */
     $sourceConfigFiles = $this->vendorFolder."Module".DS."Config";
-    $destinationConfigFiles = APPPATH;
+    $destinationConfigFiles = APPPATH.'Config';
     $publisherConfigFiles = new \CodeIgniter\Publisher\Publisher($sourceConfigFiles, $destinationConfigFiles);
     $publisherConfigFiles->addPath('Theme.php');
     $publisherConfigFiles->merge(true);
