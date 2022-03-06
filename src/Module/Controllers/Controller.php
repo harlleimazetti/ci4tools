@@ -2,25 +2,26 @@
 
 use CodeIgniter\API\ResponseTrait;
 use \Harlleimazetti\Ci4tools\Crud\Crud;
+use \Harlleimazetti\Ci4tools\Ctrlr\Ctrlr;
 
 class Controller extends \Ci4toolsadmin\Controllers\BaseController
 {
   use ResponseTrait;
 
   protected $data;
-  protected $crud;
+  protected $ctrlr;
   protected $result = [];
 
   function __construct()
   {
-    $this->crud = new Crud();
+    $this->ctrlr = new Ctrlr();
   }
 
   public function index($table = "")
   {
-    $controllers = $this->crud->loadControllers();
+    $controllers = $this->ctrlr->loadControllers();
 
-    $this->data['page_title']       = 'Controladores (Controllers)';
+    $this->data['page_title']       = 'Controllers';
     $this->data['page_subtitle']    = 'Configuração dos Controladores do sistema';
     $this->data['page_description'] = 'Parametrização das informações de identificação (labels, descrição) dos Controllers e seus métodos';
     $this->data['page_icon']        = 'fal fa-globe';

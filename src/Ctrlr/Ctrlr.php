@@ -1,4 +1,4 @@
-<?php namespace Ci4tools\Ctrlr;
+<?php namespace Harlleimazetti\Ci4tools\Ctrlr;
 
 use \CodeIgniter\CLI\CLI;
 use CodeIgniter\Config\Factories;
