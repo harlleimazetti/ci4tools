@@ -106,6 +106,7 @@ class Install extends BaseCommand
     $destinationConfigFiles = APPPATH.'Config';
     $publisherConfigFiles = new \CodeIgniter\Publisher\Publisher($sourceConfigFiles, $destinationConfigFiles);
     $publisherConfigFiles->addPath('Ci4tools.php');
+    $publisherConfigFiles->addPath('Ci4toolsRoutes.php');
     $publisherConfigFiles->merge(true);
   }
 }
