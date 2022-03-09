@@ -82,19 +82,20 @@ class Install extends BaseCommand
     $publisher->merge(true);
 
     /**
-     * Publish Ci4toolsadmin Module Assets
+     * Publish Ci4toolsadmin Admin/System Assets
      */
     $sourceAssets = $this->vendorFolder."Module".DS."public";
     $destinationAssets = FCPATH;
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     $publisherAssets->addPath('ci4toolsadmin');
+    $publisherAssets->addPath('themes');
     $publisherAssets->merge(true);
 
     /**
-     * Publish Ci4tools System Themes
+     * Publish Ci4tools System Themes View Files
      */
     $sourceAssets = $this->vendorFolder."Module".DS."Views";
-    $destinationAssets = FCPATH."Views".DS;
+    $destinationAssets = APPPATH."Views".DS;
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     $publisherAssets->addPath('themes');
     $publisherAssets->merge(true);
