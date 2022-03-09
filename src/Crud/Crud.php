@@ -37,6 +37,8 @@ class Crud extends \CodeIgniter\Controller {
   protected $crudConfigFolder;
   protected $crudTemplatesFolder;
   protected $moduleAssetsFolder;
+  protected $themesTemplatesFolder;
+  protected $themesFolders;
   protected $fieldsConfigurable;
   protected $fieldsNotConfigurable;
   protected $fieldOptionsNotConfigurable;
@@ -75,6 +77,11 @@ class Crud extends \CodeIgniter\Controller {
 		$this->modelsFolder 							= APPPATH."Models".DS;
     $this->entitiesFolder 						= APPPATH."Entities".DS;
     $this->viewsFolder     						= APPPATH."Views".DS;
+
+    $this->themesTemplatesFolder      = $this->vendorFolder.DS."Crud".DS."Templates".DS."themes".DS;
+
+    $this->themesFolders = $this->getDirectoryFoldersNames($this->themesTemplatesFolder);
+    print_r($this->themeFolders); exit;
 
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
@@ -296,6 +303,17 @@ class Crud extends \CodeIgniter\Controller {
 			echo "\r\n";
 		}
 	}
+
+  protected function getDirectoryFoldersNames($dir) {
+    $scan = scandir($dir);
+    $folders = [];
+    foreach($scan as $file) {
+      if (is_dir($file)) {
+        $folders[] = $file;
+      }
+    }
+    return $folders;
+  }
 
 	public function create($tables = "") {
     $this->result['success'] = true;
