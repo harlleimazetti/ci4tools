@@ -113,20 +113,20 @@ class Crud extends \CodeIgniter\Controller {
     /**
      * Publish Ci4tools System Themes View Files
      */
-    $sourceAssets = $this->vendorFolder."Module".DS."Views";
-    $destinationAssets = APPPATH."Views".DS;
-    $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
-    $publisherAssets->addPath('themes');
-    $publisherAssets->merge(true);
+    $sourceThemeViewFiles = $this->vendorFolder."Themes".DS."Views";
+    $destinationThemeViewFiles = APPPATH."Views";
+    $publisherThemeViewFiles = new \CodeIgniter\Publisher\Publisher($sourceThemeViewFiles, $destinationThemeViewFiles);
+    $publisherThemeViewFiles->addPath('themes');
+    $publisherThemeViewFiles->merge(true);
 
     /**
-     * Publish Crudbase Main Controller
+     * Publish Ci4tools System Themes Assets Files
      */
-    $sourceMainController = $this->vendorFolder."Crud";
-    $destinationMainController = $this->crudControllersBaseFolder;
-    $publisherMainController = new \CodeIgniter\Publisher\Publisher($sourceMainController, $destinationMainController);
-    $publisherMainController->addPath('MainController.php');
-    $publisherMainController->merge(true);
+    $sourceThemeAssetsFiles = $this->vendorFolder."Themes".DS."assets";
+    $destinationThemeAssetsFiles = FCPATH;
+    $publisherThemeAssetsFiles = new \CodeIgniter\Publisher\Publisher($sourceThemeAssetsFiles, $destinationThemeAssetsFiles);
+    $publisherThemeAssetsFiles->addPath('themes');
+    $publisherThemeAssetsFiles->merge(true);
 
     /**
      * Publish Ci4tools Config Files
