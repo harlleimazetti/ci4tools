@@ -109,6 +109,15 @@ class Install extends BaseCommand
     $publisherThemeAssetsFiles->merge(true);
 
     /**
+     * Publish Ci4tools System Themes Template Files
+     */
+    $sourceThemeTemplateFiles = $this->vendorFolder."Themes".DS."templates";
+    $destinationThemeTemplateFiles = $this->crudTemplatesBaseFolder;
+    $publisherThemeTemplateFiles = new \CodeIgniter\Publisher\Publisher($sourceThemeTemplateFiles, $destinationThemeTemplateFiles);
+    $publisherThemeTemplateFiles->addPath('themes');
+    $publisherThemeTemplateFiles->merge(true);
+
+    /**
      * Publish Crudbase Main Controller
      */
     $sourceMainController = $this->vendorFolder."Crud";

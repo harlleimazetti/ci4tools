@@ -33,6 +33,7 @@ class Crud extends \CodeIgniter\Controller {
   protected $crudModelsBaseFolder;
   protected $crudViewsBaseFolder;
   protected $crudEntitiesBaseFolder;
+  protected $crudTemplatesBaseFolder;
   protected $crudValidationFolder;
   protected $crudConfigFolder;
   protected $crudTemplatesFolder;
@@ -71,6 +72,7 @@ class Crud extends \CodeIgniter\Controller {
 		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
     $this->crudModelsBaseFolder 			= $this->crudBaseFolder."Models".DS;
 		$this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
+    $this->crudTemplatesBaseFolder 		= $this->crudBaseFolder."Templates".DS;
     $this->crudValidationFolder 		  = $this->crudBaseFolder."Validation".DS;
 
     $this->controllersFolder 					= APPPATH."Controllers".DS;
@@ -81,7 +83,6 @@ class Crud extends \CodeIgniter\Controller {
     $this->themesTemplatesFolder      = $this->vendorFolder.DS."Crud".DS."Templates".DS."themes".DS;
 
     $this->themesFolders = $this->getDirectoryFoldersNames($this->themesTemplatesFolder);
-    print_r($this->themesFolders); exit;
 
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
@@ -95,6 +96,7 @@ class Crud extends \CodeIgniter\Controller {
 		if (!is_dir($this->crudControllersBaseFolder))	{ mkdir($this->crudControllersBaseFolder); }
 		if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
 		if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
+    if (!is_dir($this->crudTemplatesBaseFolder))	{ mkdir($this->crudTemplatesBaseFolder); }
     if (!is_dir($this->crudValidationFolder))	{ mkdir($this->crudValidationFolder); }
 
     /**
@@ -135,6 +137,15 @@ class Crud extends \CodeIgniter\Controller {
     $publisherThemeAssetsFiles = new \CodeIgniter\Publisher\Publisher($sourceThemeAssetsFiles, $destinationThemeAssetsFiles);
     $publisherThemeAssetsFiles->addPath('themes');
     $publisherThemeAssetsFiles->merge(true);
+
+    /**
+     * Publish Ci4tools System Themes Template Files
+     */
+    $sourceThemeTemplateFiles = $this->vendorFolder."Themes".DS."templates";
+    $destinationThemeTemplateFiles = $this->crudTemplatesBaseFolder;
+    $publisherThemeTemplateFiles = new \CodeIgniter\Publisher\Publisher($sourceThemeTemplateFiles, $destinationThemeTemplateFiles);
+    $publisherThemeTemplateFiles->addPath('themes');
+    $publisherThemeTemplateFiles->merge(true);
 
     /**
      * Publish Crudbase Main Controller
