@@ -110,6 +110,15 @@ class Crud extends \CodeIgniter\Controller {
     $publisherAssets->merge(true);
 
     /**
+     * Publish Ci4tools System Themes
+     */
+    $sourceAssets = $this->vendorFolder."Module".DS."Views";
+    $destinationAssets = FCPATH."Views".DS;
+    $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
+    $publisherAssets->addPath('themes');
+    $publisherAssets->merge(true);
+
+    /**
      * Publish Crudbase Main Controller
      */
     $sourceMainController = $this->vendorFolder."Crud";

@@ -24,7 +24,7 @@ class {class_name}Base extends MainController
 
 	public function index()
 	{
-		redirect('{table}/list');
+		return redirect('{table}/list');
 	}
 
 	public function search()
