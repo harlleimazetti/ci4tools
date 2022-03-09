@@ -81,7 +81,7 @@ class Crud extends \CodeIgniter\Controller {
     $this->themesTemplatesFolder      = $this->vendorFolder.DS."Crud".DS."Templates".DS."themes".DS;
 
     $this->themesFolders = $this->getDirectoryFoldersNames($this->themesTemplatesFolder);
-    print_r($this->themeFolders); exit;
+    print_r($this->themesFolders); exit;
 
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
