@@ -23,8 +23,9 @@ class Install extends BaseCommand
   protected $crudConfigFolder;
   protected $crudControllersBaseFolder;
   protected $crudModelsBaseFolder;
-  protected $crudEntitiesBaseFolder;
   protected $crudViewsBaseFolder;
+  protected $crudEntitiesBaseFolder;
+  protected $crudTemplatesBaseFolder;
   protected $crudValidationFolder;
   protected $controllersFolder;
   protected $modelsFolder;
@@ -48,6 +49,7 @@ class Install extends BaseCommand
     $this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
     $this->crudModelsBaseFolder 			= $this->crudBaseFolder."Models".DS;
     $this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
+    $this->crudTemplatesBaseFolder 		= $this->crudBaseFolder."Templates".DS;
     $this->crudValidationFolder 		  = $this->crudBaseFolder."Validation".DS;
 
     $this->controllersFolder 					= APPPATH."Controllers".DS;
@@ -67,6 +69,7 @@ class Install extends BaseCommand
     if (!is_dir($this->crudControllersBaseFolder))	{ mkdir($this->crudControllersBaseFolder); }
     if (!is_dir($this->crudModelsBaseFolder))	{ mkdir($this->crudModelsBaseFolder); }
     if (!is_dir($this->crudEntitiesBaseFolder))	{ mkdir($this->crudEntitiesBaseFolder); }
+    if (!is_dir($this->crudTemplatesBaseFolder))	{ mkdir($this->crudTemplatesBaseFolder); }
     if (!is_dir($this->crudValidationFolder))	{ mkdir($this->crudValidationFolder); }
 
     /**
