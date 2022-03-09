@@ -53,6 +53,8 @@ class Crud extends \CodeIgniter\Controller {
 
 	function __construct()
 	{
+    helper('filesystem');
+
 		$this->db = \Config\Database::connect();
 		$this->tables = $this->db->listTables();
     $this->parser = new TemplateParser();
@@ -1034,6 +1036,12 @@ class Crud extends \CodeIgniter\Controller {
 
   protected function makeViewListFiles()
 	{
+    $themeFolders = directory_map($this->crudTemplatesFolder.DS."themes", 1);
+    foreach ($themeFolders as $folder => $files) {
+      echo $folder."\r\n";
+      print_r($files);
+      echo "\r\n";
+    }
 		$listContent = file_get_contents($this->crudTemplatesFolder."List.tpl");
     $newListContent = $this->parser->render($listContent, $this->templateVars);
 		$listFileName = ucfirst($this->table)."List.php";
