@@ -308,7 +308,8 @@ class Crud extends \CodeIgniter\Controller {
     $scan = scandir($dir);
     $folders = [];
     foreach($scan as $file) {
-      if (is_dir($file)) {
+      //echo $dir.$file."\r\n";
+      if (is_dir($dir.$file) && $file != "." && $file != "..") {
         $folders[] = $file;
       }
     }
