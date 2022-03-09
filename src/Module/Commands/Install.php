@@ -82,7 +82,7 @@ class Install extends BaseCommand
     $publisher->merge(true);
 
     /**
-     * Publish Ci4toolsadmin Admin/System Assets
+     * Publish Ci4toolsadmin Admin Assets
      */
     $sourceAssets = $this->vendorFolder."Module".DS."public";
     $destinationAssets = FCPATH;

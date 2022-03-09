@@ -103,13 +103,12 @@ class Crud extends \CodeIgniter\Controller {
     $publisher->merge(true);
 
     /**
-     * Publish Ci4toolsadmin Admin/System Assets
+     * Publish Ci4toolsadmin Admin Assets
      */
     $sourceAssets = $this->vendorFolder."Module".DS."public";
     $destinationAssets = FCPATH;
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     $publisherAssets->addPath('ci4toolsadmin');
-    $publisherAssets->addPath('themes');
     $publisherAssets->merge(true);
 
     /**
@@ -131,6 +130,15 @@ class Crud extends \CodeIgniter\Controller {
     $publisherThemeAssetsFiles->merge(true);
 
     /**
+     * Publish Crudbase Main Controller
+     */
+    $sourceMainController = $this->vendorFolder."Crud";
+    $destinationMainController = $this->crudControllersBaseFolder;
+    $publisherMainController = new \CodeIgniter\Publisher\Publisher($sourceMainController, $destinationMainController);
+    $publisherMainController->addPath('MainController.php');
+    $publisherMainController->merge(true);
+
+    /**
      * Publish Ci4tools Config Files
      */
     $sourceConfigFiles = $this->vendorFolder."Module".DS."Config";
@@ -138,7 +146,7 @@ class Crud extends \CodeIgniter\Controller {
     $publisherConfigFiles = new \CodeIgniter\Publisher\Publisher($sourceConfigFiles, $destinationConfigFiles);
     $publisherConfigFiles->addPath('Ci4tools.php');
     $publisherConfigFiles->addPath('Ci4toolsRoutes.php');
-    $publisherConfigFiles->merge(true);
+    $publisherConfigFiles->merge(false);
   }
 
   public function setTable($table = "") {
@@ -1036,7 +1044,7 @@ class Crud extends \CodeIgniter\Controller {
 
   protected function makeViewListFiles()
 	{
-    $themeFolders = directory_map($this->crudTemplatesFolder.DS."themes", 1);
+    $themeFolders = directory_map($this->crudTemplatesFolder."themes", 1);
     foreach ($themeFolders as $folder => $files) {
       echo $folder."\r\n";
       print_r($files);
