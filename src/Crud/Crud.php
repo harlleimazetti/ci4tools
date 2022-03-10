@@ -118,7 +118,9 @@ class Crud extends \CodeIgniter\Controller {
     $sourceAssets = $this->vendorFolder."Module".DS."public";
     $destinationAssets = FCPATH;
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
+    $publisherAssets->addPath('assets');
     $publisherAssets->addPath('ci4toolsadmin');
+    $publisherAssets->addPath('localisation');
     $publisherAssets->merge(true);
 
     /**
