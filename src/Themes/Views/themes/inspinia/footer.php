@@ -4,8 +4,10 @@
   </div> <!-- /.footer -->
 
 <!-- Mainly scripts -->
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/jquery-2.1.1.js"></script>
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/bootstrap.min.js"></script>
+<!--<script src="<?php //echo base_url(); ?>/themes/inspinia/assets/js/jquery-2.1.1.js"></script>-->
+<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/jquery-3.1.1.min.js"></script>
+<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/popper.min.js"></script>
+<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/bootstrap.js"></script>
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/toastr/toastr.min.js"></script>
@@ -80,7 +82,7 @@
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/select2/select2.full.min.js"></script>
 
 <!-- Popper -->
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/popper/popper.min.js"></script>
+<!--<script src="<?php //echo base_url(); ?>/themes/inspinia/assets/js/plugins/popper/popper.min.js"></script>-->
 
 
 <!-- Custom and plugin javascript -->
