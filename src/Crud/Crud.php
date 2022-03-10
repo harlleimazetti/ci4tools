@@ -33,6 +33,7 @@ class Crud extends \CodeIgniter\Controller {
   protected $crudModelsBaseFolder;
   protected $crudViewsBaseFolder;
   protected $crudEntitiesBaseFolder;
+  protected $crudTemplatesBaseFolder;
   protected $crudValidationFolder;
   protected $crudConfigFolder;
   protected $crudTemplatesFolder;
@@ -63,15 +64,16 @@ class Crud extends \CodeIgniter\Controller {
     $this->parser = new TemplateParser();
 
     $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
-    $this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
+    $this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."Templates".DS;
     $this->crudBaseFolder 						= APPPATH."Crudbase".DS;
     $this->moduleFolder 						  = ROOTPATH."ci4toolsadmin".DS;
     $this->moduleAssetsFolder					= FCPATH."ci4toolsadmin".DS;
 
 		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
 		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
+    $this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
     $this->crudModelsBaseFolder 			= $this->crudBaseFolder."Models".DS;
-		$this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
+    $this->crudTemplatesBaseFolder		= $this->crudBaseFolder."Templates".DS;
     $this->crudValidationFolder 		  = $this->crudBaseFolder."Validation".DS;
 
     $this->controllersFolder 					= APPPATH."Controllers".DS;
@@ -81,7 +83,7 @@ class Crud extends \CodeIgniter\Controller {
 
     $this->themesTemplatesFolder      = $this->vendorFolder."Themes".DS."Templates".DS."themes".DS;
     $this->themesTemplatesBaseFolder 	= $this->crudBaseFolder."Templates".DS;
-    $this->themesFolders              = $this->getDirectoryFoldersNames($this->themesTemplatesBaseFolder."themes");
+    $this->themesFolders              = $this->getDirectoryFoldersNames($this->themesTemplatesBaseFolder."themes".DS);
 
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
@@ -145,6 +147,15 @@ class Crud extends \CodeIgniter\Controller {
     $publisherThemeTemplateFiles = new \CodeIgniter\Publisher\Publisher($sourceThemeTemplateFiles, $destinationThemeTemplateFiles);
     $publisherThemeTemplateFiles->addPath('themes');
     $publisherThemeTemplateFiles->merge(true);
+
+    /**
+     * Publish Ci4tools CRUD Base Template Files
+     */
+    $sourceCrudTemplateFiles = $this->crudTemplatesFolder;
+    $destinationCrudTemplateFiles = $this->crudTemplatesBaseFolder;
+    $publisherCrudTemplateFiles = new \CodeIgniter\Publisher\Publisher($sourceCrudTemplateFiles, $destinationCrudTemplateFiles);
+    $publisherCrudTemplateFiles->addPath('base');
+    $publisherCrudTemplateFiles->merge(true);
 
     /**
      * Publish Crudbase Main Controller
@@ -315,6 +326,10 @@ class Crud extends \CodeIgniter\Controller {
 	}
 
   protected function getDirectoryFoldersNames($dir) {
+    if (!is_dir($dir)) {
+      return null;
+    }
+    
     $scan = scandir($dir);
     $folders = [];
     foreach($scan as $file) {
@@ -499,57 +514,62 @@ class Crud extends \CodeIgniter\Controller {
 		{
       CLI::write(" ");
 
-      try {
-        CLI::write("MAKE (INFO): Making CRUD for table: ". CLI::color($table, 'green'), 'white');
+      foreach ($this->themesFolders as $themeFolder) {
 
-        CLI::write("MAKE (INFO): Setting table info", 'white');
-        $this->setTable($table);
+        CLI::write("MAKE (INFO): Theme: ". CLI::color($themeFolder, 'blue'), 'white');
 
-        CLI::write("MAKE (INFO): Retrieving table config", 'white');
-        $fileConfigPath = $this->crudConfigFolder.$table.".json";
+        try {
+          CLI::write("MAKE (INFO): Making CRUD for table: ". CLI::color($table, 'green'), 'white');
 
-        CLI::write("MAKE (INFO): Making record fields list", 'white');
-        $this->recordFields	= $this->makeRecordFieldsString();
+          CLI::write("MAKE (INFO): Setting table info", 'white');
+          $this->setTable($table);
 
-        CLI::write("MAKE (INFO): Making record allowed fields list", 'white');
-        $this->recordAllowedFields	= $this->makeRecordAllowedFieldsString();
+          CLI::write("MAKE (INFO): Retrieving table config", 'white');
+          $fileConfigPath = $this->crudConfigFolder.$table.".json";
 
-        CLI::write("MAKE (INFO): Making record table header", 'white');
-        $this->tableHeader	= $this->makeRecordHtmlTableHeader();
+          CLI::write("MAKE (INFO): Making record fields list", 'white');
+          $this->recordFields	= $this->makeRecordFieldsString();
 
-        CLI::write("MAKE (INFO): Making record HTML form fields", 'white');
-        $this->recordFormFields = $this->makeRecordFormFields();
+          CLI::write("MAKE (INFO): Making record allowed fields list", 'white');
+          $this->recordAllowedFields	= $this->makeRecordAllowedFieldsString();
 
-        CLI::write("MAKE (INFO): Setting template vars", 'white');
-        $this->templateVars = $this->setTemplateVars();
+          CLI::write("MAKE (INFO): Making record table header", 'white');
+          $this->tableHeader	= $this->makeRecordHtmlTableHeader();
 
-        CLI::write("MAKE (INFO): Making Controller files", 'white');
-        $this->makeControllerFiles();
+          CLI::write("MAKE (INFO): Making record HTML form fields", 'white');
+          $this->recordFormFields = $this->makeRecordFormFields($themeFolder);
 
-        CLI::write("MAKE (INFO): Making Validation files", 'white');
-        $this->makeValidationFiles();
+          CLI::write("MAKE (INFO): Setting template vars", 'white');
+          $this->templateVars = $this->setTemplateVars();
 
-        CLI::write("MAKE (INFO): Making Model files", 'white');
-        $this->makeModelFiles();
+          CLI::write("MAKE (INFO): Making Controller files", 'white');
+          $this->makeControllerFiles();
 
-        CLI::write("MAKE (INFO): Making View List files", 'white');
-        $this->makeViewListFiles();
+          CLI::write("MAKE (INFO): Making Validation files", 'white');
+          $this->makeValidationFiles();
 
-        CLI::write("MAKE (INFO): Making View Form files", 'white');
-        $this->makeViewFormFiles();
+          CLI::write("MAKE (INFO): Making Model files", 'white');
+          $this->makeModelFiles();
 
-      } catch (\Exception $e) {
-        CLI::error("MAKE (ERROR): ".$e->getMessage().": ". CLI::color($table, 'green'));
-        
-        $this->result['messages'][] = 'MAKE (ERROR): Problems ocurred during CRUD Making of table: '.$table;
-        $this->result['errors'][] = $e->getMessage().": ".$table;
+          CLI::write("MAKE (INFO): Making View List files", 'white');
+          $this->makeViewListFiles();
 
-        continue;
+          CLI::write("MAKE (INFO): Making View Form files", 'white');
+          $this->makeViewFormFiles();
+
+        } catch (\Exception $e) {
+          CLI::error("MAKE (ERROR): ".$e->getMessage().": ". CLI::color($table, 'green'));
+          
+          $this->result['messages'][] = 'MAKE (ERROR): Problems ocurred during CRUD Making of table: '.$table;
+          $this->result['errors'][] = $e->getMessage().": ".$table;
+
+          continue;
+        }
+
+        CLI::write("MAKE (INFO): End of CRUD Making for table: ".CLI::color($table, 'green'), 'white');
+
+        $this->result['messages'][] = 'MAKE (INFO): CRUD successfuly created for table: '.$table;
       }
-
-      CLI::write("MAKE (INFO): End of CRUD Making for table: ".CLI::color($table, 'green'), 'white');
-
-      $this->result['messages'][] = 'MAKE (INFO): CRUD successfuly created for table: '.$table;
 		}
 
     return (object)$this->result;
@@ -846,7 +866,7 @@ class Crud extends \CodeIgniter\Controller {
 		return $tableHeader;
 	}
 
-	protected function makeRecordFormFields() {
+	protected function makeRecordFormFields($themeFolder) {
 		$table = $this->table;
     $tableConfig = $this->tableConfig;
     $formVisibleFields = $this->formVisibleFields;
@@ -856,7 +876,7 @@ class Crud extends \CodeIgniter\Controller {
 
 		foreach ($formVisibleFieldsConfig as $fieldConfig)
 		{
-      $recordFormFields .= $this->makeFormField((object)$fieldConfig);
+      $recordFormFields .= $this->makeFormField((object)$fieldConfig, $themeFolder);
 		}
 
     $recordFormFields .= $this->makeFormBack();
@@ -865,61 +885,61 @@ class Crud extends \CodeIgniter\Controller {
     return $recordFormFields;
 	}
 
-  protected function makeFormField($fieldConfig) {
+  protected function makeFormField($fieldConfig, $themeFolder) {
     $fieldHtml = '';
 
     switch ($fieldConfig->type) {
       case "text":
-        $fieldHtml = $this->makeFormFieldText($fieldConfig);
+        $fieldHtml = $this->makeFormFieldText($fieldConfig, $themeFolder);
         break;
       case "password":
-        $fieldHtml = $this->makeFormFieldPassword($fieldConfig);
+        $fieldHtml = $this->makeFormFieldPassword($fieldConfig, $themeFolder);
         break;
       case "textarea":
-        $fieldHtml = $this->makeFormFieldTextarea($fieldConfig);
+        $fieldHtml = $this->makeFormFieldTextarea($fieldConfig, $themeFolder);
         break;
       case "select":
-        $fieldHtml = $this->makeFormFieldSelect($fieldConfig);
+        $fieldHtml = $this->makeFormFieldSelect($fieldConfig, $themeFolder);
         break;
       case "checkbox":
-        $fieldHtml = $this->makeFormFieldCheckbox($fieldConfig);
+        $fieldHtml = $this->makeFormFieldCheckbox($fieldConfig, $themeFolder);
         break;
       case "radio":
-        $fieldHtml = $this->makeFormFieldRadio($fieldConfig);
+        $fieldHtml = $this->makeFormFieldRadio($fieldConfig, $themeFolder);
         break;
       case "file":
-        $fieldHtml = $this->makeFormFieldFile($fieldConfig);
+        $fieldHtml = $this->makeFormFieldFile($fieldConfig, $themeFolder);
         break;
       case "hidden":
-        $fieldHtml = $this->makeFormFieldHidden($fieldConfig);
+        $fieldHtml = $this->makeFormFieldHidden($fieldConfig, $themeFolder);
         break;
       default:
-        $fieldHtml = $this->makeFormFieldText($fieldConfig);
+        $fieldHtml = $this->makeFormFieldText($fieldConfig, $themeFolder);
         break;
     }
 
     return $fieldHtml;
   }
 
-  protected function makeFormFieldText($fieldConfig) {
-		$content = file_get_contents($this->crudTemplatesFolder."FormInputText.tpl");
+  protected function makeFormFieldText($fieldConfig, $themeFolder) {
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormInputText.tpl");
     $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldPassword($fieldConfig) {
-		$content = file_get_contents($this->crudTemplatesFolder."FormInputPassword.tpl");
+  protected function makeFormFieldPassword($fieldConfig, $themeFolder) {
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormInputPassword.tpl");
     $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldTextarea($fieldConfig) {
-		$content = file_get_contents($this->crudTemplatesFolder."FormTextarea.tpl");
+  protected function makeFormFieldTextarea($fieldConfig, $themeFolder) {
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormTextarea.tpl");
     $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldCheckbox($fieldConfig) {
+  protected function makeFormFieldCheckbox($fieldConfig, $themeFolder) {
     if (empty($fieldConfig->options)) {
       if (!empty($fieldConfig->foreign_table_name)) {
         $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
@@ -930,12 +950,12 @@ class Crud extends \CodeIgniter\Controller {
         }
       }
     }
-		$content = file_get_contents($this->crudTemplatesFolder."FormCheckbox.tpl");
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormCheckbox.tpl");
     $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldRadio($fieldConfig) {
+  protected function makeFormFieldRadio($fieldConfig, $themeFolder) {
     if (empty($fieldConfig->options)) {
       if (!empty($fieldConfig->foreign_table_name)) {
         $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
@@ -946,12 +966,12 @@ class Crud extends \CodeIgniter\Controller {
         }
       }
     }
-		$content = file_get_contents($this->crudTemplatesFolder."FormRadio.tpl");
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormRadio.tpl");
     $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldSelect($fieldConfig) {
+  protected function makeFormFieldSelect($fieldConfig, $themeFolder) {
     if (empty($fieldConfig->options)) {
       if (!empty($fieldConfig->foreign_table_name)) {
         $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
@@ -962,31 +982,31 @@ class Crud extends \CodeIgniter\Controller {
         }
       }
     }
-		$content = file_get_contents($this->crudTemplatesFolder."FormSelect.tpl");
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormSelect.tpl");
     $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldFile($fieldConfig) {
-		$content = file_get_contents($this->crudTemplatesFolder."FormInputFile.tpl");
+  protected function makeFormFieldFile($fieldConfig, $themeFolder) {
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormInputFile.tpl");
     $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormFieldHidden($fieldConfig) {
-		$content = file_get_contents($this->crudTemplatesFolder."FormInputHidden.tpl");
+  protected function makeFormFieldHidden($fieldConfig, $themeFolder) {
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormInputHidden.tpl");
     $newContent = $this->parser->render($content, $fieldConfig);
 		return $newContent;
   }
 
-  protected function makeFormSubmit() {
-		$content = file_get_contents($this->crudTemplatesFolder."FormSubmitButton.tpl");
+  protected function makeFormSubmit($themeFolder) {
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormSubmitButton.tpl");
     $newContent = $this->parser->render($content, array('label' => 'Salvar'));
 		return $newContent;
   }
 
-  protected function makeFormBack() {
-		$content = file_get_contents($this->crudTemplatesFolder."FormBackButton.tpl");
+  protected function makeFormBack($themeFolder) {
+		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormBackButton.tpl");
     $newContent = $this->parser->render($content, array('label' => 'Voltar'));
 		return $newContent;
   }
@@ -1071,23 +1091,17 @@ class Crud extends \CodeIgniter\Controller {
     }
 	}
 
-  protected function makeViewListFiles()
+  protected function makeViewListFiles($themeFolder)
 	{
-    $themeFolders = directory_map($this->crudTemplatesFolder."themes", 1);
-    foreach ($themeFolders as $folder => $files) {
-      echo $folder."\r\n";
-      print_r($files);
-      echo "\r\n";
-    }
-		$listContent = file_get_contents($this->crudTemplatesFolder."List.tpl");
+		$listContent = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."List.tpl");
     $newListContent = $this->parser->render($listContent, $this->templateVars);
 		$listFileName = ucfirst($this->table)."List.php";
 		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
 	}
 
-  protected function makeViewFormFiles()
+  protected function makeViewFormFiles($themeFolder)
 	{
-		$formContent = file_get_contents($this->crudTemplatesFolder."Form.tpl");
+		$formContent = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."Form.tpl");
     $newFormContent = $this->parser->render($formContent, $this->templateVars);
 		$formFileName = ucfirst($this->table)."Form.php";
 		file_put_contents($this->viewsFolder.$formFileName, $newFormContent);
