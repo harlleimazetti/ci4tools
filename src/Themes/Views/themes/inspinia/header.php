@@ -17,7 +17,7 @@
   <link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/chosen/chosen.css" rel="stylesheet">
 	<link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
 	<link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
-	<link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+	<!--<link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">-->
 	<link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/select2/select2.min.css" rel="stylesheet">
 
   <!-- Morris -->
@@ -28,10 +28,13 @@
   <link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/slick/slick-theme.css" rel="stylesheet">
 
   <!-- Data Tables -->
-  <link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
-  <link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
-  <link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
-	<link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.buttons.min.css" rel="stylesheet">
+  <link href="<?php echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.min.css" rel="stylesheet">
+  <!--
+  <link href="<?php //echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+  <link href="<?php //echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet">
+  <link href="<?php //echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.tableTools.min.css" rel="stylesheet">
+	<link href="<?php //echo base_url(); ?>/themes/inspinia/assets/css/plugins/dataTables/dataTables.buttons.min.css" rel="stylesheet">
+  -->
 </head>
 <body id="<?php if (isset($body_id)) { echo $body_id; } ?>" class="<?php if (isset($body_class)) { echo $body_class; } ?> <?php if (false) { ?>mini-navbar<?php } ?>">
 <div id="wrapper">

@@ -33,11 +33,14 @@
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/slick/slick.min.js"></script>
 
 <!-- Data Tables -->
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/jquery.dataTables.js"></script>
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.bootstrap.js"></script>
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.responsive.js"></script>
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.buttons.min.js"></script>
+<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.min.js"></script>
+<!--
+<script src="<?php //echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/jquery.dataTables.js"></script>
+<script src="<?php //echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.bootstrap.js"></script>
+<script src="<?php //echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.responsive.js"></script>
+<script src="<?php //echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.tableTools.min.js"></script>
+<script src="<?php //echo base_url(); ?>/themes/inspinia/assets/js/plugins/dataTables/dataTables.buttons.min.js"></script>
+-->
 
 <!-- File Upload -->
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/fileupload/jquery.fileupload.js"></script>
@@ -59,7 +62,7 @@
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/validate/jquery.validate.min.js"></script>
 
 <!-- Jquery Mask -->
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/jquerymask/jquerymask.js"></script>
+<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/jquerymask/jquery.mask.min.js"></script>
 
 <!-- IonRangeSlider -->
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/ionRangeSlider/ion.rangeSlider.min.js"></script>
