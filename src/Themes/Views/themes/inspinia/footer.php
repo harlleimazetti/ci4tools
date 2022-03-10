@@ -79,6 +79,9 @@
 <!-- Select2 -->
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/select2/select2.full.min.js"></script>
 
+<!-- Popper -->
+<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/popper/popper.min.js"></script>
+
 
 <!-- Custom and plugin javascript -->
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/inspinia.js"></script>
