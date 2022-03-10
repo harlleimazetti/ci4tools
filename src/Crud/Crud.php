@@ -1045,8 +1045,8 @@ class Crud extends \CodeIgniter\Controller {
 
 	protected function makeControllerFiles()
 	{
-		$controllerBaseContent = file_get_contents($this->crudTemplatesFolder."ControllerBase.tpl");
-		$controllerContent = file_get_contents($this->crudTemplatesFolder."Controller.tpl");
+		$controllerBaseContent = file_get_contents($this->crudTemplatesBaseFolder."base".DS."ControllerBase.tpl");
+		$controllerContent = file_get_contents($this->crudTemplatesBaseFolder."base".DS."Controller.tpl");
 		$newControllerBaseContent = $this->parse($controllerBaseContent, $this->templateVars);
 		$newControllerContent = $this->parse($controllerContent, $this->templateVars);
 		$controllerBaseFileName = ucfirst($this->table)."Base.php";
@@ -1059,10 +1059,10 @@ class Crud extends \CodeIgniter\Controller {
 
 	protected function makeModelFiles()
 	{
-		$entityBaseContent = file_get_contents($this->crudTemplatesFolder."EntityBase.tpl");
-		$entityContent = file_get_contents($this->crudTemplatesFolder."Entity.tpl");
-		$modelBaseContent = file_get_contents($this->crudTemplatesFolder."ModelBase.tpl");
-		$modelContent = file_get_contents($this->crudTemplatesFolder."Model.tpl");
+		$entityBaseContent = file_get_contents($this->crudTemplatesBaseFolder."base".DS."EntityBase.tpl");
+		$entityContent = file_get_contents($this->crudTemplatesBaseFolder."base".DS."Entity.tpl");
+		$modelBaseContent = file_get_contents($this->crudTemplatesBaseFolder."base".DS."ModelBase.tpl");
+		$modelContent = file_get_contents($this->crudTemplatesBaseFolder."base".DS."Model.tpl");
 		$newEntityBaseContent = $this->parse($entityBaseContent, $this->templateVars);
 		$newEntityContent = $this->parse($entityContent, $this->templateVars);
 		$newModelBaseContent = $this->parse($modelBaseContent, $this->templateVars);
@@ -1083,7 +1083,7 @@ class Crud extends \CodeIgniter\Controller {
 
   protected function makeValidationFiles()
 	{
-		$validationContent = file_get_contents($this->crudTemplatesFolder."Validation.tpl");
+		$validationContent = file_get_contents($this->crudTemplatesBaseFolder."base".DS."Validation.tpl");
     $newValidationContent = $this->parser->render($validationContent, $this->templateVars);
 		$validationFileName = ucfirst($this->table)."Validation.php";
     if (!file_exists($this->crudValidationFolder.$validationFileName)) {
