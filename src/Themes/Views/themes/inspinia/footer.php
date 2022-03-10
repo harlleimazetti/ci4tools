@@ -1,6 +1,6 @@
 <div class="footer">
     <div class="pull-right"><strong></strong></div>
-    <div class="text-center"> <strong>COPYRIGHT</strong> DELIDIET &copy; SISTEMA DE GESTÃO NUTRICIONAL - <?php echo date('Y') ?> </div>
+    <div class="text-center"> <strong>COPYRIGHT</strong> IDCOLLEGE &copy; VALIDADOR ESTUDANTIL - <?php echo date('Y') ?> </div>
   </div> <!-- /.footer -->
 
 <!-- Mainly scripts -->

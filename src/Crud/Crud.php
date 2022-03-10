@@ -516,6 +516,7 @@ class Crud extends \CodeIgniter\Controller {
 
       foreach ($this->themesFolders as $themeFolder) {
 
+        CLI::write(" ");
         CLI::write("MAKE (INFO): Theme: ". CLI::color($themeFolder, 'blue'), 'white');
 
         try {
@@ -552,10 +553,10 @@ class Crud extends \CodeIgniter\Controller {
           $this->makeModelFiles();
 
           CLI::write("MAKE (INFO): Making View List files", 'white');
-          $this->makeViewListFiles();
+          $this->makeViewListFiles($themeFolder);
 
           CLI::write("MAKE (INFO): Making View Form files", 'white');
-          $this->makeViewFormFiles();
+          $this->makeViewFormFiles($themeFolder);
 
         } catch (\Exception $e) {
           CLI::error("MAKE (ERROR): ".$e->getMessage().": ". CLI::color($table, 'green'));
@@ -879,8 +880,8 @@ class Crud extends \CodeIgniter\Controller {
       $recordFormFields .= $this->makeFormField((object)$fieldConfig, $themeFolder);
 		}
 
-    $recordFormFields .= $this->makeFormBack();
-    $recordFormFields .= $this->makeFormSubmit();
+    $recordFormFields .= $this->makeFormBack($themeFolder);
+    $recordFormFields .= $this->makeFormSubmit($themeFolder);
 
     return $recordFormFields;
 	}
@@ -1096,7 +1097,7 @@ class Crud extends \CodeIgniter\Controller {
 		$listContent = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."List.tpl");
     $newListContent = $this->parser->render($listContent, $this->templateVars);
 		$listFileName = ucfirst($this->table)."List.php";
-		file_put_contents($this->viewsFolder.$listFileName, $newListContent);
+		file_put_contents($this->viewsFolder."themes".DS.$themeFolder.DS.$listFileName, $newListContent);
 	}
 
   protected function makeViewFormFiles($themeFolder)
@@ -1104,7 +1105,7 @@ class Crud extends \CodeIgniter\Controller {
 		$formContent = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."Form.tpl");
     $newFormContent = $this->parser->render($formContent, $this->templateVars);
 		$formFileName = ucfirst($this->table)."Form.php";
-		file_put_contents($this->viewsFolder.$formFileName, $newFormContent);
+		file_put_contents($this->viewsFolder."themes".DS.$themeFolder.DS.$formFileName, $newFormContent);
 	}
 
 	protected function color($text, $color)
