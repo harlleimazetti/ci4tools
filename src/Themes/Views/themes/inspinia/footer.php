@@ -83,6 +83,7 @@
 <!-- Custom and plugin javascript -->
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/inspinia.js"></script>
 <script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/plugins/pace/pace.min.js"></script>
-<script src="<?php echo base_url(); ?>/themes/inspinia/assets/js/javascripts.js"></script>
+<script src="<?php echo base_url(); ?>/assets/js/axios.min.js"></script>
+<script src="<?php echo base_url(); ?>/assets/js/javascripts.js" type="module"></script>
 </body>
 </html>
