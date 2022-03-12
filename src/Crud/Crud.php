@@ -945,9 +945,11 @@ class Crud extends \CodeIgniter\Controller {
   protected function makeFormFieldCheckbox($fieldConfig, $themeFolder) {
     if (empty($fieldConfig->options)) {
       if (!empty($fieldConfig->foreign_table_name)) {
-        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
-        $foreignModel = model("App\\Models\\".$modelName);
-        $foreignRecords = $foreignModel->findAll();
+        //$modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+        //$foreignModel = model("App\\Models\\".$modelName);
+        //$foreignRecords = $foreignModel->findAll();
+        $foreignModel = $this->db->table($fieldConfig->foreign_table_name);
+        $foreignRecords = $foreignModel->get();
         foreach ($foreignRecords as $record) {
           $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
         }
@@ -961,9 +963,11 @@ class Crud extends \CodeIgniter\Controller {
   protected function makeFormFieldRadio($fieldConfig, $themeFolder) {
     if (empty($fieldConfig->options)) {
       if (!empty($fieldConfig->foreign_table_name)) {
-        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
-        $foreignModel = model("App\\Models\\".$modelName);
-        $foreignRecords = $foreignModel->findAll();
+        //$modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+        //$foreignModel = model("App\\Models\\".$modelName);
+        //$foreignRecords = $foreignModel->findAll();
+        $foreignModel = $this->db->table($fieldConfig->foreign_table_name);
+        $foreignRecords = $foreignModel->get();
         foreach ($foreignRecords as $record) {
           $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
         }
@@ -977,9 +981,11 @@ class Crud extends \CodeIgniter\Controller {
   protected function makeFormFieldSelect($fieldConfig, $themeFolder) {
     if (empty($fieldConfig->options)) {
       if (!empty($fieldConfig->foreign_table_name)) {
-        $modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
-        $foreignModel = model("App\\Models\\".$modelName);
-        $foreignRecords = $foreignModel->findAll();
+        //$modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
+        //$foreignModel = model("App\\Models\\".$modelName);
+        //$foreignRecords = $foreignModel->findAll();
+        $foreignModel = $this->db->table($fieldConfig->foreign_table_name);
+        $foreignRecords = $foreignModel->get();
         foreach ($foreignRecords as $record) {
           $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
         }
