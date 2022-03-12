@@ -951,7 +951,7 @@ class Crud extends \CodeIgniter\Controller {
         $foreignTable = $this->db->table($fieldConfig->foreign_table_name);
         $foreignRecords = $foreignTable->get();
         foreach ($foreignRecords->getResult() as $record) {
-          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
+          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->{$fieldConfig->foreign_column_name}];
         }
       }
     }
@@ -969,7 +969,7 @@ class Crud extends \CodeIgniter\Controller {
         $foreignTable = $this->db->table($fieldConfig->foreign_table_name);
         $foreignRecords = $foreignTable->get();
         foreach ($foreignRecords->getResult() as $record) {
-          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
+          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->{$fieldConfig->foreign_column_name}];
         }
       }
     }
@@ -987,7 +987,7 @@ class Crud extends \CodeIgniter\Controller {
         $foreignTable = $this->db->table($fieldConfig->foreign_table_name);
         $foreignRecords = $foreignTable->get();
         foreach ($foreignRecords->getResult() as $record) {
-          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->name];
+          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->{$fieldConfig->foreign_column_name}];
         }
       }
     }
