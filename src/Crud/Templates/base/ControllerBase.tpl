@@ -93,7 +93,7 @@ class {class_name}Base extends MainController
     $contents = array('{view_name}Form');
 
     echo $this->showView(
-      $theme_name     = $this->themeConfig->themeName,
+      $theme_name     = $this->config->themeName,
       $theme_options  = $this->data['theme_options'],
       $contents       = $contents,
       $data           = $this->data,
@@ -126,7 +126,7 @@ class {class_name}Base extends MainController
     $contents = array('{view_name}Form');
 
     echo $this->showView(
-      $theme_name     = $this->themeConfig->themeName,
+      $theme_name     = $this->config->themeName,
       $theme_options  = $this->data['theme_options'],
       $contents       = $contents,
       $data           = $this->data,
