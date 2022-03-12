@@ -1,7 +1,9 @@
             <div class="row wrapper border-bottom white-bg page-heading">
               <div class="col-sm-4">
-                <h2><?php echo $page_title ?></h2>
-                <h4><?php echo $page_subtitle ?></h4>
+                <h2>
+                  <?php echo $page_title ?>
+                  <small><?php echo $page_subtitle ?></small>
+                </h2>
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item">
                   <a href="<?php echo base_url() ?>/dashboard">Início</a>
