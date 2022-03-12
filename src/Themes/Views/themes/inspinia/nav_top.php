@@ -1,7 +1,8 @@
   <div id="page-wrapper" class="gray-bg">
     <div class="row border-bottom">
-      <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header"> <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+      <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+          <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
           <form role="search" class="navbar-form-custom" action="">
             <div class="form-group">
               <input type="text" placeholder="Busca" class="form-control" name="top-search" id="top-search">
@@ -12,10 +13,12 @@
           <li>
             <span class="m-r-sm text-muted welcome-message">
               <div class="btn-group">
-                <select id="proponente_id_selecionado" name="proponente_id_selecionado" class="select2 proponente_id_selecionado">
+                <select id="pda_id_selecionado" name="pda_id_selecionado" class="select2 pda_id_selecionado">
+                  <option value="">Selecione o PDA</option>
                   <?php
-                  //foreach(json_decode($this->session->userdata('usuario_proponente')) as $usuario_proponente) { ?>
-                  <option value="<?php //echo $usuario_proponente->id ?>" <?php //if ($usuario_proponente->id == $this->session->userdata('usuario_proponente_selecionado')) { ?>selected <?php // } ?>><?php //echo $usuario_proponente->nome ?>	- <?php //echo $usuario_proponente->cnpj ?></option>
+                    //foreach(json_decode($this->session->userdata('usuario_proponente')) as $usuario_proponente) {
+                  ?>
+                    <option value="<?php //echo $usuario_proponente->id ?>" <?php //if ($usuario_proponente->id == $this->session->userdata('usuario_proponente_selecionado')) { ?>selected <?php // } ?>><?php //echo $usuario_proponente->nome ?>	- <?php //echo $usuario_proponente->cnpj ?></option>
                   <?php // } ?>
                 </select>
               </div>
