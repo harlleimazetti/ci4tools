@@ -644,6 +644,8 @@ class Crud extends \CodeIgniter\Controller {
 
   public function saveTableConfig($table, $options)
   {
+    $this->setTableInfo($table);
+
     unset($options['table']);
     
     $optionsKeys = array_keys($options);
@@ -652,16 +654,24 @@ class Crud extends \CodeIgniter\Controller {
     for ($i = 0; $i < $countOptions; $i++) {
       $newConf[] = array_combine($optionsKeys, array_column($options, $i));
     }
-    
+
     //$tableFields = $this->crud->getFieldsConfigurable();
     $tableConfig = $this->getTableConfig();
     $tableConfig = json_decode(json_encode($tableConfig), true);
 
-    foreach($tableConfig['fields'] as $key => $config) {
-      foreach($newConf as $newConfig) {
-        if ($config['name'] == $newConfig['name']) {
-          $tableConfig['fields'][$key] = array_merge($config, $newConfig);
-        }
+    $newFields = array_column($newConf, 'name');
+    $oldFields = array_column($tableConfig['fields'], 'name');
+    $newFields = array_diff($newFields, $oldFields);
+
+    foreach($newConf as $pos => $newConfig) {
+      $index = array_search($newConfig['name'], array_column($tableConfig['fields'], 'name'));
+      if ($index === false) {
+        $fk = $this->verifyForeignKey($newConfig['name']);
+        $newConfig['foreign_table_name']  = !empty($fk) ? $fk->foreign_table_name : '';
+        $newConfig['foreign_column_name'] = !empty($fk) ? $fk->foreign_column_name : '';
+        array_splice($tableConfig['fields'], $pos, 0, array(array_merge($tableConfig['fields'][$pos], $newConfig)));
+      } else {
+        $tableConfig['fields'][$index] = array_merge($tableConfig['fields'][$index], $newConfig);
       }
     }
 
@@ -715,6 +725,21 @@ class Crud extends \CodeIgniter\Controller {
       }
     }
     //print_r((object)$this->controllers);
+  }
+
+  protected function verifyForeignKey($fieldName)
+  {
+    $tableKeys = json_decode(json_encode($this->keys), true);
+
+    $key = array_search($fieldName, array_column($tableKeys, 'column_name'));
+
+    if (!(empty($key) && $key !== 0)) {
+      $fk = $this->keys[$key];
+    } else {
+      $fk = NULL;
+    }
+
+    return $fk;
   }
 
 	protected function loadVisibleFields($table = "")

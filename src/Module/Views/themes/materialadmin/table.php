@@ -49,7 +49,7 @@
 
                           <div class="listview__item p-2">
                             <div class="col-1 mr-2">
-                              <input type="text" id="name[]" name="name[]" class="form-control" value="<?php echo $tableConfig->fields[$key]->name ?>" placeholder="<?php echo $tableField->name ?>" readonly>
+                              <input type="text" id="name[]" name="name[]" class="form-control" value="<?php echo $tableField->name ?>" placeholder="<?php echo $tableField->name ?>" readonly>
                               <i class="form-group__bar"></i>
                             </div>
 
