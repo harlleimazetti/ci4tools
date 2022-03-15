@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="<?php echo base_url() ?>/ci4toolsadmin/assets/css/app.min.css">
     </head>
 
-    <body data-ma-theme="green">
+    <body data-ma-theme="blue-grey">
         <main class="main">
             <div class="page-loader">
                 <div class="page-loader__spinner">
