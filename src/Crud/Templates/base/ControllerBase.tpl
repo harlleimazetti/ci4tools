@@ -38,7 +38,7 @@ class {class_name}Base extends MainController
 	{
 		${table}Model = new \App\Models\{model_name}Model();
     $this->data['data'] = array();
-		${record}s = ${table}Model->findAll();
+		${record}s = ${table}Model->where(['tenant_id', 3])->findAll();
     
     $this->data['{record}s']          = ${record}s;
     $this->data['listVisibleFields']  = $this->listVisibleFields;
@@ -103,7 +103,7 @@ class {class_name}Base extends MainController
   public function edit($id)
   {
 		${table}Model = new \App\Models\{model_name}Model();
-    ${record} = ${table}Model->find([$id]);
+    ${record} = ${table}Model->where(['tenant_id' => 3, 'id' => $id])->findAll();
     
     $this->data['data']               = array();
     $this->data['{record}']           = ${record};
