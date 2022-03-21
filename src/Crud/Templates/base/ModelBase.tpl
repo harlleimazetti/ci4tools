@@ -90,6 +90,11 @@ class {class_name}ModelBase extends Model
     return $this;
   }
 
+  public function withTenant($tenant) {
+    $this->builder()->where($this->table . '.tenant_id', $tenant->id);
+    return $this;
+  }
+
 	function countAll() {
 		$this->countAllRecords = $this->db->count_all('{table}');
 		return $this->countAllRecords;

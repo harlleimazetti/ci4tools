@@ -16,3 +16,21 @@ $routes->group('admin', ['namespace' => '\Ci4toolsadmin\Controllers'], function 
   $routes->post('table/saveconfig',     'Table::saveconfig');
   $routes->get('controller',            'Controller::index');
 });
+
+//$routes->group('sistema', function($routes) {
+  $routes->get('home',                  'Home::index');
+
+  $routes->get('dashboard',             'Dashboard::index');
+
+  $routes->get('carteira',              'Carteira::index');
+  $routes->get('carteira/list',         'Carteira::list');
+  $routes->get('carteira/new',          'Carteira::new');
+  $routes->get('carteira/edit/(:num)',  'Carteira::edit/$1');
+  $routes->post('carteira/store',       'Carteira::store');
+
+  $routes->get('pda',                   'Pda::index');
+  $routes->get('pda/list',              'Pda::list');
+  $routes->get('pda/new',               'Pda::new');
+  $routes->get('pda/edit/(:num)',       'Pda::edit/$1');
+  $routes->post('pda/store',            'Pda::store');
+//});

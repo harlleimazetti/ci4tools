@@ -42,6 +42,13 @@ class MainController extends Controller
   protected $config;
 
   /**
+   * System Tenant.
+   *
+   * @object tenant
+   */
+  protected $tenant;
+
+  /**
    * Constructor.
    */
   public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
@@ -57,7 +64,8 @@ class MainController extends Controller
     date_default_timezone_set('America/Sao_Paulo');
 
     $this->config = $this->getConfig();
-    $this->menus = $this->mountMenu();
+    $this->menus  = $this->mountMenu();
+    $this->tenant = $this->defineTenant();
   }
 
 	protected function showView(
@@ -113,5 +121,11 @@ class MainController extends Controller
   protected function getConfig() {
     $config = config('Ci4tools');
     return $config;
+  }
+
+  protected function defineTenant() {
+    $tenantModel = new \App\Models\tenantModel;
+    $tenant = $tenantModel->find(3);
+    return $tenant;
   }
 }

@@ -13,9 +13,7 @@
                         <div class="card-body">
                           <h4 class="card-title"><?php echo isset($tableConfig->tableLabel) ? $tableConfig->tableLabel : $table ?></h4>
                           <!--<h6 class="card-subtitle"><?php //echo isset($tableConfig->tableDescription) ? $tableConfig->tableDescription : $table ?></h6>-->
-                        </div>
 
-                        <div class="card-body">
                           <div class="tab-container">
                             <ul class="nav nav-tabs" role="tablist">
                               <li class="nav-item">
@@ -116,9 +114,7 @@
                               </div>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="card-body">
                           <button type="submit" class="btn btn-primary">Salvar</button>
                         </div>
 
