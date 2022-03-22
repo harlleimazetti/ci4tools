@@ -38,7 +38,7 @@ class {class_name}ModelBase extends Model
 		$database = \Config\Database::connect();
 		$this->db	= $database->table('{table}');
 
-    $this->fields	= $this->db->getFieldData($this->table);
+    $this->fields	= $database->getFieldNames($this->table);
 
     ${table}Validation = new {class_name}Validation();
     $this->validationRules = ${table}Validation->getRules();
@@ -94,7 +94,11 @@ class {class_name}ModelBase extends Model
 
   public function withTenant($tenant) {
     $this->tenant = $tenant;
-    $this->builder()->where($this->table . '.tenant_id', $tenant->id);
+
+    if (in_array('tenant_id', $this->fields)) {
+      $this->builder()->where($this->table . '.tenant_id', $tenant->id);
+    }
+    
     return $this;
   }
 

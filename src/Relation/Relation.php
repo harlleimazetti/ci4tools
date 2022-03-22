@@ -155,8 +155,14 @@ class Relation  {
 
     $model = model("App\\Models\\".$this->parentTableModel, false);
 
-    $result = $model->where($this->parentTablePk, $record->{$this->parentTableFk})
-                    ->findAll();
+    $model->where($this->parentTablePk, $record->{$this->parentTableFk});
+
+    if (!empty($this->tenant)) {
+      $model->withTenant($this->tenant);
+    }
+
+    $result = $model->findAll();
+
     return $result;
   }
 
@@ -191,7 +197,12 @@ class Relation  {
     $linkResult = $modelLink->where($this->parentTableFk, $record->{$this->parentTablePk})
                   ->findColumn($this->childTableFk);
 
+    if (!empty($this->tenant)) {
+      $model->withTenant($this->tenant);
+    }
+
     $result = $model->find($linkResult);
+    
     return $result;
   }
 
