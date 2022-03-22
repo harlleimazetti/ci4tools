@@ -861,7 +861,7 @@ class Crud extends \CodeIgniter\Controller {
 		$tableConfig = $this->tableConfig;
 		foreach ($tableConfig->fields as $field)
 		{
-			if ($field->allowed) {
+			if (($field->allowed !== false) && ($field->allowed !== "false")) {
 				$recordAllowedFields .= "'".$field->name."', ";
 			}
 		}

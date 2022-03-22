@@ -33,10 +33,11 @@ class {class_name}ModelBase extends Model
 
 	function __construct() {
 		parent::__construct();
-		//$this->fields = array_fill_keys($this->db->list_fields("{table}"), '');
-
+    
 		$database = \Config\Database::connect();
 		$this->db	= $database->table('{table}');
+
+    $this->fields	= $this->db->getFieldData($this->table);
 
     ${table}Validation = new {class_name}Validation();
     $this->validationRules = ${table}Validation->getRules();
