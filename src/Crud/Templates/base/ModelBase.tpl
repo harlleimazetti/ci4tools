@@ -13,6 +13,7 @@ class {class_name}ModelBase extends Model
 	protected $emptyRecord;
 	protected $countAllRecords;
 	protected $countResultsRecords;
+  protected $tenant;
   protected $relations = [];
   protected $result = [];
 
@@ -48,7 +49,7 @@ class {class_name}ModelBase extends Model
     foreach($data['data'] as $record) {
       foreach($this->relations as $r) {
         $r->record = $record;
-        $relation = new Relation($r);
+        $relation = new Relation($r, $this->tenant);
         $record->{$r->name} = $relation->get();
       }
     }
@@ -92,6 +93,7 @@ class {class_name}ModelBase extends Model
   }
 
   public function withTenant($tenant) {
+    $this->tenant = $tenant;
     $this->builder()->where($this->table . '.tenant_id', $tenant->id);
     return $this;
   }

@@ -18,13 +18,18 @@ class Relation  {
   protected $childTableModel;
   protected $linkTable;
   protected $linkTableModel;
+  protected $tenant;
 
-  function __construct($relation = null)
+  function __construct($relation = null, $tenant = null)
 	{
 		$this->db = \Config\Database::connect();
 
     if (isset($relation)) {
       $this->setRelation($relation);
+    }
+
+    if (isset($tenant)) {
+      $this->setTenant($tenant);
     }
   }
 
@@ -58,6 +63,17 @@ class Relation  {
     $this->parentTableModel = ucfirst($this->parentTable."Model");
     $this->childTableModel = ucfirst($this->childTable."Model");
     $this->linkTableModel = ucfirst($this->linkTable."Model");
+  }
+
+  /**
+   * Set Tenant
+   *
+   * @param object $tenant
+   *
+   * @return null
+   */
+  public function setTenant($tenant) {
+    $this->tenant = $tenant;
   }
 
   public function setRelationType($relationType)
@@ -152,8 +168,14 @@ class Relation  {
 
     $model = model("App\\Models\\".$this->childTableModel, false);
 
-    $result = $model->where($this->parentTableFk, $record->{$this->parentTablePk})
-                    ->findAll();
+    $model->where($this->parentTableFk, $record->{$this->parentTablePk});
+
+    if (!empty($this->tenant)) {
+      $model->withTenant($this->tenant);
+    }
+
+    $result = $model->findAll();
+    
     return $result;
   }
 
