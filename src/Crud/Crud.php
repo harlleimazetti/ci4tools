@@ -1004,6 +1004,7 @@ class Crud extends \CodeIgniter\Controller {
   }
 
   protected function makeFormFieldSelect($fieldConfig, $themeFolder) {
+    print_r($fieldConfig); exit;
     if (empty($fieldConfig->options)) {
       if (!empty($fieldConfig->foreign_table_name)) {
         //$modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
@@ -1012,7 +1013,11 @@ class Crud extends \CodeIgniter\Controller {
         $foreignTable = $this->db->table($fieldConfig->foreign_table_name);
         $foreignRecords = $foreignTable->get();
         foreach ($foreignRecords->getResult() as $record) {
-          $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->{$fieldConfig->foreign_column_name}];
+          $text = "";
+          foreach($fieldConfig->foreign_column_show as $columnShow) {
+            $text .= $record->{$columnShow};
+          }
+          $fieldConfig->options[] = ['value' => $record->id, 'text' => $text];
         }
       }
     }
