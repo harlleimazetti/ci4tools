@@ -1,4 +1,4 @@
-export const baseURL = 'http://localhost:8080/';
+export const baseURL = 'http://localhost:8080/sistema/';
 
 export const server = axios.create({
   baseURL: baseURL,

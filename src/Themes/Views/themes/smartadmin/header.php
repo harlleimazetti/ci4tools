@@ -918,7 +918,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
 
         <!-- BEGIN Page Wrapper -->
         <div class="page-wrapper auth">
-          <div class="page-inner bg-brand-gradient">
+          <div class="page-inner">
             <?php if ($theme_options['show_nav_side'] === false && $theme_options['show_nav_top'] === false) { ?>
               <div class="page-content-wrapper bg-transparent m-0">
             <?php } ?>

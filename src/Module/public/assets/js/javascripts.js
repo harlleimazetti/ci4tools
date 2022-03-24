@@ -22,6 +22,42 @@ $(document).ready(function() {
 
   //console.log(tableRecords);
 
+  $("#form-login").submit(function(event) {
+    event.preventDefault();
+
+    unHighlightFieldsError();
+
+    var url = $(this).attr('action');
+    var formData = new FormData(this);
+
+    server.post(url, formData)
+      .then(response => {
+        console.log(response);
+        notify(response.data.messages, 'info');
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          console.log(error.response.status);
+          console.log(error.response.headers);
+          notify(error.response.data.messages.error.messages, 'error');
+          highlightFieldsError(error.response.data.messages.error.errors);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+      });
+
+    return false;
+  });
+
   $(".form-record").submit(function(event) {
     event.preventDefault();
 
