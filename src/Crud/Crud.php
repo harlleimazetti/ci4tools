@@ -973,11 +973,13 @@ class Crud extends \CodeIgniter\Controller {
         //$modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
         //$foreignModel = model("App\\Models\\".$modelName);
         //$foreignRecords = $foreignModel->findAll();
+        /*
         $foreignTable = $this->db->table($fieldConfig->foreign_table_name);
         $foreignRecords = $foreignTable->get();
         foreach ($foreignRecords->getResult() as $record) {
           $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->{$fieldConfig->foreign_column_name}];
         }
+        */
       }
     }
 		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormCheckbox.tpl");
@@ -991,11 +993,12 @@ class Crud extends \CodeIgniter\Controller {
         //$modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
         //$foreignModel = model("App\\Models\\".$modelName);
         //$foreignRecords = $foreignModel->findAll();
+        /*
         $foreignTable = $this->db->table($fieldConfig->foreign_table_name);
         $foreignRecords = $foreignTable->get();
         foreach ($foreignRecords->getResult() as $record) {
           $fieldConfig->options[] = ['value' => $record->id, 'text' => $record->{$fieldConfig->foreign_column_name}];
-        }
+        }*/
       }
     }
 		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormRadio.tpl");
@@ -1004,12 +1007,12 @@ class Crud extends \CodeIgniter\Controller {
   }
 
   protected function makeFormFieldSelect($fieldConfig, $themeFolder) {
-    print_r($fieldConfig); exit;
     if (empty($fieldConfig->options)) {
       if (!empty($fieldConfig->foreign_table_name)) {
         //$modelName = ucfirst($fieldConfig->foreign_table_name)."Model";
         //$foreignModel = model("App\\Models\\".$modelName);
         //$foreignRecords = $foreignModel->findAll();
+        /*
         $foreignTable = $this->db->table($fieldConfig->foreign_table_name);
         $foreignRecords = $foreignTable->get();
         foreach ($foreignRecords->getResult() as $record) {
@@ -1018,7 +1021,7 @@ class Crud extends \CodeIgniter\Controller {
             $text .= $record->{$columnShow};
           }
           $fieldConfig->options[] = ['value' => $record->id, 'text' => $text];
-        }
+        }*/
       }
     }
 		$content = file_get_contents($this->themesTemplatesBaseFolder."themes".DS.$themeFolder.DS."FormSelect.tpl");

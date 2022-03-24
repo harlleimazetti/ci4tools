@@ -6,8 +6,19 @@
     {{# options}}
       <option value="{{value}}" <?php if (${{table}}->{{name}} == {{value}}) { ?>selected<?php } ?>>{{text}}</option>
     {{/ options}}
-    {{# foreign_table_name}}
-      <option value="1">Entrou aqui bonitão</option>
-    {{/ foreign_table_name}}
+    {{^ options}}
+      {{# foreign_table_name}}
+        <?php
+          foreach(${{foreign_table_name}}s as ${{foreign_table_name}}) {
+            $text = "";
+            {{# foreign_column_show}}
+            $text .= ${{foreign_table_name}}->{{.}}." - ";
+            {{/ foreign_column_show}}
+            $text = substr($text, 0, -3);
+        ?>
+        <option value="${{foreign_table_name}}->{{foreign_column_name}}"><?php echo $text ?></option>
+        <?php } ?>  
+      {{/ foreign_table_name}}
+    {{/ options}}
   </select>
 </div>

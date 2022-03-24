@@ -888,8 +888,9 @@ html {
   .page-logo img {
     /*width: 28px;*/
     /*height: 28px;*/
-    width: 150px;
-    height: 31px; }
+    border-radius: 10px;
+    width: 60px;
+    height: 60px; }
   .page-logo .page-logo-link {
     -webkit-box-flex: 1;
         -ms-flex: 1 0 auto;
