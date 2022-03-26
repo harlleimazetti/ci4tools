@@ -124,7 +124,7 @@ class MainController extends Controller
   }
 
   protected function defineTenant() {
-    $tenantModel = new \App\Models\tenantModel;
+    $tenantModel = new \App\Models\TenantModel;
     $tenant = $tenantModel->find(3);
     return $tenant;
   }
