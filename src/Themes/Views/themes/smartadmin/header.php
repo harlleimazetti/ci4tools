@@ -21,18 +21,18 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         <!-- Remove Tap Highlight on Windows Phone IE -->
         <meta name="msapplication-tap-highlight" content="no">
         <!-- base css -->
-        <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/themes/smartadmin/assets/css/vendors.bundle.css">
-        <link id="appbundle" rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/themes/smartadmin/assets/css/app.bundle.css">
+        <link id="vendorsbundle" rel="stylesheet" media="screen, print" href="<?php echo base_url('/public/themes/smartadmin/assets/css/vendors.bundle.css'); ?>">
+        <link id="appbundle" rel="stylesheet" media="screen, print" href="<?php echo base_url('/public/themes/smartadmin/assets/css/app.bundle.css'); ?>">
         <link id="mytheme" rel="stylesheet" media="screen, print" href="#">
-        <link id="myskin" rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/themes/smartadmin/assets/css/skins/skin-master.css">
+        <link id="myskin" rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/css/skins/skin-master.css">
         <!-- Place favicon.ico in the root directory -->
-        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url(); ?>/themes/smartadmin/assets/img/favicon/apple-touch-icon.png">
-        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo base_url(); ?>/themes/smartadmin/assets/img/favicon/favicon-32x32.png">
-        <link rel="mask-icon" href="<?php echo base_url(); ?>/themes/smartadmin/assets/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
-        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/themes/smartadmin/assets/css/fa-brands.css">
-        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/themes/smartadmin/assets/css/datagrid/datatables/datatables.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/themes/smartadmin/assets/css/formplugins/select2/select2.bundle.css">
-        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/themes/smartadmin/assets/css/notifications/toastr/toastr.css">
+        <link rel="apple-touch-icon" sizes="180x180" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/img/favicon/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/img/favicon/favicon-32x32.png">
+        <link rel="mask-icon" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/img/favicon/safari-pinned-tab.svg" color="#5bbad5">
+        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/css/fa-brands.css">
+        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/css/datagrid/datatables/datatables.bundle.css">
+        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/css/formplugins/select2/select2.bundle.css">
+        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/css/notifications/toastr/toastr.css">
         <!-- You can add your own stylesheet here to override any styles that comes before it
 		<link rel="stylesheet" media="screen, print" href="css/your_styles.css">-->
     </head>

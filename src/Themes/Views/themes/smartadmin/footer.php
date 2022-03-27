@@ -34,14 +34,14 @@
 						+ waves.js (extension)
 						+ smartpanels.js (extension)
 						+ src/../jquery-snippets.js (core) -->
-        <script src="<?php echo base_url(); ?>/themes/smartadmin/assets/js/vendors.bundle.js"></script>
-        <script src="<?php echo base_url(); ?>/themes/smartadmin/assets/js/datagrid/datatables/datatables.bundle.js"></script>
-        <script src="<?php echo base_url(); ?>/themes/smartadmin/assets/js/app.bundle.js"></script>
-        <script src="<?php echo base_url(); ?>/themes/smartadmin/assets/js/formplugins/select2/select2.bundle.js"></script>
-        <script src="<?php echo base_url(); ?>/themes/smartadmin/assets/js/fileupload/jquery.fileupload.js"></script>
-        <script src="<?php echo base_url(); ?>/themes/smartadmin/assets/js/notifications/toastr/toastr.js"></script>
-        <script src="<?php echo base_url(); ?>/assets/js/axios.min.js"></script>
-        <script src="<?php echo base_url(); ?>/assets/js/javascripts.js" type="module"></script>
+        <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/vendors.bundle.js"></script>
+        <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/datagrid/datatables/datatables.bundle.js"></script>
+        <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/app.bundle.js"></script>
+        <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/formplugins/select2/select2.bundle.js"></script>
+        <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/fileupload/jquery.fileupload.js"></script>
+        <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/notifications/toastr/toastr.js"></script>
+        <script src="<?php echo base_url(); ?>/public/assets/js/axios.min.js"></script>
+        <script src="<?php echo base_url(); ?>/public/assets/js/javascripts.js" type="module"></script>
     </body>
     <!-- END Body -->
 </html>

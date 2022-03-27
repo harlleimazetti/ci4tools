@@ -3,8 +3,8 @@
                 <aside class="page-sidebar">
                     <div class="page-logo">
                         <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
-                            <img src="<?php echo base_url(); ?>/assets/img/logo_feub.jpg" alt="Validador Estudantil" aria-roledescription="logo">
-                            <span class="page-logo-text mr-1">Validador Estudantil</span>
+                            <img src="<?php echo base_url(); ?>/public/assets/img/logo_validador_estudantil_276x30.png" alt="Validador Estudantil" aria-roledescription="logo">
+                            <!--<span class="page-logo-text mr-1">Validador Estudantil</span>-->
                             <!--<span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>-->
                             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                         </a>
@@ -20,7 +20,7 @@
                             </div>
                         </div>
                         <div class="info-card">
-                            <img src="<?php echo base_url(); ?>/assets/img/hccm.jpg" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
+                            <img src="<?php echo base_url(); ?>/public/assets/img/hccm.jpg" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
                             <div class="info-card-text">
                                 <a href="#" class="d-flex align-items-center text-white">
                                     <span class="text-truncate text-truncate-sm d-inline-block">
@@ -29,7 +29,7 @@
                                 </a>
                                 <span class="d-inline-block text-truncate text-truncate-sm">Nutricionista</span>
                             </div>
-                            <img src="<?php echo base_url(); ?>/themes/smartadmin/assets/img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
+                            <img src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/img/card-backgrounds/cover-2-lg.png" class="cover" alt="cover">
                             <a href="#" onclick="return false;" class="pull-trigger-btn" data-action="toggle" data-class="list-filter-active" data-target=".page-sidebar" data-focus="nav_filter_input">
                                 <i class="fal fa-angle-down"></i>
                             </a>

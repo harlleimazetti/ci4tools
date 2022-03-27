@@ -5,7 +5,7 @@
     <div class="d-flex align-items-center container p-0">
         <div class="page-logo width-mobile-auto mt-2 align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 border-0">
             <a href="<?php echo base_url(); ?>/home" class="page-logo-link press-scale-down d-flex align-items-center">
-                <img src="<?php echo base_url(); ?>/assets/img/logo_feub.jpg" alt="Validador Estudantil" aria-roledescription="logo">
+                <img src="<?php echo base_url(); ?>/assets/img/logo_validador_estudantil_276x30.png" alt="Validador Estudantil" aria-roledescription="logo">
                 <span class="page-logo-text mr-1">Validador Estudantil</span>
             </a>
         </div>
