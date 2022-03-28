@@ -67,7 +67,7 @@ class Crud extends \CodeIgniter\Controller {
     $this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."Templates".DS;
     $this->crudBaseFolder 						= APPPATH."Crudbase".DS;
     $this->moduleFolder 						  = ROOTPATH."ci4toolsadmin".DS;
-    $this->moduleAssetsFolder					= FCPATH."public".DS."ci4toolsadmin".DS;
+    $this->moduleAssetsFolder					= ROOTPATH."public".DS."ci4toolsadmin".DS;
 
 		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
 		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
@@ -116,7 +116,7 @@ class Crud extends \CodeIgniter\Controller {
      * Publish Ci4toolsadmin Admin Assets
      */
     $sourceAssets = $this->vendorFolder."Module".DS."public";
-    $destinationAssets = FCPATH."public";
+    $destinationAssets = ROOTPATH."public";
     $publisherAssets = new \CodeIgniter\Publisher\Publisher($sourceAssets, $destinationAssets);
     $publisherAssets->addPath('assets');
     $publisherAssets->addPath('ci4toolsadmin');
@@ -136,7 +136,7 @@ class Crud extends \CodeIgniter\Controller {
      * Publish Ci4tools System Themes Assets Files
      */
     $sourceThemeAssetsFiles = $this->vendorFolder."Themes".DS."assets";
-    $destinationThemeAssetsFiles = FCPATH."public";
+    $destinationThemeAssetsFiles = ROOTPATH."public";
     $publisherThemeAssetsFiles = new \CodeIgniter\Publisher\Publisher($sourceThemeAssetsFiles, $destinationThemeAssetsFiles);
     $publisherThemeAssetsFiles->addPath('themes');
     $publisherThemeAssetsFiles->merge(true);
