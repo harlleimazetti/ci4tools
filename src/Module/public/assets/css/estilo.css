@@ -1,0 +1,105 @@
+.img-carteira-digital-wrapper {
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  width: 340px;
+  height: 215px;
+  margin: auto;
+  /*background: url('../img/carteira_digital/matriz.jpg');*/
+  background: url('../img/dne2022.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.img-carteira-digital-container {
+  position: absolute;
+  width: 340px;
+  height: 215px;
+  /*background: url('../img/carteira_digital/matriz.jpg');*/
+  /*background: url('../img/carteira_digital/matriz_02.jpg');*/
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.carteira-digital-left {
+  /*opacity: 0.5;*/
+  width: 33% !important;
+  height: 100%;
+  /*background-color: green !important;*/
+}
+.carteira-digital-right {
+  /*opacity: 0.5;*/
+  width: 67% !important;
+  height: 100%;
+  /*background-color: blue !important;*/
+}
+.carteira-digital-top-spacer {
+  height: 106.7px;
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  /*background-color: red !important;*/
+}
+.carteira-digital-middle-spacer {
+  height: 25px;
+  /*background-color: red !important;*/
+}
+.carteira-digital-foto-container {
+  width: 80px !important;
+  height: 108px !important;
+  margin-top: 52px !important;
+  margin-left: 16px !important;
+  overflow: hidden;
+  background-color: brown !important;
+}
+.carteira-digital-foto {
+  width: 80px !important;
+  height: 108px !important;
+  object-fit: cover;
+}
+.carteira-digital-qrcode {
+  margin-top: 3px !important;
+  margin-left: 32px !important;
+  width: 48px !important;
+  height: 48px !important;
+}
+.carteira-digital-campo {
+  /*background-color: yellow !important;*/
+  color: black !important;
+  font-size: 10px;
+  font-weight: bold;
+  line-height: 12.7px !important;
+  padding: 0 !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  text-align: left !important;
+  text-decoration: none !important;
+}
+.cd-campo-escola {
+  margin-left: 0px !important;
+}
+.cd-campo-nome-aluno {
+  margin-left: 0px !important;
+  /*height: 25.4px !important;*/
+  height: 12.7px !important;
+  margin-right: 16px !important;
+  /*background-color: yellow !important;*/
+}
+.cd-campo-curso {
+  margin-left: 0px !important;
+}
+.cd-campo-cpf {
+  margin-left: 15px !important;
+}
+.cd-campo-rg {
+  margin-left: 15px !important;
+}
+.cd-campo-nascimento {
+  margin-left: 50px !important;
+}
+.cd-campo-matricula {
+  margin-left: 50px !important;
+}
+.cd-campo-codigo-uso {
+  margin-left: 65px !important;
+}
