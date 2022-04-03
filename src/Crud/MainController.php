@@ -66,6 +66,8 @@ class MainController extends Controller
     $this->config = $this->getConfig();
     $this->menus  = $this->mountMenu();
     $this->tenant = $this->defineTenant();
+
+    define('UPLOADPATH', WRITEPATH.'uploads'.DIRECTORY_SEPARATOR);
   }
 
 	protected function showView(
