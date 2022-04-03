@@ -28,6 +28,13 @@ export function initializeTableRecords() {
       }
     },
     {
+      text: '<i class="fal fa-upload mr-2"></i>Upload',
+      className: 'btn btn-primary',
+      action: function ( e, dt, node, config ) {
+        $('#modal_arquivo').modal('show');
+      }
+    },
+    {
       text: '<i class="fal fa-times-circle mr-2"></i>Excluir',
       className: 'btn btn-danger',
       action: function ( e, dt, node, config ) {

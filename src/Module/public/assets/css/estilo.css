@@ -6,7 +6,7 @@
   height: 215px;
   margin: auto;
   /*background: url('../img/carteira_digital/matriz.jpg');*/
-  background: url('../img/dne2022.jpg');
+  background: url('../img/dne2022matriz.jpg');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -41,7 +41,7 @@
   /*background-color: red !important;*/
 }
 .carteira-digital-middle-spacer {
-  height: 25px;
+  height: 18px;
   /*background-color: red !important;*/
 }
 .carteira-digital-foto-container {
@@ -89,17 +89,17 @@
   margin-left: 0px !important;
 }
 .cd-campo-cpf {
-  margin-left: 15px !important;
+  margin-left: 0px !important;
 }
 .cd-campo-rg {
   margin-left: 15px !important;
 }
 .cd-campo-nascimento {
-  margin-left: 50px !important;
+  margin-left: 0px !important;
 }
 .cd-campo-matricula {
-  margin-left: 50px !important;
+  margin-left: 0px !important;
 }
 .cd-campo-codigo-uso {
-  margin-left: 65px !important;
+  margin-left: 55px !important;
 }

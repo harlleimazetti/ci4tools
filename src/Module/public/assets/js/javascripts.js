@@ -125,9 +125,11 @@ $(document).ready(function() {
   });
   
   $('.file-upload').on('click', function() {
-    //console.log('clicou');
-    //$('#file-upload-status').hide();
+    console.log('clicou');
+    $('#file-upload-status').hide();
+    $('#file-upload-progress').hide();
     //$('#file-upload-progress .progress-bar').css('width', '0%');
+    //$('#file-upload-list').show();
     //$('#file-upload-progress').show();
   });
 
