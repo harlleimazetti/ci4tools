@@ -109,13 +109,13 @@ $(document).ready(function() {
         console.log(response);
         //response = jQuery.parseJSON(response);
         if (response.status == 'ok') {
-          //prompt(response.mensagem);
+          //prompt(response.message);
           //$("form.formulario-registro #id").val("0");
           //$("form.formulario-registro #operacao_bd").val("novo");
           //$('#modal_formulario_registro').modal('hide');
           //atualiza_tabela_registros();
         } else {
-          //toastr.error(response.mensagem);
+          //toastr.error(response.message);
         }
       },
       error: function(jqXHR, textStatus, msg) {
@@ -159,12 +159,14 @@ $(document).ready(function() {
       //atualiza_tabela_registros();
     },
     done: function (e, data) {
-      response = data.result;
-      if (response.status == 'ok') {
-        toastr.info(response.mensagem);
-      } else {
-        toastr.error(response.mensagem);
-      }
+      console.log(data);
+      var response = data.result;
+      notify(response.messages, 'info');
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      var response = jqXHR.responseJSON;
+      console.log(response);
+      notify(response.messages, 'error');
     }
   });
 });
