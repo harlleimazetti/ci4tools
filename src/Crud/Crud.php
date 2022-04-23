@@ -177,6 +177,15 @@ class Crud extends \CodeIgniter\Controller {
     $publisherConfigFiles->addPath('Ci4tools.php');
     $publisherConfigFiles->addPath('Ci4toolsRoutes.php');
     $publisherConfigFiles->merge(false);
+
+    /**
+     * Publish Auth Filters
+     */
+    $sourceAuthFiltersFiles = $this->vendorFolder."Auth";
+    $destinationAuthFiltersFiles = APPPATH;
+    $publisherAuthFiltersFiles = new \CodeIgniter\Publisher\Publisher($sourceAuthFiltersFiles, $destinationAuthFiltersFiles);
+    $publisherAuthFiltersFiles->addPath('Filters');
+    $publisherAuthFiltersFiles->merge(true);
   }
 
   public function setTable($table = "") {

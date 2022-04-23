@@ -1,6 +1,4 @@
-<?php
-
-namespace App\Commands;
+<?php namespace Harlleimazetti\Ci4tools\Commands;
 
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;

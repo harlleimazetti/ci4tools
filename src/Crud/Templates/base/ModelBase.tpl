@@ -46,13 +46,16 @@ class {class_name}ModelBase extends Model
 
   protected function findRelations(array $data)
   {
-    foreach($data['data'] as $record) {
-      foreach($this->relations as $r) {
-        $r->record = $record;
-        $relation = new Relation($r, $this->tenant);
-        $record->{$r->name} = $relation->get();
+    if (!empty($data['data'])) {
+      foreach($data['data'] as $record) {
+        foreach($this->relations as $r) {
+          $r->record = $record;
+          $relation = new Relation($r, $this->tenant);
+          $record->{$r->name} = $relation->get();
+        }
       }
     }
+
     return $data;
   }
 

@@ -8,50 +8,71 @@ class Auth
   protected $request;
   protected $host;
   protected $result;
+  protected $serverKey;
+  protected $algo;
 
   function __construct()
   {
     $uri = new \CodeIgniter\HTTP\URI(base_url());
 
-    $this->host     = $uri->getHost();
-    $this->request  = \Config\Services::request();
-    $this->result   = new \stdClass();
+    $this->host       = $uri->getHost();
+    $this->request    = \Config\Services::request();
+    $this->result     = new \stdClass();
+    $this->serverKey  = $this->getServerKey();
+    $this->algo       = 'HS256';
   }
 
   public function login($credentials = [])
   {
+    $userModel = new \App\Models\UserModel();
+
     if (empty($credentials)) {
       $this->result->success = false;
       $this->result->message[] = 'Dados de acesso não foram informados corretamente';
       return $this->result;
     }
 
-    if ($credentials['login'] != 'harlleimazetti@gmail.com' || $credentials['password'] != 'mazetti') {
+    if ($credentials['login'] == '' || $credentials['password'] == '') {
       $this->result->success = false;
       $this->result->message[] = 'Login ou senha inválidos';
       return $this->result;
     }
 
-    $user = [
-      'id' => '1',
-      'tenant_id' => '1',
-      'nome' => 'Harllei Mazetti',
-      'email' => 'harlleimazetti@gmail.com',
+    $user = $userModel
+      ->where('login', $this->request->getPost('login'))
+      ->first();
+
+    if (!$user) {
+      $this->result->success = false;
+      $this->result->message[] = 'Usuário não encontrado';
+      return $this->result;
+    }
+
+    if (!password_verify($this->request->getPost('password'), $user->password)) {
+      $this->result->success = false;
+      $this->result->message[] = 'Senha inválida';
+      return $this->result;
+    }
+
+    $userData = [
+      'id'        => $user->id,
+      'tenant_id' => $user->tenant_id,
+      'name'      => $user->name,
+      'email'     => $user->email,
     ];
 
-    $algo = 'HS256';
-
-    $key = $this->getServerKey();
-    $iat = time();
-    $nbf = time();
-    $exp = time() + 60;
+    $algo = $this->algo;
+    $key  = $this->serverKey;
+    $iat  = time();
+    $nbf  = time();
+    $exp  = time() + 60;
 
     $payload = array(
       "iss" => $this->host,
       "aud" => $this->host,
       "iat" => $iat,
       "exp" => $exp,
-      "user" => $user,
+      "user" => $userData,
     );
 
     $jwt = $this->encodeJWT($payload, $key, $algo);
@@ -63,9 +84,21 @@ class Auth
     return $this->result;
   }
 
-  public function verify() {
-    $key  = $this->getServerKey();
-    $algo = 'HS256';
+  public function isLoggedIn()
+  {
+    $isLoggedIn = $this->verify();
+
+    if ($isLoggedIn->success) {
+      return true;
+    }
+
+    return false;
+  }
+
+  public function verify()
+  {
+    $key  = $this->serverKey;
+    $algo = $this->algo;
 
     $authHeader = $this->request->getHeader('Authorization');
 
@@ -96,6 +129,35 @@ class Auth
       $this->result->message[] = 'Acesso negado';
       $this->result->errors = $e->getMessage();
       return $this->result;
+    }
+  }
+
+  public function user_id()
+  {
+    $key  = $this->serverKey;
+    $algo = $this->algo;
+
+    $authHeader = $this->request->getHeader('Authorization');
+
+    if (empty($authHeader)) {
+      $this->result->success = false;
+      $this->result->message[] = 'Acesso negado - token não informado';
+      return $this->result;
+    }
+
+    $token = $this->getBearerToken($authHeader->getValue());
+
+    try {
+      $decoded = $this->decodeJWT($token, $key, $algo);
+
+      if (!$decoded) {
+        return null;
+      }
+
+      return $decoded->user->id;
+
+    } catch (\Exception $e) {
+      return null;
     }
   }
 
