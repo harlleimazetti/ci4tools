@@ -1,13 +1,43 @@
 export const baseURL = 'http://localhost:8080/sistema/';
 
+export const cookies = Cookies;
+
 export const server = axios.create({
   baseURL: baseURL,
   timeout: 1000,
   headers: {
-    'X-Custom-Header': 'Harllei',
-    'Token': 'Bearer kjsalf0q398kjlafkjas0r98q3ojflçsakdjfsjfsof0w9fksdf'
+    'x-api-key': 'dkjfsakdjflsakdjlf',
+    'x-client-type': 'appweb',
   }
 });
+
+const requestHandler = request => {
+  // Token will be dynamic so we can use any app-specific way to always   
+  // fetch the new token before making the call
+  request.headers.Authorization = 'Bearer ' + cookies.get('token');
+  return request;
+};
+
+const responseHandler = response => {
+  if (response.status === 401) {
+    window.location = baseURL + '/login';
+  }
+  return response;
+};
+
+const errorHandler = error => {
+  return Promise.reject(error);
+};
+
+server.interceptors.request.use(
+  (request) => requestHandler(request),
+  (error) => errorHandler(error)
+);
+
+server.interceptors.response.use(
+  (response) => responseHandler(response),
+  (error) => errorHandler(error)
+);
 
 export function initializeTableRecords() {
   let tables = [];

@@ -1,4 +1,4 @@
-import { initializeTableRecords, server } from './ci4crud.js';
+import { initializeTableRecords, server, cookies } from './ci4crud.js';
 import { notify, unHighlightFieldsError, highlightFieldsError} from './utils.js';
 
 $(document).ready(function() {
@@ -34,7 +34,8 @@ $(document).ready(function() {
     server.post(url, formData)
       .then(response => {
         console.log(response);
-        notify(response.data.messages, 'info');
+        notify(response.data.message, 'info');
+        cookies.set('token', response.data.token);
       })
       .catch(error => {
         if (error.response) {

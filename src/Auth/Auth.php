@@ -100,15 +100,13 @@ class Auth
     $key  = $this->serverKey;
     $algo = $this->algo;
 
-    $authHeader = $this->request->getHeader('Authorization');
+    $token = $this->getAuthToken();
 
-    if (empty($authHeader)) {
+    if (empty($token)) {
       $this->result->success = false;
       $this->result->message[] = 'Acesso negado - token não informado';
       return $this->result;
     }
-
-    $token = $this->getBearerToken($authHeader->getValue());
 
     try {
       $decoded = $this->decodeJWT($token, $key, $algo);
@@ -137,15 +135,11 @@ class Auth
     $key  = $this->serverKey;
     $algo = $this->algo;
 
-    $authHeader = $this->request->getHeader('Authorization');
+    $token = $this->getAuthToken();
 
-    if (empty($authHeader)) {
-      $this->result->success = false;
-      $this->result->message[] = 'Acesso negado - token não informado';
-      return $this->result;
+    if (empty($token)) {
+      return null;
     }
-
-    $token = $this->getBearerToken($authHeader->getValue());
 
     try {
       $decoded = $this->decodeJWT($token, $key, $algo);
@@ -175,12 +169,23 @@ class Auth
     return getenv('app.serverKey');
   }
 
-  protected function getBearerToken($headers) {
-    if (!empty($headers)) {
-      if (preg_match('/Bearer\s(\S+)/', $headers, $matches)) {
+  protected function getAuthToken() {
+    $authToken = $this->request->getHeader('Authorization');
+
+    if (!empty($authToken)) {
+      if (preg_match('/Bearer\s(\S+)/', $authToken, $matches)) {
         return $matches[1];
       }
     }
+
+    $authToken = $this->request->getCookie('token');
+
+    if (!empty($authToken)) {
+      return $authToken;
+    }
+
+    $this->result->success = false;
+    $this->result->message[] = 'Acesso negado - token não informado';
     return null;
   }
 }
