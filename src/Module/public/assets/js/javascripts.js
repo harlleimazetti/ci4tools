@@ -24,6 +24,7 @@ $(document).ready(function() {
 
   $("#form-login").submit(function(event) {
     event.preventDefault();
+    console.log('submit login');
 
     unHighlightFieldsError();
 
@@ -42,7 +43,7 @@ $(document).ready(function() {
           console.log(error.response.data);
           console.log(error.response.status);
           console.log(error.response.headers);
-          notify(error.response.data.messages.error.messages, 'error');
+          notify(error.response.data.message, 'error');
           highlightFieldsError(error.response.data.messages.error.errors);
         } else if (error.request) {
           // The request was made but no response was received
@@ -125,7 +126,7 @@ $(document).ready(function() {
   });
   
   $('.file-upload').on('click', function() {
-    console.log('clicou');
+    //console.log('clicou');
     $('#file-upload-status').hide();
     $('#file-upload-progress').hide();
     //$('#file-upload-progress .progress-bar').css('width', '0%');

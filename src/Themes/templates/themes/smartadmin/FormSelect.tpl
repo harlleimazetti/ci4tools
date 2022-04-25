@@ -16,7 +16,7 @@
             {{/ foreign_column_show}}
             $text = substr($text, 0, -3);
         ?>
-        <option value="${{foreign_table_name}}->{{foreign_column_name}}"><?php echo $text ?></option>
+        <option value="<?php echo ${{foreign_table_name}}->{{foreign_column_name}} ?>"><?php echo $text ?></option>
         <?php } ?>  
       {{/ foreign_table_name}}
     {{/ options}}

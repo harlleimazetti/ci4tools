@@ -11,11 +11,11 @@ class PermissionFilter implements FilterInterface
     $auth = service('auth');
     $router = service('router');
     
-    $controller  = $router->controllerName();
-    $method = $router->methodName();
+    //$controller  = $router->controllerName();
+    //$method = $router->methodName();
 
-    echo $controller." - ".$method;
-    
+    //echo $controller." - ".$method;
+
     /*
     if (!$auth->isLoggedIn()) {
       return redirect()->to(base_url('sistema/login'));

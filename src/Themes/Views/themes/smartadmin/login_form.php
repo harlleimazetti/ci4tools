@@ -33,16 +33,16 @@
                     -->
                 </h2>
 
-                <form id="form-login" novalidate="" action="<?php echo base_url() ?>/sistema/login/auth">
+                <form id="form-login" method="post" action="<?php echo base_url() ?>/sistema/login/auth">
                     <div class="form-group">
-                        <label class="form-label" for="username">Email</label>
-                        <input type="email" id="username" class="form-control form-control-md" placeholder="Email" value="" required>
+                        <label class="form-label" for="login">Email</label>
+                        <input type="email" name="login" id="login" class="form-control form-control-md" placeholder="Email" value="" required>
                         <div class="invalid-feedback">Email incorreto.</div>
                         <!--<div class="help-block">Informe seu email</div>-->
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="password">Senha</label>
-                        <input type="password" id="password" class="form-control form-control-md" placeholder="Senha" value="" required>
+                        <input type="password" name="password" id="password" class="form-control form-control-md" placeholder="Senha" value="" required>
                         <div class="invalid-feedback">Senha incorreta.</div>
                         <!--<div class="help-block">Informe sua senha</div>-->
                     </div>
@@ -59,7 +59,7 @@
                             <button type="button" class="btn btn-primary btn-block btn-md">Criar uma conta <!--<i class="fab fa-google"></i>--></button>
                         </div>
                         <div class="col-lg-6 pl-lg-1 my-2">
-                            <button id="" type="button" class="btn bg-warning-800 btn-block btn-md color-white">Entrar</button>
+                            <button id="" type="submit" class="btn bg-warning-800 btn-block btn-md color-white">Entrar</button>
                         </div>
                     </div>
                 </form>
@@ -152,7 +152,13 @@ DOC: if you remove pace.js from core please note on Internet Explorer some CSS a
 + smartpanels.js (extension)
 + src/../jquery-snippets.js (core) -->
 <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/vendors.bundle.js"></script>
+<script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/datagrid/datatables/datatables.bundle.js"></script>
 <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/app.bundle.js"></script>
+<script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/formplugins/select2/select2.bundle.js"></script>
+<script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/fileupload/jquery.fileupload.js"></script>
+<script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/notifications/toastr/toastr.js"></script>
+<script src="<?php echo base_url(); ?>/public/assets/js/axios.min.js"></script>
+<script src="<?php echo base_url(); ?>/public/assets/js/javascripts.js" type="module"></script>
 </body>
 <!-- END Body -->
 </html>
