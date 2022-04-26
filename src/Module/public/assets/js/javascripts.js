@@ -1,4 +1,4 @@
-import { initializeTableRecords, server, cookies } from './ci4crud.js';
+import { initializeTableRecords, server, cookies, baseURL } from './ci4crud.js';
 import { notify, unHighlightFieldsError, highlightFieldsError} from './utils.js';
 
 $(document).ready(function() {
@@ -36,6 +36,7 @@ $(document).ready(function() {
         console.log(response);
         notify(response.data.message, 'info');
         cookies.set('token', response.data.token);
+        window.location.href = baseURL + 'sistema/dashboard';
       })
       .catch(error => {
         if (error.response) {

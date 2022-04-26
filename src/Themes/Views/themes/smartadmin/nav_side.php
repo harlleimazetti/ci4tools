@@ -3,7 +3,7 @@
                 <aside class="page-sidebar">
                     <div class="page-logo">
                         <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
-                            <img src="<?php echo base_url(); ?>/public/assets/img/logo_validador_estudantil_276x30.png" alt="Validador Estudantil" aria-roledescription="logo">
+                            <img src="<?php echo base_url(); ?>/public/assets/img/logo_validador_184x20_white.png" alt="Validador Estudantil" aria-roledescription="logo">
                             <!--<span class="page-logo-text mr-1">Validador Estudantil</span>-->
                             <!--<span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>-->
                             <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
@@ -51,6 +51,7 @@
                                 </li>
                               <?php } ?>
                             <?php } ?>
+                            <!--
                             <li class="nav-title">Navigation Title</li>
                             <li class="active">
                                 <a href="blank.html" title="Blank Project" data-filter-tags="blank page">
@@ -88,7 +89,9 @@
                                     </li>
                                 </ul>
                             </li>
+                              -->
                             <!-- Example of open and active states -->
+                            <!--
                             <li class="active open">
                                 <a href="#" title="Category" data-filter-tags="category">
                                     <i class="fal fa-plus"></i>
@@ -109,11 +112,13 @@
                                     </li>
                                 </ul>
                             </li>
+                              -->
                         </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
                     </nav>
                     <!-- END PRIMARY NAVIGATION -->
                     <!-- NAV FOOTER -->
+                    <!--
                     <div class="nav-footer shadow-top">
                         <a href="#" onclick="return false;" data-action="toggle" data-class="nav-function-minify" class="hidden-md-down">
                             <i class="ni ni-chevron-right"></i>
@@ -136,7 +141,9 @@
                                 </a>
                             </li>
                         </ul>
-                    </div> <!-- END NAV FOOTER -->
+                    </div>
+                    -->
+                    <!-- END NAV FOOTER -->
                 </aside>
                 <!-- END Left Aside -->
                 <?php if ($theme_options['show_nav_side'] === true && $theme_options['show_nav_top'] === false) { ?>

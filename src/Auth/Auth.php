@@ -39,14 +39,19 @@ class Auth
     }
 
     $user = $userModel
+      ->manyToOne('tenant')
       ->where('login', $this->request->getPost('login'))
-      ->first();
+      ->find();
 
     if (!$user) {
       $this->result->success = false;
       $this->result->message[] = 'Usuário não encontrado';
       return $this->result;
     }
+
+    $user = reset($user);
+    $tenant = $user->tenant;
+    $tenant = reset($tenant);
 
     if (!password_verify($this->request->getPost('password'), $user->password)) {
       $this->result->success = false;
@@ -61,18 +66,24 @@ class Auth
       'email'     => $user->email,
     ];
 
+    $tenantData = [
+      'id'        => $tenant->id,
+      'nome'      => $tenant->nome,
+    ];
+
     $algo = $this->algo;
     $key  = $this->serverKey;
     $iat  = time();
     $nbf  = time();
-    $exp  = time() + 60;
+    $exp  = time() + 300;
 
     $payload = array(
-      "iss" => $this->host,
-      "aud" => $this->host,
-      "iat" => $iat,
-      "exp" => $exp,
-      "user" => $userData,
+      "iss"    => $this->host,
+      "aud"    => $this->host,
+      "iat"    => $iat,
+      "exp"    => $exp,
+      "user"   => $userData,
+      "tenant" => $tenantData,
     );
 
     $jwt = $this->encodeJWT($payload, $key, $algo);
@@ -149,6 +160,31 @@ class Auth
       }
 
       return $decoded->user->id;
+
+    } catch (\Exception $e) {
+      return null;
+    }
+  }
+
+  public function user()
+  {
+    $key  = $this->serverKey;
+    $algo = $this->algo;
+
+    $token = $this->getAuthToken();
+
+    if (empty($token)) {
+      return null;
+    }
+
+    try {
+      $decoded = $this->decodeJWT($token, $key, $algo);
+
+      if (!$decoded) {
+        return null;
+      }
+
+      return $decoded->user;
 
     } catch (\Exception $e) {
       return null;

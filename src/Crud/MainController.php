@@ -49,6 +49,13 @@ class MainController extends Controller
   protected $tenant;
 
   /**
+   * Auth service.
+   *
+   * @service auth
+   */
+  protected $auth;
+
+  /**
    * Constructor.
    */
   public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
@@ -66,6 +73,8 @@ class MainController extends Controller
     $this->config = $this->getConfig();
     $this->menus  = $this->mountMenu();
     $this->tenant = $this->defineTenant();
+
+    $this->auth   = service('auth');
 
     define('UPLOADPATH', WRITEPATH.'uploads'.DIRECTORY_SEPARATOR);
   }
@@ -126,8 +135,20 @@ class MainController extends Controller
   }
 
   protected function defineTenant() {
+    $auth = service('auth');
+
+    if (!$auth->verify()->success) {
+      return redirect()->to('/sistema/login');
+    }
+
+    $user = $auth->user();
+    
+    if (!$user) {
+      return redirect()->to('/sistema/login');
+    }
+
     $tenantModel = new \App\Models\TenantModel();
-    $tenant = $tenantModel->find(3);
+    $tenant = $tenantModel->find($user->tenant_id);
     return $tenant;
   }
 }

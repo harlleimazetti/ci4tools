@@ -6,7 +6,7 @@ export const server = axios.create({
   baseURL: baseURL,
   timeout: 1000,
   headers: {
-    'x-api-key': 'dkjfsakdjflsakdjlf',
+    'x-api-key': '',
     'x-client-type': 'appweb',
   }
 });

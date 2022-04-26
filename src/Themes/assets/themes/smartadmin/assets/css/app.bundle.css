@@ -866,7 +866,7 @@ html {
 /* app logo */
 .page-logo {
   height: 4.125rem;
-  width: 20.875rem;
+  /*width: 16.875rem;*/
   /*width: 20.875rem; -- alterado por Harllei Mazetti */
   -webkit-box-shadow: 0px 0px 28px 0px rgba(0, 0, 0, 0.13);
           box-shadow: 0px 0px 28px 0px rgba(0, 0, 0, 0.13);
@@ -875,9 +875,9 @@ html {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
+  /* -webkit-box-align: center;
       -ms-flex-align: center;
-          align-items: center;
+          align-items: center; */
   -ms-flex-positive: 0;
   -webkit-box-flex: 0;
           flex-grow: 0;
@@ -888,9 +888,9 @@ html {
   .page-logo img {
     /*width: 28px;*/
     /*height: 28px;*/
-    border-radius: 10px;
+    /*border-radius: 10px;*/
     /*width: 60px;*/
-    height: 30px; }
+    height: 20px; }
   .page-logo .page-logo-link {
     -webkit-box-flex: 1;
         -ms-flex: 1 0 auto;
