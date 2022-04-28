@@ -137,7 +137,7 @@ class MainController extends Controller
   protected function defineTenant() {
     $auth = service('auth');
 
-    if (!$auth->verify()->success) {
+    if (!$auth->isLoggedIn()) {
       return redirect()->to('/sistema/login');
     }
 

@@ -1,4 +1,4 @@
-export const baseURL = 'http://localhost:8080/sistema/';
+export const baseURL = 'http://localhost/danms/appweb/';
 
 export const cookies = Cookies;
 
