@@ -42,7 +42,7 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
       'show_footer' => true,
     ];
 
-    $contents = array('Table');
+    $contents = array('TableForm');
 
     echo $this->showView(
       $theme_name     = $this->config->themeAdminName,

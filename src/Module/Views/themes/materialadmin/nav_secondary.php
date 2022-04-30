@@ -30,7 +30,16 @@
                             </ul>
                         </li>
 
-                        <li><a href="<?php echo base_url() ?>/admin/controllers"><i class="zmdi zmdi-code-setting"></i> Controllers</a></li>
+                        <li class="navigation__sub">
+                            <a href=""><i class="zmdi zmdi-code-setting"></i> Controllers</a>
+                            <ul>
+                              <?php
+                                foreach ($menus['controllersConfigurable'] as $menu) {
+                              ?>
+                                <li><a href="<?php echo base_url() ?>/admin/controllers/<?php echo $menu->path ?>"><?php echo $menu->name ?></a></li>
+                              <?php } ?>
+                            </ul>
+                        </li>
 
                         <li><a href="<?php echo base_url() ?>/admin/routes"><i class="zmdi zmdi-compass"></i> Routes</a></li>
 

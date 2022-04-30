@@ -10,7 +10,7 @@
                     <input type="hidden" id="controller" name="controller" value="<?php //echo $table ?>">
 
                     <div class="card-body">
-                      <h4 class="card-title"><?php //echo isset($tableConfig->tableLabel) ? $tableConfig->tableLabel : $table ?></h4>
+                      <h4 class="card-title"><?php echo isset($controllerConfig->controllerLabel) ? $controllerConfig->controllerLabel : $controller ?></h4>
                       <!--<h6 class="card-subtitle"><?php //echo isset($tableConfig->tableDescription) ? $tableConfig->tableDescription : $table ?></h6>-->
 
                       <div class="tab-container">
@@ -52,7 +52,7 @@
                               </div>
 
                               <?php
-                                foreach($controllers as $controller => $methods) {
+                                foreach($controllerMethods as $k => $controllerMethod) {
                                   //$key = array_search($tableField->name, array_column($tableConfig->fields, 'name'));
                               ?>
 
@@ -67,7 +67,7 @@
                                 </div>
 
                                 <div class="col-11">
-                                  <div class="listview__heading"><?php echo $controller ?></div>
+                                  <div class="listview__heading"><?php echo $controllerMethod ?></div>
                                   <input type="text" id="label[]" name="label[]" class="form-control" value="<?php //echo $tableConfig->fields[$key]->label ?>" placeholder="<?php //echo $tableConfig->fields[$key]->label ?>">
                                   <i class="form-group__bar"></i>
                                 </div>

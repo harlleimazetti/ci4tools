@@ -104,7 +104,7 @@ class BaseController extends Controller
   {
     $crud = new \Harlleimazetti\Ci4tools\Crud\Crud();
     $route = new \Harlleimazetti\Ci4tools\Route\Route();
-    
+
     $menuArea = [];
 
     if (file_exists(APPPATH."Models/MenuModel.php")) {
@@ -136,7 +136,19 @@ class BaseController extends Controller
         'description' => $table,
         'path' => $table,
         'icon' => 'fal fa-table',
-        'tags' => 'table $table'
+        'tags' => 'table '.$table
+      ];
+    }
+
+    $controllersConfigurable = $route->getControllersConfigurable();
+
+    foreach ($controllersConfigurable as $controller) {
+      $menuArea['controllersConfigurable'][] = (object)[
+        'name' => $controller,
+        'description' => $controller,
+        'path' => $controller,
+        'icon' => 'fal fa-table',
+        'tags' => 'table '.$controller
       ];
     }
 

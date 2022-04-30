@@ -17,27 +17,32 @@ class Controllers extends \Ci4toolsadmin\Controllers\BaseController
     $this->route = new Route();
   }
 
-  public function index()
+  public function index($controller = "")
   {
-    $controllers = $this->route->loadControllers();
+    $this->route->setControllerInfo($controller);
+    
+    $controllerMethods = $this->crud->getMethods();
+    //$controllerConfig = $this->crud->getControllerConfig();
 
-    $this->data['page_title']       = 'Controllers';
-    $this->data['page_subtitle']    = 'Configuração dos Controladores do sistema';
-    $this->data['page_description'] = 'Parametrização das informações de identificação (labels, descrição) dos Controllers e seus métodos';
-    $this->data['page_icon']        = 'fal fa-globe';
-    $this->data['body_id']          = 'body_table';
-    $this->data['system_area']      = 'Controllers';
-    $this->data['menus']            = $this->menus;
-    $this->data['controllers']      = $controllers;
+    $this->data['page_title']         = 'Controllers';
+    $this->data['page_subtitle']      = 'Configuração dos Controladores do sistema';
+    $this->data['page_description']   = 'Parametrização das informações de identificação (labels, descrição) dos Controllers e seus métodos';
+    $this->data['page_icon']          = 'fal fa-globe';
+    $this->data['body_id']            = 'body_table';
+    $this->data['system_area']        = 'Controllers';
+    $this->data['menus']              = $this->menus;
+    
+    $this->data['controller']         = $controller;
+    $this->data['controllerMethods']  = $controllerMethods;
 
-    $this->data['theme_options']    = [
+    $this->data['theme_options']      = [
       'show_header' => true,
       'show_nav_primary' => true,
       'show_nav_secondary' => true,
       'show_footer' => true,
     ];
 
-    $contents = array('ControllerList');
+    $contents = array('ControllerForm');
 
     echo $this->showView(
       $theme_name     = $this->config->themeAdminName,
