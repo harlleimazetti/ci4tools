@@ -18,9 +18,8 @@ class Route extends Crud {
 	{
     parent::__construct();
 
-    $this->controllersNotConfigurable = ['user', 'group', 'permission', 'permission_user', 'permission_group'];
+    $this->controllersNotConfigurable = ['BaseController', 'User', 'Group', 'Permission'];
 
-    $this->loadControllers();
     $this->setControllersConfigurable();
 	}
 
@@ -36,7 +35,7 @@ class Route extends Crud {
 
 	protected function setControllerInfo($controller) {
 		$this->controller	= $controller;
-    $this->methods = $this->controllers[$controller]; 
+    $this->methods = $this->controllers->{$controller};
 	}
 
   protected function setControllerConfig($controller) {
@@ -50,8 +49,34 @@ class Route extends Crud {
     $this->controllerConfig = json_decode(file_get_contents($fileConfigPath));
   }
 
+  protected function setControllersConfigurable() {
+    $controllers = (array)$this->controllers;
+    $controllersConfigurable = array_diff(array_keys($controllers), $this->controllersNotConfigurable);
+    $this->controllersConfigurable  = $controllersConfigurable;
+  }
+
+  public function getControllers() {
+    return $this->controllers;
+  }
+
+  public function getController() {
+    return $this->controller;
+  }
+
+  public function getMethods() {
+    return $this->methods;
+  }
+
   public function getControllerConfig() {
     return $this->controllerConfig;
+  }
+
+  public function getControllersNotConfigurable() {
+    return $this->controllerNotConfigurable;
+  }
+
+  public function getControllersConfigurable() {
+    return $this->controllerConfigurable;
   }
 
 	public function controllerinfo($controller = "") {
@@ -66,7 +91,7 @@ class Route extends Crud {
     CLI::write("METHODS: ", 'white');
 	
     foreach ($this->methods as $method) {
-      CLI::write($method, 'white');
+      CLI::write($method->name, 'white');
 		}
 	}
 
@@ -339,6 +364,8 @@ class Route extends Crud {
     $controllers = new \CodeIgniter\Files\FileCollection;
     $controllers->add($this->controllersFolder, true)->retainPattern('*.php');
     
+    $this->controllers = [];
+
     foreach($controllers as $controller)
     {
       $controllerName = substr($controller->getBasename(), 0, -4);
@@ -374,4 +401,4 @@ class Route extends Crud {
 }
 
 /* Fim do arquivo Route.php */
-/* Local: /Ci4toolsadmin/Controllers/Route.php */
+/* Local: /Harlleimazetti/Ci4tools/Route/Route.php */
