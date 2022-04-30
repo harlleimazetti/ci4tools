@@ -1,7 +1,6 @@
 <?php namespace Ci4toolsadmin\Controllers;
 
 use CodeIgniter\API\ResponseTrait;
-use \Harlleimazetti\Ci4tools\Crud\Crud;
 use \Harlleimazetti\Ci4tools\Route\Route;
 
 class Routes extends \Ci4toolsadmin\Controllers\BaseController

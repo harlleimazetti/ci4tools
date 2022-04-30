@@ -102,6 +102,7 @@ class BaseController extends Controller
 
   protected function mountMenu()
   {
+    $crud = new \Harlleimazetti\Ci4tools\Crud\Crud();
     $menuArea = [];
 
     if (file_exists(APPPATH."Models/MenuModel.php")) {
@@ -124,6 +125,18 @@ class BaseController extends Controller
       'icon' => 'fal fa-home',
       'tags' => 'dashboard home'
     ];
+
+    $tablesConfigurable = $crud->getTablesConfigurable();
+    
+    foreach ($tablesConfigurable as $table) {
+      $menuArea['tablesConfigurable'][] = (object)[
+        'name' => $table,
+        'description' => $table,
+        'path' => $table,
+        'icon' => 'fal fa-table',
+        'tags' => 'table $table'
+      ];
+    }
 
     return $menuArea;
   }

@@ -41,6 +41,8 @@ class Crud extends \CodeIgniter\Controller {
   protected $themesTemplatesFolder;
   protected $themesTemplatesBaseFolder;
   protected $themesFolders;
+  protected $tablesConfigurable;
+  protected $tablesNotConfigurable;
   protected $fieldsConfigurable;
   protected $fieldsNotConfigurable;
   protected $fieldOptionsNotConfigurable;
@@ -85,8 +87,11 @@ class Crud extends \CodeIgniter\Controller {
     $this->themesTemplatesBaseFolder 	= $this->crudBaseFolder."Templates".DS;
     $this->themesFolders              = $this->getDirectoryFoldersNames($this->themesTemplatesBaseFolder."themes".DS);
 
+    $this->tablesNotConfigurable        = ['user', 'group', 'permission', 'permission_user', 'permission_group'];
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
+
+    $this->setTablesConfigurable();
 	}
 
   public function install()
@@ -239,6 +244,12 @@ class Crud extends \CodeIgniter\Controller {
     }
   }
 
+  protected function setTablesConfigurable() {
+    $tables = $this->db->listTables();
+    $tablesConfigurable = array_diff($tables, $this->tablesNotConfigurable);
+    $this->tablesConfigurable  = $tablesConfigurable;
+  }
+
   protected function setFieldsConfigurable() {
     $fields = json_decode(json_encode($this->fields), true);
     $fieldsConfigurable = array_column($fields, 'name');
@@ -273,6 +284,14 @@ class Crud extends \CodeIgniter\Controller {
 
   public function getFieldsConfigurable() {
     return $this->fieldsConfigurable;
+  }
+
+  public function getTablesNotConfigurable() {
+    return $this->tablesNotConfigurable;
+  }
+
+  public function getTablesConfigurable() {
+    return $this->tablesConfigurable;
   }
 
 	public function tableinfo($table = "") {
