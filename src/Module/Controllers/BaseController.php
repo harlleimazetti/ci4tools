@@ -103,6 +103,8 @@ class BaseController extends Controller
   protected function mountMenu()
   {
     $crud = new \Harlleimazetti\Ci4tools\Crud\Crud();
+    $route = new \Harlleimazetti\Ci4tools\Route\Route();
+    
     $menuArea = [];
 
     if (file_exists(APPPATH."Models/MenuModel.php")) {

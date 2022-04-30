@@ -21,14 +21,13 @@
 
                         <li class="navigation__sub">
                             <a href=""><i class="zmdi zmdi-view-list"></i> Tables</a>
-
-                            <?php
-                              foreach ($menus['tablesConfigurable'] as $menu) {
-                            ?>
                             <ul>
+                              <?php
+                                foreach ($menus['tablesConfigurable'] as $menu) {
+                              ?>
                                 <li><a href="<?php echo base_url() ?>/admin/table/<?php echo $menu->path ?>"><?php echo $menu->name ?></a></li>
+                              <?php } ?>
                             </ul>
-                            <?php } ?>
                         </li>
 
                         <li><a href="<?php echo base_url() ?>/admin/controllers"><i class="zmdi zmdi-code-setting"></i> Controllers</a></li>

@@ -11,11 +11,17 @@ use Harlleimazetti\Ci4tools\Crud\Crud;
 class Route extends Crud {
   protected $result = [];
   protected $controllers = [];
+  protected $methods = [];
   protected $controller;
 
 	function __construct()
 	{
     parent::__construct();
+
+    $this->controllersNotConfigurable = ['user', 'group', 'permission', 'permission_user', 'permission_group'];
+
+    $this->loadControllers();
+    $this->setControllersConfigurable();
 	}
 
   public function setController($controller = "") {
@@ -30,6 +36,7 @@ class Route extends Crud {
 
 	protected function setControllerInfo($controller) {
 		$this->controller	= $controller;
+    $this->methods = $this->controllers[$controller]; 
 	}
 
   protected function setControllerConfig($controller) {
@@ -55,51 +62,11 @@ class Route extends Crud {
 
 		$this->setControllerInfo($controller);
 
-		echo "\r\n";
-		echo "> TABLE NAME: ".$this->color($this->controller, "green")."\r\n";
-		echo "\r\n\r\n";
-
-		echo "> FIELDS \r\n";
-		echo "\r\n";
-		foreach ($this->fields as $field) {
-			echo STR_PAD($field->name, 30);
-			echo STR_PAD($field->type, 20);
-			echo STR_PAD($field->max_length, 10);
-			if ($field->primary_key) {
-				echo $this->color(STR_PAD("PRIMARY", 20), "orange");
-				echo STR_PAD("-", 20);
-				echo STR_PAD("-", 20);
-			} else {
-				$k = array_search($field->name, array_column($this->keys, 'column_name'));
-				if (is_numeric($k)) {
-					echo $this->color(STR_PAD("FOREIGN KEY", 20), "orange");
-					echo $this->color(STR_PAD($this->keys[$k]->foreign_controller_name,20), "green");
-					echo $this->color(STR_PAD($this->keys[$k]->foreign_column_name,20), "blue");
-				}	else {
-					echo STR_PAD("-", 20);
-					echo STR_PAD("-", 20);
-					echo STR_PAD("-", 20);
-				}
-			}
-			echo "\r\n";
-		}
-		echo "\r\n";
-
-
-		echo "> INDEXES \r\n";
-		echo "\r\n";
-
-		foreach ($this->indexes as $index) {
-			$color = $index->name == "PRIMARY" ? "orange" : "white";
-
-			echo $this->color(STR_PAD($index->name, 15), $color);
-			echo $this->color(STR_PAD($index->type, 15), $color);
-			$fields = "";
-			foreach($index->fields as $field) {
-				$fields .= $field.", ";
-			}
-			echo $this->color(STR_PAD($fields, 15), "blue");
-			echo "\r\n";
+    CLI::write("CONTROLLER NAME: ". CLI::color($controller, 'green'), 'white');
+    CLI::write("METHODS: ", 'white');
+	
+    foreach ($this->methods as $method) {
+      CLI::write($method, 'white');
 		}
 	}
 
@@ -377,8 +344,6 @@ class Route extends Crud {
       $controllerName = substr($controller->getBasename(), 0, -4);
       $this->controllers[$controllerName] = [];
 
-      //print_r($this->controllers);
-
       $instance = Factories::controllers($controllerName);
       $class    = new \ReflectionClass($instance);
       $methods  = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
@@ -391,14 +356,6 @@ class Route extends Crud {
     }
 
     $this->controllers = (object)$this->controllers;
-
-    foreach($this->controllers as $controller => $methods) {
-      echo $controller."\r\n";
-      foreach ($methods as $method) {
-        echo "  :.....".$method->name."\r\n";
-      }
-    }
-    //print_r((object)$this->controllers);
   }
 
 	protected function _makeControllerFiles()
