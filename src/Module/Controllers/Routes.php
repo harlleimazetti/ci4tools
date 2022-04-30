@@ -2,24 +2,24 @@
 
 use CodeIgniter\API\ResponseTrait;
 use \Harlleimazetti\Ci4tools\Crud\Crud;
-use \Harlleimazetti\Ci4tools\Ctrlr\Ctrlr;
+use \Harlleimazetti\Ci4tools\Route\Route;
 
-class Controller extends \Ci4toolsadmin\Controllers\BaseController
+class Routes extends \Ci4toolsadmin\Controllers\BaseController
 {
   use ResponseTrait;
 
   protected $data;
-  protected $ctrlr;
+  protected $route;
   protected $result = [];
 
   function __construct()
   {
-    $this->ctrlr = new Ctrlr();
+    $this->route = new Route();
   }
 
-  public function index($table = "")
+  public function index()
   {
-    $controllers = $this->ctrlr->loadControllers();
+    $controllers = $this->route->loadControllers();
 
     $this->data['page_title']       = 'Controllers';
     $this->data['page_subtitle']    = 'Configuração dos Controladores do sistema';
@@ -28,8 +28,6 @@ class Controller extends \Ci4toolsadmin\Controllers\BaseController
     $this->data['body_id']          = 'body_table';
     $this->data['system_area']      = 'Tabelas';
     $this->data['menus']            = $this->menus;
-
-    $this->data['table']            = $table;
     $this->data['controllers']      = $controllers;
 
     $this->data['theme_options']    = [

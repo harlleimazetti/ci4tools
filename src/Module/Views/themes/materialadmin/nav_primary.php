@@ -8,7 +8,7 @@
                 </div>
 
                 <div class="header__logo hidden-sm-down">
-                    <h1><a href="index.html">CI4TOOLS ADMIN</a></h1>
+                    <h1><a href="<?php echo base_url() ?>/admin/dashboard">CI4Tools Admin</a></h1>
                 </div>
 
                 <form class="search">

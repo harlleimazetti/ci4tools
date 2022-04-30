@@ -27,11 +27,13 @@
                             </ul>
                         </li>
 
-                        <li><a href="<?php echo base_url() ?>/admin/controller"><i class="zmdi zmdi-menu"></i> Controllers</a></li>
+                        <li><a href="<?php echo base_url() ?>/admin/controllers"><i class="zmdi zmdi-code-setting"></i> Controllers</a></li>
 
-                        <li><a href="widgets.html"><i class="zmdi zmdi-menu"></i> Menus</a></li>
+                        <li><a href="<?php echo base_url() ?>/admin/routes"><i class="zmdi zmdi-compass"></i> Routes</a></li>
 
-                        <li><a href="typography.html"><i class="zmdi zmdi-accounts"></i> Users</a></li>
+                        <li><a href="<?php echo base_url() ?>/admin/menus"><i class="zmdi zmdi-menu"></i> Menus</a></li>
+
+                        <li><a href="<?php echo base_url() ?>/admin/users"><i class="zmdi zmdi-accounts"></i> Users</a></li>
 
                     </ul>
                 </div>

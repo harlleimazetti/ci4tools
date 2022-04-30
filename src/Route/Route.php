@@ -2,44 +2,21 @@
 
 use \CodeIgniter\CLI\CLI;
 use CodeIgniter\Config\Factories;
+use Harlleimazetti\Ci4tools\Crud\Crud;
 
-defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
-defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
+//defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+//defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
+//defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Ctrlr {
+class Route extends Crud {
   protected $result = [];
   protected $controllers = [];
+  protected $controller;
 
 	function __construct()
 	{
-    $this->vendorFolder 						  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
-
-    $this->moduleFolder 						  = ROOTPATH."ci4toolsadmin".DS;
-
-		$this->crudTemplatesFolder 				= ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."templates".DS;
-		
-    $this->crudBaseFolder 						= APPPATH."Crudbase".DS;
-
-		$this->crudConfigFolder 					= $this->crudBaseFolder."Config".DS;
-		$this->crudControllersBaseFolder 	= $this->crudBaseFolder."Controllers".DS;
-    $this->crudModelsBaseFolder 			= $this->crudBaseFolder."Models".DS;
-		$this->crudEntitiesBaseFolder 		= $this->crudBaseFolder."Entities".DS;
-    $this->crudValidationFolder 		  = $this->crudBaseFolder."Validation".DS;
-
-    $this->controllersFolder 					= APPPATH."Controllers".DS;
-		$this->modelsFolder 							= APPPATH."Models".DS;
-    $this->entitiesFolder 						= APPPATH."Entities".DS;
-    $this->viewsFolder     						= APPPATH."Views".DS;
-
-    $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
-    $this->fieldOptionsNotConfigurable  = ['name'];
+    parent::__construct();
 	}
-
-  public function install()
-  {
-
-  }
 
   public function setController($controller = "") {
 		if (empty($controller)) {
@@ -47,15 +24,12 @@ class Ctrlr {
       return null;
 		}
 
-    //$this->setControllerInfo($controller);
+    $this->setControllerInfo($controller);
     $this->setControllerConfig($controller);
   }
 
 	protected function setControllerInfo($controller) {
-		$this->controller		  = $controller;
-		$this->fields		      = $this->db->getFieldData($this->controller);
-		$this->keys			      = $this->db->getForeignKeyData($this->controller);
-		$this->indexes        = $this->db->getIndexData($this->controller);
+		$this->controller	= $controller;
 	}
 
   protected function setControllerConfig($controller) {
