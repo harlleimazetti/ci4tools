@@ -14,9 +14,9 @@
                       <!--<h6 class="card-subtitle"><?php //echo isset($tableConfig->tableDescription) ? $tableConfig->tableDescription : $table ?></h6>-->
 
                       <div class="tab-container">
-                        <ul class="nav nav-tabs nav-tabs--amber" role="tablist">
+                        <ul class="nav nav-tabs" role="tablist">
                           <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#controller-basic-info" role="tab">Information</a>
+                            <a class="nav-link active" data-toggle="tab" href="#controller-basic-info" role="tab">General</a>
                           </li>
                           <li class="nav-item">
                             <a class="nav-link" data-toggle="tab" href="#controller-fields" role="tab">Methods</a>
@@ -31,7 +31,7 @@
                           <div class="tab-pane fade" id="controller-fields" role="tabpanel">
                             <div class="listview listview--hover" id="controller-config">
                               <div class="listview__item p-2">
-                                <div class="col-1">
+                                <div class="col-2">
                                   <div class="listview__heading">Name</div>
                                 </div>
                                 <div class="col-3 listview__content">
@@ -52,7 +52,7 @@
                               <input type="hidden" id="label_class[]" name="label_class[]" value="<?php //echo $tableConfig->fields[$key]->label_class ?>">
 
                               <div class="listview__item p-1">
-                                <div class="col-1 mr-2">
+                                <div class="col-2 mr-2">
                                   <input type="text" id="name[]" name="name[]" class="form-control" value="<?php echo $controllerMethod->name ?>" placeholder="<?php echo $controllerMethod->name ?>" readonly>
                                   <i class="form-group__bar"></i>
                                 </div>

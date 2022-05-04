@@ -17,7 +17,7 @@
                           <div class="tab-container">
                             <ul class="nav nav-tabs" role="tablist">
                               <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#table-basic-info" role="tab">Information</a>
+                                <a class="nav-link active" data-toggle="tab" href="#table-basic-info" role="tab">General</a>
                               </li>
                               <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#table-fields" role="tab">Fields</a>
