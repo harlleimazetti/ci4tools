@@ -1,4 +1,4 @@
-<?php namespace Harlleimazetti\Ci4tools\Tools;
+<?php namespace Harlleimazetti\Ci4tools\Crud;
 
 use \CodeIgniter\CLI\CLI;
 use \Harlleimazetti\Ci4tools\Templateparser\TemplateParser;
@@ -8,7 +8,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Ci4tools extends \CodeIgniter\Controller {
+class Crud extends \CodeIgniter\Controller {
   protected $db;
   protected $tables;
   protected $table;
@@ -23,10 +23,8 @@ class Ci4tools extends \CodeIgniter\Controller {
   protected $tableHeader;
   protected $templateVars;
   protected $vendorFolder;
-  protected $crudTemplatesFolder;
-  protected $crudBaseFolder;
   protected $moduleFolder;
-  protected $moduleAssetsFolder;
+  protected $crudBaseFolder;
   protected $controllersFolder;
   protected $modelsFolder;
   protected $viewsFolder;
@@ -37,9 +35,9 @@ class Ci4tools extends \CodeIgniter\Controller {
   protected $crudEntitiesBaseFolder;
   protected $crudTemplatesBaseFolder;
   protected $crudValidationFolder;
-  protected $routeControllersConfigFolder;
-  protected $routeRoutesConfigFolder;
   protected $crudConfigFolder;
+  protected $crudTemplatesFolder;
+  protected $moduleAssetsFolder;
   protected $themesTemplatesFolder;
   protected $themesTemplatesBaseFolder;
   protected $themesFolders;
@@ -101,7 +99,6 @@ class Ci4tools extends \CodeIgniter\Controller {
 
   public function install()
   {
-    echo "instalando...";
 		if (!is_dir($this->moduleFolder))	{ mkdir($this->moduleFolder); }
     if (!is_dir($this->crudBaseFolder))	{ mkdir($this->crudBaseFolder); }
 		if (!is_dir($this->crudConfigFolder))	{ mkdir($this->crudConfigFolder); }

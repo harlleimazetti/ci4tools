@@ -2,26 +2,30 @@
 
 use \CodeIgniter\CLI\CLI;
 use CodeIgniter\Config\Factories;
-use Harlleimazetti\Ci4tools\Crud\Crud;
 
-//defined('DS') or define('DS', DIRECTORY_SEPARATOR);
-//defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
-//defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
+defined('DS') or define('DS', DIRECTORY_SEPARATOR);
+defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
+defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Route extends Crud {
+trait Route {
   protected $result = [];
   protected $controllers = [];
   protected $methods = [];
   protected $controller;
+  protected $routeControllersConfigFolder;
+  protected $routeRoutesConfigFolder;
 
 	function __construct()
 	{
-    parent::__construct();
+    //parent::__construct();
 
-    $this->controllersNotConfigurable = ['BaseController', 'User', 'Group', 'Permission'];
+    $this->routeControllersConfigFolder = $this->crudBaseFolder."Route".DS."Config".DS."Controllers".DS;
+    $this->routeRoutesConfigFolder      = $this->crudBaseFolder."Route".DS."Config".DS."Routes".DS;
 
-    $this->loadControllers();
-    $this->setControllersConfigurable();
+    $this->controllersNotConfigurable   = ['BaseController', 'User', 'Group', 'Permission'];
+
+    //$this->loadControllers();
+    //$this->setControllersConfigurable();
 	}
 
   public function setController($controller = "") {

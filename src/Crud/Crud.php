@@ -8,7 +8,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Crud extends \CodeIgniter\Controller {
+trait Crud {
   protected $db;
   protected $tables;
   protected $table;
@@ -78,9 +78,6 @@ class Crud extends \CodeIgniter\Controller {
     $this->crudTemplatesBaseFolder		  = $this->crudBaseFolder."Templates".DS;
     $this->crudValidationFolder 		    = $this->crudBaseFolder."Validation".DS;
 
-    $this->routeControllersConfigFolder = $this->crudBaseFolder."Route".DS."Config".DS."Controllers".DS;
-    $this->routeRoutesConfigFolder      = $this->crudBaseFolder."Route".DS."Config".DS."Routes".DS;
-
     $this->controllersFolder 					  = APPPATH."Controllers".DS;
 		$this->modelsFolder 							  = APPPATH."Models".DS;
     $this->entitiesFolder 						  = APPPATH."Entities".DS;
@@ -94,7 +91,7 @@ class Crud extends \CodeIgniter\Controller {
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
 
-    $this->setTablesConfigurable();
+    //$this->setTablesConfigurable();
 	}
 
   public function install()

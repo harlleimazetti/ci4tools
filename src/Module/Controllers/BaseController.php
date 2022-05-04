@@ -128,6 +128,7 @@ class BaseController extends Controller
       'tags' => 'dashboard home'
     ];
 
+    $crud->setTablesConfigurable();
     $tablesConfigurable = $crud->getTablesConfigurable();
     
     foreach ($tablesConfigurable as $table) {
@@ -140,6 +141,8 @@ class BaseController extends Controller
       ];
     }
 
+    $route->loadControllers();
+    $route->setControllersConfigurable();
     $controllersConfigurable = $route->getControllersConfigurable();
 
     foreach ($controllersConfigurable as $controller) {
