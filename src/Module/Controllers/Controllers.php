@@ -19,9 +19,9 @@ class Controllers extends \Ci4toolsadmin\Controllers\BaseController
 
   public function index($controller = "")
   {
-    $this->route->setControllerInfo($controller);
+    $this->route->setController($controller);
     
-    $controllerMethods = $this->crud->getMethods();
+    $controllerMethods = $this->route->getMethods();
     //$controllerConfig = $this->crud->getControllerConfig();
 
     $this->data['page_title']         = 'Controllers';

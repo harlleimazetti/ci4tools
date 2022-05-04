@@ -7,19 +7,19 @@
 
                   <form method="post" action="<?php echo base_url() ?>/admin/controllers/saveconfig" class="form-record">
 
-                    <input type="hidden" id="controller" name="controller" value="<?php //echo $table ?>">
+                    <input type="hidden" id="controller" name="controller" value="<?php echo $controller ?>">
 
                     <div class="card-body">
-                      <h4 class="card-title"><?php echo isset($controllerConfig->controllerLabel) ? $controllerConfig->controllerLabel : $controller ?></h4>
+                      <h4 class="card-title"><?php echo isset($controllerConfig->controllerLabel) ? $controllerConfig->controllerLabel : $controller ?> (Controller)</h4>
                       <!--<h6 class="card-subtitle"><?php //echo isset($tableConfig->tableDescription) ? $tableConfig->tableDescription : $table ?></h6>-->
 
                       <div class="tab-container">
-                        <ul class="nav nav-tabs" role="tablist">
+                        <ul class="nav nav-tabs nav-tabs--amber" role="tablist">
                           <li class="nav-item">
-                            <a class="nav-link active" data-toggle="tab" href="#controller-basic-info" role="tab">Informações</a>
+                            <a class="nav-link active" data-toggle="tab" href="#controller-basic-info" role="tab">Information</a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#controller-fields" role="tab">Campos</a>
+                            <a class="nav-link" data-toggle="tab" href="#controller-fields" role="tab">Methods</a>
                           </li>
                         </ul>
 
@@ -37,17 +37,8 @@
                                 <div class="col-3 listview__content">
                                   <div class="listview__heading">Label</div>
                                 </div>
-                                <div class="col-3 listview__content">
-                                  <div class="listview__heading">Type</div>
-                                </div>
-                                <div class="col-1 text-center">
-                                  <div class="listview__heading">Allowed</div>
-                                </div>
-                                <div class="col-1 text-center">
-                                  <div class="listview__heading">Multiple</div>
-                                </div>
-                                <div class="col-1 text-center">
-                                  <div class="listview__heading">Show</div>
+                                <div class="col-8 listview__content">
+                                  <div class="listview__heading">Description</div>
                                 </div>
                               </div>
 
@@ -60,15 +51,19 @@
                               <input type="hidden" id="field_class[]" name="field_class[]" value="<?php //echo $tableConfig->fields[$key]->field_class ?>">
                               <input type="hidden" id="label_class[]" name="label_class[]" value="<?php //echo $tableConfig->fields[$key]->label_class ?>">
 
-                              <div class="listview__item p-2">
+                              <div class="listview__item p-1">
                                 <div class="col-1 mr-2">
-                                  <input type="text" id="name[]" name="name[]" class="form-control" value="<?php //echo $tableField->name ?>" placeholder="<?php //echo $tableField->name ?>" readonly>
+                                  <input type="text" id="name[]" name="name[]" class="form-control" value="<?php echo $controllerMethod->name ?>" placeholder="<?php echo $controllerMethod->name ?>" readonly>
                                   <i class="form-group__bar"></i>
                                 </div>
 
-                                <div class="col-11">
-                                  <div class="listview__heading"><?php echo $controllerMethod ?></div>
+                                <div class="col-3">
                                   <input type="text" id="label[]" name="label[]" class="form-control" value="<?php //echo $tableConfig->fields[$key]->label ?>" placeholder="<?php //echo $tableConfig->fields[$key]->label ?>">
+                                  <i class="form-group__bar"></i>
+                                </div>
+
+                                <div class="col-8">
+                                  <input type="text" id="description[]" name="description[]" class="form-control" value="<?php //echo $tableConfig->fields[$key]->label ?>" placeholder="<?php //echo $tableConfig->fields[$key]->label ?>">
                                   <i class="form-group__bar"></i>
                                 </div>
                               </div>

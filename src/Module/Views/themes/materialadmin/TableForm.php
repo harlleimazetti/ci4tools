@@ -11,16 +11,16 @@
                         <input type="hidden" id="table" name="table" value="<?php echo $table ?>">
 
                         <div class="card-body">
-                          <h4 class="card-title"><?php echo isset($tableConfig->tableLabel) ? $tableConfig->tableLabel : $table ?></h4>
+                          <h4 class="card-title"><?php echo isset($tableConfig->tableLabel) ? $tableConfig->tableLabel : $table ?> (Table)</h4>
                           <!--<h6 class="card-subtitle"><?php //echo isset($tableConfig->tableDescription) ? $tableConfig->tableDescription : $table ?></h6>-->
 
                           <div class="tab-container">
                             <ul class="nav nav-tabs" role="tablist">
                               <li class="nav-item">
-                                <a class="nav-link active" data-toggle="tab" href="#table-basic-info" role="tab">Informações</a>
+                                <a class="nav-link active" data-toggle="tab" href="#table-basic-info" role="tab">Information</a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" data-toggle="tab" href="#table-fields" role="tab">Campos</a>
+                                <a class="nav-link" data-toggle="tab" href="#table-fields" role="tab">Fields</a>
                               </li>
                             </ul>
 
@@ -48,7 +48,10 @@
                                       <div class="listview__heading">Multiple</div>
                                     </div>
                                     <div class="col-1 text-center">
-                                      <div class="listview__heading">Show</div>
+                                      <div class="listview__heading">Show on List</div>
+                                    </div>
+                                    <div class="col-1 text-center">
+                                      <div class="listview__heading">Show on Form</div>
                                     </div>
                                   </div>
 
@@ -61,7 +64,7 @@
                                   <input type="hidden" id="field_class[]" name="field_class[]" value="<?php echo $tableConfig->fields[$key]->field_class ?>">
                                   <input type="hidden" id="label_class[]" name="label_class[]" value="<?php echo $tableConfig->fields[$key]->label_class ?>">
 
-                                  <div class="listview__item p-2">
+                                  <div class="listview__item p-1">
                                     <div class="col-1 mr-2">
                                       <input type="text" id="name[]" name="name[]" class="form-control" value="<?php echo $tableField->name ?>" placeholder="<?php echo $tableField->name ?>" readonly>
                                       <i class="form-group__bar"></i>
@@ -103,6 +106,13 @@
                                       <div class="checkbox mt-2">
                                         <input type="checkbox" id="show[<?php echo $k ?>]" name="show[]" value="Y" <?php if ($tableConfig->fields[$key]->show === 'Y') { ?> checked <?php } ?>>
                                         <label class="checkbox__label" for="show[<?php echo $k ?>]"></label>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-1 text-center">
+                                      <div class="checkbox mt-2">
+                                        <input type="checkbox" id="show_on_form[<?php echo $k ?>]" name="show_on_form[]" value="Y" <?php if ($tableConfig->fields[$key]->show_on_form === 'Y') { ?> checked <?php } ?>>
+                                        <label class="checkbox__label" for="show_on_form[<?php echo $k ?>]"></label>
                                       </div>
                                     </div>
 

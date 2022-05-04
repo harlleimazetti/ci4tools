@@ -20,6 +20,7 @@ class Route extends Crud {
 
     $this->controllersNotConfigurable = ['BaseController', 'User', 'Group', 'Permission'];
 
+    $this->loadControllers();
     $this->setControllersConfigurable();
 	}
 
@@ -30,7 +31,7 @@ class Route extends Crud {
 		}
 
     $this->setControllerInfo($controller);
-    $this->setControllerConfig($controller);
+    //$this->setControllerConfig($controller);
   }
 
 	protected function setControllerInfo($controller) {
@@ -72,11 +73,11 @@ class Route extends Crud {
   }
 
   public function getControllersNotConfigurable() {
-    return $this->controllerNotConfigurable;
+    return $this->controllersNotConfigurable;
   }
 
   public function getControllersConfigurable() {
-    return $this->controllerConfigurable;
+    return $this->controllersConfigurable;
   }
 
 	public function controllerinfo($controller = "") {
