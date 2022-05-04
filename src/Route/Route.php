@@ -31,7 +31,7 @@ class Route extends Crud {
 		}
 
     $this->setControllerInfo($controller);
-    //$this->setControllerConfig($controller);
+    $this->setControllerConfig($controller);
   }
 
 	protected function setControllerInfo($controller) {
@@ -101,7 +101,7 @@ class Route extends Crud {
         
 		if (!empty($controller))
 		{
-			$this->controller = $controllers;
+			$this->controller = $controller;
     }
 
 		$this->setControllerInfo($controller);

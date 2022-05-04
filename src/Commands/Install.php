@@ -3,13 +3,13 @@
 use CodeIgniter\CLI\BaseCommand;
 use CodeIgniter\CLI\CLI;
 
-use Harlleimazetti\Ci4tools\Crud\Crud;
+use Harlleimazetti\Ci4tools\Tools\Ci4tools;
 
 class Install extends BaseCommand
 {
   protected $group       = 'ci4tools';
   protected $name        = 'ci4tools:install';
-  protected $description = 'Install Ci4Tools Admin.';
+  protected $description = 'Install Ci4Tools';
 
   function __construct()
   {
@@ -18,8 +18,8 @@ class Install extends BaseCommand
   
   public function run(array $params)
   {
-    $crud = new Crud();
-    $crud->install();
+    $tools = new Ci4tools();
+    $tools->install();
     exit;
   }
 }
