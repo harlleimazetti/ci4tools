@@ -2,8 +2,8 @@
 
 use \CodeIgniter\CLI\CLI;
 use \Harlleimazetti\Ci4tools\Templateparser\TemplateParser;
-use \Harlleimazetti\Ci4tools\Crud\Crud;
-use \Harlleimazetti\Ci4tools\Route\Route;
+use \Harlleimazetti\Ci4tools\Crud\CrudTrait;
+use \Harlleimazetti\Ci4tools\Route\RouteTrait;
 use CodeIgniter\Config\Factories;
 
 defined('DS') or define('DS', DIRECTORY_SEPARATOR);
@@ -11,7 +11,7 @@ defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
 class Ci4tools extends \CodeIgniter\Controller {
-  use Crud, Route;
+  use CrudTrait, RouteTrait;
 
 	function __construct()
 	{

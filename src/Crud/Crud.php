@@ -8,7 +8,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-trait Crud {
+class Crud extends \CodeIgniter\Controller {
   protected $db;
   protected $tables;
   protected $table;
@@ -56,6 +56,7 @@ trait Crud {
   protected $result = [];
   protected $controllers = [];
   protected $parser;
+  protected $config;
 
 	function __construct()
 	{
@@ -65,6 +66,37 @@ trait Crud {
 		$this->tables = $this->db->listTables();
     $this->parser = new TemplateParser();
 
+    $this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
+
+    $this->vendorFolder 						    = $this->config->vendorFolder;
+    $this->crudTemplatesFolder 				  = $this->config->crudTemplatesFolder;
+    $this->crudBaseFolder 						  = $this->config->crudBaseFolder;
+    $this->moduleFolder 						    = $this->config->moduleFolder;
+    $this->moduleAssetsFolder					  = $this->config->moduleAssetsFolder;
+
+		$this->crudConfigFolder 					  = $this->config->crudConfigFolder;
+		$this->crudControllersBaseFolder 	  = $this->config->crudControllersBaseFolder;
+    $this->crudEntitiesBaseFolder 		  = $this->config->crudEntitiesBaseFolder;
+    $this->crudModelsBaseFolder 			  = $this->config->crudModelsBaseFolder;
+    $this->crudTemplatesBaseFolder		  = $this->config->crudTemplatesBaseFolder;
+    $this->crudValidationFolder 		    = $this->config->crudValidationFolder;
+
+    $this->controllersFolder 					  = $this->config->controllersFolder;
+		$this->modelsFolder 							  = $this->config->modelsFolder;
+    $this->entitiesFolder 						  = $this->config->entitiesFolder;
+    $this->viewsFolder     						  = $this->config->viewsFolder;
+
+    $this->themesTemplatesFolder        = $this->config->themesTemplatesFolder;
+    $this->themesTemplatesBaseFolder 	  = $this->config->themesTemplatesBaseFolder;
+    $this->themesFolders                = $this->getDirectoryFoldersNames($this->themesTemplatesBaseFolder."themes".DS);
+
+    $this->tablesNotConfigurable        = $this->config->tablesNotConfigurable;
+    $this->fieldsNotConfigurable        = $this->config->fieldsNotConfigurable;
+    $this->fieldOptionsNotConfigurable  = $this->config->fieldOptionsNotConfigurable;
+
+    print_r(get_object_var($this)); exit;
+
+    /*
     $this->vendorFolder 						    = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
     $this->crudTemplatesFolder 				  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."Templates".DS;
     $this->crudBaseFolder 						  = APPPATH."Crudbase".DS;
@@ -90,6 +122,7 @@ trait Crud {
     $this->tablesNotConfigurable        = ['user', 'group', 'permission', 'permission_user', 'permission_group'];
     $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
     $this->fieldOptionsNotConfigurable  = ['name'];
+    */
 
     //$this->setTablesConfigurable();
 	}

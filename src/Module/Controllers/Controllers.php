@@ -22,7 +22,7 @@ class Controllers extends \Ci4toolsadmin\Controllers\BaseController
     $this->route->setController($controller);
     
     $controllerMethods = $this->route->getMethods();
-    //$controllerConfig = $this->crud->getControllerConfig();
+    //$controllerConfig = $this->route->getControllerConfig();
 
     $this->data['page_title']         = 'Controllers';
     $this->data['page_subtitle']      = 'Configuração dos Controladores do sistema';
