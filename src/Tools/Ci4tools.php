@@ -11,8 +11,11 @@ defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
 class Ci4tools extends \CodeIgniter\Controller {
-  use CrudTrait { CrudTrait::init as private initCrudTrait; }
-  use RouteTrait { RouteTrait::init as private initRouteTrait; }
+  use CrudTrait, RouteTrait {
+    CrudTrait::init insteadOf RouteTrait;
+    CrudTrait::init as initCrudTrait;
+    RouteTrait::init as initRouteTrait;
+  }
 
 	function __construct()
 	{

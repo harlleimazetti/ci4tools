@@ -2,7 +2,7 @@
 
 use \Harlleimazetti\Ci4tools\Crud\CrudTrait;
 
-class Crud {
+class CrudController extends \CodeIgniter\Controller {
   use CrudTrait {
     CrudTrait::init as private initCrudTrait;
   }
@@ -13,5 +13,5 @@ class Crud {
 	}
 }
 
-/* Fim do arquivo Crud.php */
-/* Local: /Harlleimazetti/Ci4tools/Crud/Crud.php */
+/* Fim do arquivo CrudController.php */
+/* Local: /Harlleimazetti/Ci4tools/Crud/CrudController.php */

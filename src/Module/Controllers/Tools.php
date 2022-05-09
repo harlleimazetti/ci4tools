@@ -1,6 +1,4 @@
-<?php
-
-namespace Ci4toolsadmin\Controllers;
+<?php namespace Ci4toolsadmin\Controllers;
 
 use Harlleimazetti\Ci4tools\Tools\Ci4tools;
 

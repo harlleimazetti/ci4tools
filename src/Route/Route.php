@@ -2,8 +2,10 @@
 
 use \Harlleimazetti\Ci4tools\Route\RouteTrait;
 
-class Route extends \CodeIgniter\Controller {
-  use RouteTrait { RouteTrait::init as private initRouteTrait; }
+class Route {
+  use RouteTrait {
+    RouteTrait::init as private initRouteTrait;
+  }
 
 	function __construct()
 	{
