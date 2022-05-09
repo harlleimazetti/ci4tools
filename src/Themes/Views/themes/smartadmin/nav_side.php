@@ -19,7 +19,10 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="info-card">
+                        
+                        <?php if (false) { ?>
+                        
+                          <div class="info-card">
                             <img src="<?php echo base_url(); ?>/public/assets/img/hccm.jpg" class="profile-image rounded-circle" alt="Dr. Codex Lantern">
                             <div class="info-card-text">
                                 <a href="#" class="d-flex align-items-center text-white">
@@ -34,6 +37,9 @@
                                 <i class="fal fa-angle-down"></i>
                             </a>
                         </div>
+
+                        <?php } ?>
+                        
                         <!--  TIP: The menu items are not auto translated.
                               You must have a residing lang file associated with the menu
                               saved inside dist/media/data with reference to each 'data-i18n' attribute.
@@ -51,6 +57,8 @@
                                 </li>
                               <?php } ?>
                             <?php } ?>
+
+                            <?php if (false) { ?>
                             <!--
                             <li class="nav-title">Navigation Title</li>
                             <li class="active">
@@ -112,10 +120,13 @@
                                     </li>
                                 </ul>
                             </li>
-                              -->
+                            -->
+                            <?php } ?>
                         </ul>
                         <div class="filter-message js-filter-message bg-success-600"></div>
                     </nav>
+                    
+                    <?php if (false) { ?>
                     <!-- END PRIMARY NAVIGATION -->
                     <!-- NAV FOOTER -->
                     <!--
@@ -143,6 +154,7 @@
                         </ul>
                     </div>
                     -->
+                    <?php } ?>
                     <!-- END NAV FOOTER -->
                 </aside>
                 <!-- END Left Aside -->

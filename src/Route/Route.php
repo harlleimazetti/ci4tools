@@ -7,7 +7,11 @@ class Route extends \CodeIgniter\Controller {
 
 	function __construct()
 	{
-    
+    $this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
+
+    foreach($this->config as $property => $value) {
+      $this->{$property} = $value;
+    }
 	}
 }
 

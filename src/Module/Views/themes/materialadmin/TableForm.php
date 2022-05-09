@@ -53,6 +53,9 @@
                                     <div class="col-1 text-center">
                                       <div class="listview__heading">Show on Form</div>
                                     </div>
+                                    <div class="col-1 text-center">
+                                      <div class="listview__heading">Searchable</div>
+                                    </div>
                                   </div>
 
                                   <?php
@@ -113,6 +116,13 @@
                                       <div class="checkbox mt-2">
                                         <input type="checkbox" id="show_on_form[<?php echo $k ?>]" name="show_on_form[]" value="Y" <?php if ($tableConfig->fields[$key]->show_on_form === 'Y') { ?> checked <?php } ?>>
                                         <label class="checkbox__label" for="show_on_form[<?php echo $k ?>]"></label>
+                                      </div>
+                                    </div>
+
+                                    <div class="col-1 text-center">
+                                      <div class="checkbox mt-2">
+                                        <input type="checkbox" id="searchable[<?php echo $k ?>]" name="searchable[]" value="Y" <?php if ($tableConfig->fields[$key]->searchable === 'Y') { ?> checked <?php } ?>>
+                                        <label class="checkbox__label" for="searchable[<?php echo $k ?>]"></label>
                                       </div>
                                     </div>
 

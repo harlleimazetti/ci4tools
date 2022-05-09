@@ -12,7 +12,8 @@
   "minimum-stability": "dev",
   "require": {
     "mustache/mustache": "~2.5",
-    "firebase/php-jwt": "dev-main"
+    "firebase/php-jwt": "dev-main",
+    "hermawan/codeigniter4-datatables": "dev-master"
   },
   "autoload" : {
     "psr-4" : {

@@ -15,6 +15,7 @@ class Controllers extends \Ci4toolsadmin\Controllers\BaseController
   function __construct()
   {
     $this->route = new Route();
+    $this->route->loadControllers();
   }
 
   public function index($controller = "")

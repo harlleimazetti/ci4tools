@@ -53,8 +53,10 @@ class Crud extends \CodeIgniter\Controller {
   protected $formVisibleFields;
   protected $formVisibleFieldsLabel;
   protected $formVisibleFieldsConfig;
+  protected $searchableFields;
+  protected $searchableFieldsLabel;
+  protected $searchableFieldsConfig;
   protected $result = [];
-  protected $controllers = [];
   protected $parser;
   protected $config;
 
@@ -93,8 +95,6 @@ class Crud extends \CodeIgniter\Controller {
     $this->tablesNotConfigurable        = $this->config->tablesNotConfigurable;
     $this->fieldsNotConfigurable        = $this->config->fieldsNotConfigurable;
     $this->fieldOptionsNotConfigurable  = $this->config->fieldOptionsNotConfigurable;
-
-    print_r(get_object_var($this)); exit;
 
     /*
     $this->vendorFolder 						    = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
@@ -275,15 +275,22 @@ class Crud extends \CodeIgniter\Controller {
       $this->formVisibleFieldsConfig = array_values($formVisibleFieldsConfig);
       $this->formVisibleFieldsLabel = array_column($this->formVisibleFieldsConfig, 'label');
     }
+
+    $this->searchableFields = $this->loadVisibleFields($this->table);
+    $searchableFieldsConfig = $this->loadSearchableFieldsConfig($this->table);
+    if (!empty($searchableFieldsConfig)) {
+      $this->searchableFieldsConfig = array_values($searchableFieldsConfig);
+      $this->searchableFieldsLabel = array_column($this->searchableFieldsConfig, 'label');
+    }
   }
 
-  protected function setTablesConfigurable() {
+  public function setTablesConfigurable() {
     $tables = $this->db->listTables();
     $tablesConfigurable = array_diff($tables, $this->tablesNotConfigurable);
     $this->tablesConfigurable  = $tablesConfigurable;
   }
 
-  protected function setFieldsConfigurable() {
+  public function setFieldsConfigurable() {
     $fields = json_decode(json_encode($this->fields), true);
     $fieldsConfigurable = array_column($fields, 'name');
     $fieldsConfigurable = array_diff($fieldsConfigurable, $this->fieldsNotConfigurable);
@@ -309,6 +316,10 @@ class Crud extends \CodeIgniter\Controller {
 
   public function getFormVisibleFields() {
     return $this->formVisibleFields;
+  }
+
+  public function getSearchableFields() {
+    return $this->searchableFields;
   }
 
   public function getFieldsNotConfigurable() {
@@ -466,6 +477,7 @@ class Crud extends \CodeIgniter\Controller {
 				$show			    = "Y";
         $show_on_list = "Y";
         $show_on_form = "Y";
+        $searchable   = "Y";
 				$allowed	    = "Y";
 
 				if ($field->name == "id") {
@@ -516,6 +528,7 @@ class Crud extends \CodeIgniter\Controller {
 					"show"				          => $show,
           "show_on_list"          => $show_on_list,
           "show_on_form"          => $show_on_form,
+          "searchable"            => $searchable,
 					"type"				          => $type,
 					"allowed"			          => $allowed,
           "foreign_table_name"    => !empty($fk) ? $fk->foreign_table_name : '',
@@ -881,6 +894,26 @@ class Crud extends \CodeIgniter\Controller {
     $formVisibleFieldsConfig = array_intersect_key($tableConfig['fields'], array_flip($displayableFields));
 
     return $formVisibleFieldsConfig;
+  }
+
+  protected function loadSearchableFieldsConfig($table = "") {
+		if (empty($table)) {
+      return null;
+		}
+
+    $tableConfig = json_decode(json_encode($this->tableConfig), true);
+
+    if (empty($tableConfig)) {
+      return null;
+    }
+
+    /* Find fields that area searchable: searchable = Y */
+    $searchableFields = array_keys(array_column($tableConfig['fields'], 'searchable'), 'Y');
+
+    /* Intersect displyable fields to filter $this->tableConfig array */
+    $searchableFieldsConfig = array_intersect_key($tableConfig['fields'], array_flip($searchableFields));
+
+    return $searchableFieldsConfig;
   }
 
 	protected function extrair_conteudo($conteudo, $tag_inicio, $tag_fim) {

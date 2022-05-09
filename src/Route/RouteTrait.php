@@ -17,25 +17,7 @@ trait RouteTrait {
 
 	function __construct()
 	{
-    //parent::__construct();
 
-    $this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
-
-    foreach($this->config as $property => $value) {
-      $this->{$property} = $value;
-    }
-
-    print_r(get_object_var($this)); exit;
-
-    /*
-    $this->routeControllersConfigFolder = $this->crudBaseFolder."Route".DS."Config".DS."Controllers".DS;
-    $this->routeRoutesConfigFolder      = $this->crudBaseFolder."Route".DS."Config".DS."Routes".DS;
-
-    $this->controllersNotConfigurable   = ['BaseController', 'User', 'Group', 'Permission'];
-    */
-
-    //$this->loadControllers();
-    //$this->setControllersConfigurable();
 	}
 
   public function setController($controller = "") {
@@ -54,17 +36,17 @@ trait RouteTrait {
 	}
 
   protected function setControllerConfig($controller) {
-    $fileConfigPath = $this->controllerConfigFolder.$controller.".json";
+    $fileConfigPath = $this->routeControllersConfigFolder.$controller.".json";
 
     if (!file_exists($fileConfigPath)) {
-      throw new \Exception('Config file not found');
+      //throw new \Exception('Config file not found');
       return null;
     }
 
     $this->controllerConfig = json_decode(file_get_contents($fileConfigPath));
   }
 
-  protected function setControllersConfigurable() {
+  public function setControllersConfigurable() {
     $controllers = (array)$this->controllers;
     $controllersConfigurable = array_diff(array_keys($controllers), $this->controllersNotConfigurable);
     $this->controllersConfigurable  = $controllersConfigurable;

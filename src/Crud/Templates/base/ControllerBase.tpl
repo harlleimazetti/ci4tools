@@ -5,33 +5,29 @@ use Harlleimazetti\Ci4tools\Crud\Crud;
 
 class {class_name}Base extends MainController
 {
-	private $result;
+	private $result = new \stdClass;
+  private $crud;
 	private $relations;
   private $visibleFields;
   private $listVisibleFields;
   private $formVisibleFields;
+  private $searchableFields;
 	private $data = [];
 
 	function __construct()
 	{
-		$this->result['message'] = [];
-    $crud = new Crud();
-    $crud->setTable('{table}');
-    $this->visibleFields = $crud->getVisibleFields();
-    $this->listVisibleFields = $crud->getListVisibleFields();
-    $this->formVisibleFields = $crud->getFormVisibleFields();
+    $this->crud = new Crud();
+    $this->crud->setTable('{table}');
+
+    $this->visibleFields      = $this->crud->getVisibleFields();
+    $this->listVisibleFields  = $this->crud->getListVisibleFields();
+    $this->formVisibleFields  = $this->crud->getFormVisibleFields();
+    $this->searchableFields   = $this->crud->getSearchableFields();
 	}
 
 	public function index()
 	{
 		return redirect('{table}/list');
-	}
-
-	public function search()
-	{
-		${table}Model = new \App\Models\{model_name}Model();
-		${record}s = ${table}Model->get{model_name}(array('AND' => array('{table_alias}.NO_PROCEDIMENTO' => $this->request->getPost('search'))));
-		echo json_encode(${record}s);
 	}
 
 	public function list()
@@ -133,19 +129,25 @@ class {class_name}Base extends MainController
     );
   }
 
-	public function list_backup()
+  public function search($search = '')
 	{
-		$this->permissao->resultado($this->permissao->verifica($this->router->class, $this->router->method));
 		${table}Model = new \App\Models\{model_name}Model();
-		//${record}s = ${table}Model->getAll(array());
-		$this->data['page_title'] = '{page_title_list}';
-		$this->data['pages'][] = '{view_name}List';
-		$this->data['data'] = array();
-		$this->data['body_id'] = '{body_id_list}';
-		$this->data['system_area_title'] = '{system_area_title}';
-		$this->data['system_area_description'] = '{system_area_list_description}';
-		//$this->data['{record}s'] = ${record}s;
-		echo $this->loadTemplate($this->data['pages'], $this->data);
+
+    if (empty($search)) {
+      $search = $this=>request->getPostGet('search);
+    }
+
+		${table}Model->withTenant($this->tenant);
+    
+    if (!empty($search)) {
+      foreach($this->searchableFields as $field) {
+        ${table}Model->orLike($field, $search);
+      }
+    }
+  
+    ${record}s = ${table}Model->findAll();
+
+		return json_encode(${record}s);
 	}
 
 	function list_datatables_columns()
@@ -186,24 +188,6 @@ class {class_name}Base extends MainController
 		if (file_exists(APPPATH."Views/{class_name}ViewDetails.php")) {
 			$this->data['pages'][] = '{class_name}ViewDetails';
 		}
-		echo $this->loadTemplate($this->data['pages'], $this->data);
-	}
-
-	public function edit_backup($id)
-	{
-		$this->permissao->resultado($this->permissao->verifica($this->router->class, $this->router->method));
-		${table}Model = new \App\Models\{model_name}Model();
-		${record} = ${table}Model->get{model_name}(array('AND' => array('{table_alias}.id' => $id)));
-		$this->data['page_title'] = '{page_title_edit}';
-		//$this->data['title_page'] = lang('page_title_edit');
-		$this->data['pages'][] = '{view_name}Form';
-		$this->data['data'] = array();
-		$this->data['body_id'] = '{body_id_editar}';
-		$this->data['system_area_title'] = '{system_area_title}';
-		$this->data['system_area_description'] = '{system_area_edit_description}';
-		$this->data['{record}'] = ${record};
-		$this->data['operacao_bd'] = 'edit';
-		$this->data['acao'] = 'edit';
 		echo $this->loadTemplate($this->data['pages'], $this->data);
 	}
 
