@@ -63,71 +63,20 @@ trait CrudTrait {
 	function __construct()
 	{
     helper('filesystem');
-
-		$this->db = \Config\Database::connect();
-		$this->tables = $this->db->listTables();
-    $this->parser = new TemplateParser();
-
-    //$this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
-
-    /*
-    $this->vendorFolder 						    = $this->config->vendorFolder;
-    $this->crudTemplatesFolder 				  = $this->config->crudTemplatesFolder;
-    $this->crudBaseFolder 						  = $this->config->crudBaseFolder;
-    $this->moduleFolder 						    = $this->config->moduleFolder;
-    $this->moduleAssetsFolder					  = $this->config->moduleAssetsFolder;
-
-		$this->crudConfigFolder 					  = $this->config->crudConfigFolder;
-		$this->crudControllersBaseFolder 	  = $this->config->crudControllersBaseFolder;
-    $this->crudEntitiesBaseFolder 		  = $this->config->crudEntitiesBaseFolder;
-    $this->crudModelsBaseFolder 			  = $this->config->crudModelsBaseFolder;
-    $this->crudTemplatesBaseFolder		  = $this->config->crudTemplatesBaseFolder;
-    $this->crudValidationFolder 		    = $this->config->crudValidationFolder;
-
-    $this->controllersFolder 					  = $this->config->controllersFolder;
-		$this->modelsFolder 							  = $this->config->modelsFolder;
-    $this->entitiesFolder 						  = $this->config->entitiesFolder;
-    $this->viewsFolder     						  = $this->config->viewsFolder;
-
-    $this->themesTemplatesFolder        = $this->config->themesTemplatesFolder;
-    $this->themesTemplatesBaseFolder 	  = $this->config->themesTemplatesBaseFolder;
-    $this->themesFolders                = $this->getDirectoryFoldersNames($this->themesTemplatesBaseFolder."themes".DS);
-
-    $this->tablesNotConfigurable        = $this->config->tablesNotConfigurable;
-    $this->fieldsNotConfigurable        = $this->config->fieldsNotConfigurable;
-    $this->fieldOptionsNotConfigurable  = $this->config->fieldOptionsNotConfigurable;
-    */
-
-    /*
-    $this->vendorFolder 						    = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
-    $this->crudTemplatesFolder 				  = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS."Crud".DS."Templates".DS;
-    $this->crudBaseFolder 						  = APPPATH."Crudbase".DS;
-    $this->moduleFolder 						    = ROOTPATH."ci4toolsadmin".DS;
-    $this->moduleAssetsFolder					  = ROOTPATH."public".DS."ci4toolsadmin".DS;
-
-		$this->crudConfigFolder 					  = $this->crudBaseFolder."Config".DS;
-		$this->crudControllersBaseFolder 	  = $this->crudBaseFolder."Controllers".DS;
-    $this->crudEntitiesBaseFolder 		  = $this->crudBaseFolder."Entities".DS;
-    $this->crudModelsBaseFolder 			  = $this->crudBaseFolder."Models".DS;
-    $this->crudTemplatesBaseFolder		  = $this->crudBaseFolder."Templates".DS;
-    $this->crudValidationFolder 		    = $this->crudBaseFolder."Validation".DS;
-
-    $this->controllersFolder 					  = APPPATH."Controllers".DS;
-		$this->modelsFolder 							  = APPPATH."Models".DS;
-    $this->entitiesFolder 						  = APPPATH."Entities".DS;
-    $this->viewsFolder     						  = APPPATH."Views".DS;
-
-    $this->themesTemplatesFolder        = $this->vendorFolder."Themes".DS."Templates".DS."themes".DS;
-    $this->themesTemplatesBaseFolder 	  = $this->crudBaseFolder."Templates".DS;
-    $this->themesFolders                = $this->getDirectoryFoldersNames($this->themesTemplatesBaseFolder."themes".DS);
-
-    $this->tablesNotConfigurable        = ['user', 'group', 'permission', 'permission_user', 'permission_group'];
-    $this->fieldsNotConfigurable        = ['created_at', 'updated_at', 'deleted_at'];
-    $this->fieldOptionsNotConfigurable  = ['name'];
-    */
-
-    //$this->setTablesConfigurable();
 	}
+
+  public static function init() {
+    $self = new self();
+    $self->db = \Config\Database::connect();
+    $self->parser = new TemplateParser();
+    $self->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
+
+    foreach($self->config as $property => $value) {
+      $self->{$property} = $value;
+    }
+
+    $self->themesFolders = $self->getDirectoryFoldersNames($self->themesTemplatesBaseFolder."themes".DS);
+  }
 
   public function _install()
   {
