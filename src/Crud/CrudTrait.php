@@ -8,7 +8,7 @@ defined('DS') or define('DS', DIRECTORY_SEPARATOR);
 defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
-class Crud extends \CodeIgniter\Controller {
+trait CrudTrait {
   protected $db;
   protected $tables;
   protected $table;
