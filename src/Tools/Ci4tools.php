@@ -11,22 +11,13 @@ defined('VENDOR_NAME') or define('VENDOR_NAME', 'harlleimazetti');
 defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
 class Ci4tools extends \CodeIgniter\Controller {
-  use CrudTrait, RouteTrait;
+  use CrudTrait { CrudTrait::init as private initCrudTrait; }
+  use RouteTrait { RouteTrait::init as private initRouteTrait; }
 
 	function __construct()
 	{
-    CrudTrait::init();
-    /*
-    $this->db = \Config\Database::connect();
-    $this->parser = new TemplateParser();
-    $this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
-
-    foreach($this->config as $key => $value) {
-      $this->{$key} = $value;
-    }
-
-    $this->themesFolders = $this->getDirectoryFoldersNames($this->themesTemplatesBaseFolder."themes".DS);
-    */
+    $this->initCrudTrait();
+    $this->initRouteTrait();
 	}
 
   public function install()

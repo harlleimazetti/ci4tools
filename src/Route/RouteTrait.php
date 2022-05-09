@@ -20,6 +20,14 @@ trait RouteTrait {
 
 	}
 
+  public function init() {
+    $this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
+
+    foreach($this->config as $property => $value) {
+      $this->{$property} = $value;
+    }
+  }
+
   public function setController($controller = "") {
 		if (empty($controller)) {
       throw new \Exception('Controller name can`t be null');
