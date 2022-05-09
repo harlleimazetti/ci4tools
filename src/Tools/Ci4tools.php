@@ -15,7 +15,12 @@ class Ci4tools extends \CodeIgniter\Controller {
 
 	function __construct()
 	{
+    $this->db = \Config\Database::connect();
+    $this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
 
+    foreach($this->config as $key => $value) {
+      $this->{$key} = $value;
+    }
 	}
 
   public function install()

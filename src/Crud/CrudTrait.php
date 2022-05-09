@@ -68,8 +68,9 @@ trait CrudTrait {
 		$this->tables = $this->db->listTables();
     $this->parser = new TemplateParser();
 
-    $this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
+    //$this->config = config(\Harlleimazetti\Ci4tools\Config\Ci4toolsConfig::class);
 
+    /*
     $this->vendorFolder 						    = $this->config->vendorFolder;
     $this->crudTemplatesFolder 				  = $this->config->crudTemplatesFolder;
     $this->crudBaseFolder 						  = $this->config->crudBaseFolder;
@@ -95,6 +96,7 @@ trait CrudTrait {
     $this->tablesNotConfigurable        = $this->config->tablesNotConfigurable;
     $this->fieldsNotConfigurable        = $this->config->fieldsNotConfigurable;
     $this->fieldOptionsNotConfigurable  = $this->config->fieldOptionsNotConfigurable;
+    */
 
     /*
     $this->vendorFolder 						    = ROOTPATH."vendor".DS.VENDOR_NAME.DS.PACKAGE_NAME.DS."src".DS;
@@ -127,7 +129,7 @@ trait CrudTrait {
     //$this->setTablesConfigurable();
 	}
 
-  public function install()
+  public function _install()
   {
 		if (!is_dir($this->moduleFolder))	{ mkdir($this->moduleFolder); }
     if (!is_dir($this->crudBaseFolder))	{ mkdir($this->crudBaseFolder); }
@@ -765,40 +767,6 @@ trait CrudTrait {
     $this->result['messages'][] = 'Dados salvos com sucesso';
     $this->result['errors'] = [];
     return (object)$this->result;
-  }
-
-  public function loadControllers()
-  {
-    $controllers = new \CodeIgniter\Files\FileCollection;
-    $controllers->add($this->controllersFolder, true)->retainPattern('*.php');
-    
-    foreach($controllers as $controller)
-    {
-      $controllerName = substr($controller->getBasename(), 0, -4);
-      $this->controllers[$controllerName] = [];
-
-      //print_r($this->controllers);
-
-      $instance = Factories::controllers($controllerName);
-      $class    = new \ReflectionClass($instance);
-      $methods  = $class->getMethods(\ReflectionMethod::IS_PUBLIC);
-
-      foreach($methods as $method)
-      {
-        $m = (stristr($method->class, $controllerName) && $method->name !== '__construct') ? $method : null;
-        !empty($m) && array_push($this->controllers[$controllerName], $m);
-      }
-    }
-
-    $this->controllers = (object)$this->controllers;
-
-    foreach($this->controllers as $controller => $methods) {
-      echo $controller."\r\n";
-      foreach ($methods as $method) {
-        echo "  :.....".$method->name."\r\n";
-      }
-    }
-    //print_r((object)$this->controllers);
   }
 
   protected function verifyForeignKey($fieldName)
