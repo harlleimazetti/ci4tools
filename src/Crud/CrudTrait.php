@@ -93,10 +93,10 @@ trait CrudTrait {
   }
 
 	protected function setTableInfo($table) {
-		$this->table		      = $table;
-		$this->fields		      = $this->db->getFieldData($this->table);
-		$this->keys			      = $this->db->getForeignKeyData($this->table);
-		$this->indexes        = $this->db->getIndexData($this->table);
+		$this->table    = $table;
+		$this->fields   = $this->db->getFieldData($this->table);
+		$this->keys     = $this->db->getForeignKeyData($this->table);
+		$this->indexes  = $this->db->getIndexData($this->table);
 	}
 
   protected function setTableConfig($table) {

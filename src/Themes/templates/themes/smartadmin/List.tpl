@@ -154,7 +154,7 @@
                         </div>
                         -->
                         <!-- datatable start -->
-                        <table id="table-list-{{table}}" data-url="<?php echo base_url() ?>/{{table}}" data-tablename="{{table}}" class="table table-bordered table-hover table-striped table-sm w-100 table-records">
+                        <table id="table-list-{{table}}" data-url="<?php echo base_url() ?>/sistema/{{table}}" data-tablename="{{table}}" class="table table-bordered table-hover table-striped table-sm w-100 table-records">
                           <thead>
                             <tr>
                               <th class="text-center" width="30">ID</th>

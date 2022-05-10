@@ -42,12 +42,22 @@ server.interceptors.response.use(
 export function initializeTableRecords() {
   let tables = [];
 
-  $('.table-records').each(function (index, table) {
+  $('.table-records').each(async function (index, table) {
     let tableRecordsName  = $(table).data('tablename');
     let tableRecordsUrl   = $(table).data('url');
 
+    function getColumns(url) { 
+      return $.ajax({
+        url: url,
+        type: 'GET',
+      });
+    };
+
+    var columns = await getColumns(tableRecordsUrl + '/dataTablesColumns');
+    
     console.log(tableRecordsUrl);
-  
+    console.log(columns);
+
     let tableRecordsButtons = [{
       text: '<i class="fal fa-file mr-2"></i>Novo',
       className: 'btn btn-primary',
@@ -75,6 +85,12 @@ export function initializeTableRecords() {
   
     tables[index] = $(table).dataTable({
       responsive: true,
+      serverSide: true,
+      ajax: {
+        url: tableRecordsUrl + '/searchDataTables',
+        type: 'POST'
+      },
+      columns: columns,
       language: {
         url: '/localisation/datatables_pt_br.json'
       },

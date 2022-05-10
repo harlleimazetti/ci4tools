@@ -1,11 +1,12 @@
 <?php namespace App\Crudbase\Controllers;
 
 use App\Crudbase\Controllers\MainController;
-use Harlleimazetti\Ci4tools\Crud\Crud;
+use \Harlleimazetti\Ci4tools\Crud\Crud;
+use \Hermawan\DataTables\DataTable;
 
 class {class_name}Base extends MainController
 {
-	private $result = new \stdClass;
+	private $result;
   private $crud;
 	private $relations;
   private $visibleFields;
@@ -16,6 +17,7 @@ class {class_name}Base extends MainController
 
 	function __construct()
 	{
+    $this->result = new \stdClass();
     $this->crud = new Crud();
     $this->crud->setTable('{table}');
 
@@ -129,33 +131,95 @@ class {class_name}Base extends MainController
     );
   }
 
-  public function search($search = '')
+  public function erase()
 	{
 		${table}Model = new \App\Models\{model_name}Model();
-
-    if (empty($search)) {
-      $search = $this=>request->getPostGet('search);
-    }
-
-		${table}Model->withTenant($this->tenant);
-    
-    if (!empty($search)) {
-      foreach($this->searchableFields as $field) {
-        ${table}Model->orLike($field, $search);
-      }
-    }
-  
-    ${record}s = ${table}Model->findAll();
-
-		return json_encode(${record}s);
+		$this->result = ${table}Model->erase($this->request->getPost('id'));
+		echo json_encode($this->result);
 	}
 
-	function list_datatables_columns()
+	public function store()
 	{
-		$this->permissao->resultado($this->permissao->verifica($this->router->class, $this->router->method));
 		${table}Model = new \App\Models\{model_name}Model();
-		$colunas = ${table}Model->getDatatablesColumns();
-		echo json_encode($colunas);
+		$this->result = ${table}Model->store($this->request->getPost());
+    if ($this->result->success === false) {
+       return $this->fail($this->result, 400);
+    }
+
+		return $this->respond($this->result, 200);
+	}
+
+  private function executeSearch($q = '', $page = 0, $perPage = 20, $params = [], $source = '', $template = '')
+  {
+    $q        = empty($q)         ? $this->request->getPostGet('q')         : $q;
+    $page     = empty($page)      ? $this->request->getPostGet('page')      : $page;
+    $perPage  = empty($perPage)   ? $this->request->getPostGet('perPage')   : $perPage;
+    $params   = empty($params)    ? $this->request->getPostGet('params')    : $params;
+    $source   = empty($source)    ? $this->request->getPostGet('source')    : $source;
+    $template = empty($template)  ? $this->request->getPostGet('template')  : $template;
+
+    $columns = 'id, '.implode(', ', $this->listVisibleFields);
+
+		${table}Model = new \App\Models\{model_name}Model();
+
+		${table}Model->select($columns);
+    ${table}Model->withTenant($this->tenant);
+    
+    if (!empty($q)) {
+      ${table}Model->groupStart();
+      foreach($this->searchableFields as $field) {
+        ${table}Model->orLike($field, $q);
+      }
+      ${table}Model->groupEnd();
+    }
+  
+    ${table}Model->limit($perPage, ($page * $perPage));
+
+    return ${table}Model;
+  }
+
+  public function search($q = '', $page = 0, $perPage = 20, $params = [], $source = '', $template = '')
+	{
+    $q        = empty($q)         ? $this->request->getPostGet('q')         : $q;
+    $page     = empty($page)      ? $this->request->getPostGet('page')      : $page;
+    $perPage  = empty($perPage)   ? $this->request->getPostGet('perPage')   : $perPage;
+    $params   = empty($params)    ? $this->request->getPostGet('params')    : $params;
+    $source   = empty($source)    ? $this->request->getPostGet('source')    : $source;
+    $template = empty($template)  ? $this->request->getPostGet('template')  : $template;
+
+    $searchResult = $this->executeSearch($this->request->getPost('q'));
+    ${record}s = $searchResult->get();
+
+		return json_encode(${record}s->getResult());
+	}
+
+  public function searchSelect2() {
+    $searchResult = $this->executeSearch($this->request->getPost('q'));
+    ${record}s = $searchResult->get();
+
+    $response = [
+      'results'     => [],
+      'pagination'  => false
+    ];
+
+    foreach(${record}s->getResult() as $data) {
+      $response['results'][] = [
+        'id'    => $data->id,
+        'text'  => $data->nome
+      ];
+    }
+
+    return json_encode($response);
+  }
+
+  public function searchDataTables() {
+    $searchResult = $this->executeSearch($this->request->getPost('q'));
+    return DataTable::of($searchResult->builder())->toJson(true);
+  }
+
+	function dataTablesColumns()
+	{
+		return json_encode($this->listVisibleFields);
 	}
 
 	function list_datatables($params = array())
@@ -262,25 +326,6 @@ class {class_name}Base extends MainController
 		} else {
 			echo json_encode($this->result);
 		}
-	}
-
-	public function erase()
-	{
-		$this->permissao->resultado($this->permissao->verifica($this->router->class, $this->router->method));
-		${table}Model = new \App\Models\{model_name}Model();
-		$this->result = ${table}Model->erase($this->request->getPost('id'));
-		echo json_encode($this->result);
-	}
-
-	public function store()
-	{
-		${table}Model = new \App\Models\{model_name}Model();
-		$this->result = ${table}Model->store($this->request->getPost());
-    if ($this->result->success === false) {
-       return $this->fail($this->result, 400);
-    }
-
-		return $this->respond($this->result, 200);
 	}
 }
 

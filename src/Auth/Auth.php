@@ -75,7 +75,7 @@ class Auth
     $key  = $this->serverKey;
     $iat  = time();
     $nbf  = time();
-    $exp  = time() + 300;
+    $exp  = time() + 1500;
 
     $payload = array(
       "iss"    => $this->host,
