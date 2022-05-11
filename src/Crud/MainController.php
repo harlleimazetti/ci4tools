@@ -121,9 +121,49 @@ class MainController extends Controller
     $menuArea['Menu principal'][] = (object)[
       'name' => 'Dashboard',
       'description' => 'Dashboard',
-      'path' => 'dashboard',
-      'icon' => 'fal fa-home',
+      'path' => 'sistema/dashboard',
+      'icon' => 'fa fa-home',
       'tags' => 'dashboard home'
+    ];
+
+    $menuArea['Menu principal'][] = (object)[
+      'name' => 'Planilhas',
+      'description' => 'Planilhas',
+      'path' => 'sistema/arquivo/list',
+      'icon' => 'fa fa-file-spreadsheet',
+      'tags' => 'planilha planilhas csv'
+    ];
+
+    $menuArea['Menu principal'][] = (object)[
+      'name' => 'Carteiras',
+      'description' => 'Carteiras',
+      'path' => 'sistema/carteira/list',
+      'icon' => 'fa fa-address-card',
+      'tags' => 'carteira estudantil carteiras'
+    ];
+
+    $menuArea['Menu principal'][] = (object)[
+      'name' => 'Fotos',
+      'description' => 'Fotos',
+      'path' => 'sistema/image/list',
+      'icon' => 'fa fa-camera-alt',
+      'tags' => 'fotos foto'
+    ];
+
+    $menuArea['Menu principal'][] = (object)[
+      'name' => 'Postos de atendimento',
+      'description' => 'Postos de atendimento',
+      'path' => 'sistema/pda/list',
+      'icon' => 'fa fa-user-headset',
+      'tags' => 'pda postos de atendimento'
+    ];
+
+    $menuArea['Menu principal'][] = (object)[
+      'name' => 'Logout',
+      'description' => 'Logout',
+      'path' => 'sistema/logout',
+      'icon' => 'fa fa-sign-out',
+      'tags' => 'logout sair'
     ];
 
     return $menuArea;

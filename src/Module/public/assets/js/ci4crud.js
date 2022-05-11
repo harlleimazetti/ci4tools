@@ -49,7 +49,8 @@ export function initializeTableRecords() {
     function getColumns(url) { 
       return $.ajax({
         url: url,
-        type: 'GET',
+        type: 'POST',
+        dataType: 'json'
       });
     };
 

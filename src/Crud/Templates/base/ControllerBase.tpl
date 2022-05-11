@@ -219,7 +219,16 @@ class {class_name}Base extends MainController
 
 	function dataTablesColumns()
 	{
-		return json_encode($this->listVisibleFields);
+    $columns = [];
+    $columns[] = ['data' => 'id'];
+    
+    foreach ($this->listVisibleFields as $field) {
+      $columns[] = ['data' => $field];
+    }
+
+    $columns[] = ['data' => 'acoes'];
+
+		return json_encode($columns);
 	}
 
 	function list_datatables($params = array())
