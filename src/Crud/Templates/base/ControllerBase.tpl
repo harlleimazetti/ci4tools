@@ -214,13 +214,38 @@ class {class_name}Base extends MainController
 
   public function searchDataTables() {
     $searchResult = $this->executeSearch($this->request->getPost('q'));
-    return DataTable::of($searchResult->builder())->toJson(true);
+    return DataTable::of($searchResult->builder())
+      ->edit('id', function($row){
+        return '
+          <td class="text-center">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" name="id[]" id="id['.$row->id.']" value="'.$row->id.'">
+              <label class="custom-control-label" for="id['.'$row->id .']"></label>
+            </div>
+          </td>'
+      })
+      ->add('acoes', function($row)) {
+        return '
+          <td class="text-center">
+            <div class="btn-group dropleft">
+              <button type="button" class="btn btn-outline btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fal fa-ellipsis-v"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="<?php echo base_url() ?>/sistema/{{table}}/edit/'.$row->id .'"><i class="fal fa-edit mr-2"></i> Editar</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="javascript:void(0)"><i class="fal fa-times-circle mr-2"></i> Excluir</a>
+              </div>
+            </div>
+          </td>'
+      })
+      ->toJson(true);                              
   }
 
 	function dataTablesColumns()
 	{
     $columns = [];
-    $columns[] = ['data' => 'id'];
+    //$columns[] = ['data' => 'id'];
     
     foreach ($this->listVisibleFields as $field) {
       $columns[] = ['data' => $field];

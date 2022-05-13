@@ -145,7 +145,7 @@ class MainController extends Controller
     $menuArea['Menu principal'][] = (object)[
       'name' => 'Fotos',
       'description' => 'Fotos',
-      'path' => 'sistema/image/list',
+      'path' => 'sistema/imagem/list',
       'icon' => 'fa fa-camera-alt',
       'tags' => 'fotos foto'
     ];
