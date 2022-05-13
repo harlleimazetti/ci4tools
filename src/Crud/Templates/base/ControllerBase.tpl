@@ -215,16 +215,18 @@ class {class_name}Base extends MainController
   public function searchDataTables() {
     $searchResult = $this->executeSearch($this->request->getPost('q'));
     return DataTable::of($searchResult->builder())
-      ->edit('id', function($row){
+      /*
+      ->add('id', function($row){
         return '
           <td class="text-center">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" name="id[]" id="id['.$row->id.']" value="'.$row->id.'">
-              <label class="custom-control-label" for="id['.'$row->id .']"></label>
+              <label class="custom-control-label" for="id['.$row->id.']"></label>
             </div>
-          </td>'
+          </td>';
       })
-      ->add('acoes', function($row)) {
+      */
+      ->add('actions', function($row) {
         return '
           <td class="text-center">
             <div class="btn-group dropleft">
@@ -237,7 +239,7 @@ class {class_name}Base extends MainController
                 <a class="dropdown-item" href="javascript:void(0)"><i class="fal fa-times-circle mr-2"></i> Excluir</a>
               </div>
             </div>
-          </td>'
+          </td>';
       })
       ->toJson(true);                              
   }
@@ -251,7 +253,7 @@ class {class_name}Base extends MainController
       $columns[] = ['data' => $field];
     }
 
-    $columns[] = ['data' => 'acoes'];
+    $columns[] = ['data' => 'actions', orderable: false];
 
 		return json_encode($columns);
 	}
