@@ -18,7 +18,7 @@
             </div>
             -->
             <!-- Record form start -->
-            <form method="post" action="<?php echo base_url(); ?>/{{table}}/store" class="form-record" enctype="multipart/form-data">
+            <form method="post" action="<?php echo base_url(); ?>/sistema/{{table}}/store" class="form-record" enctype="multipart/form-data">
               
               {{{record_form_fields}}}
 

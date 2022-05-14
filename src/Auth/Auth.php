@@ -18,7 +18,7 @@ class Auth
     $this->host       = $uri->getHost();
     $this->request    = \Config\Services::request();
     $this->result     = new \stdClass();
-    $this->serverKey  = $this->getServerKey();
+    //$this->serverKey  = $this->getServerKey();
     $this->algo       = 'HS256';
   }
 
@@ -72,7 +72,7 @@ class Auth
     ];
 
     $algo = $this->algo;
-    $key  = $this->serverKey;
+    $key  = $this->getServerKey();
     $iat  = time();
     $nbf  = time();
     $exp  = time() + 1500;
@@ -108,7 +108,7 @@ class Auth
 
   public function verify()
   {
-    $key  = $this->serverKey;
+    $key  = $this->getServerKey();
     $algo = $this->algo;
 
     $token = $this->getAuthToken();
@@ -143,7 +143,7 @@ class Auth
 
   public function user_id()
   {
-    $key  = $this->serverKey;
+    $key  = $this->getServerKey();
     $algo = $this->algo;
 
     $token = $this->getAuthToken();
@@ -168,7 +168,7 @@ class Auth
 
   public function user()
   {
-    $key  = $this->serverKey;
+    $key  = $this->getServerKey();
     $algo = $this->algo;
 
     $token = $this->getAuthToken();

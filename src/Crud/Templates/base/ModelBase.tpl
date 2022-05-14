@@ -30,6 +30,8 @@ class {class_name}ModelBase extends Model
 	//protected $validationMessages = [];
 	protected $allowedFields      = [{record_allowed_fields}];
 
+  protected $beforeUpdate       = ['includeTenant'];
+  protected $beforeInsert       = ['includeTenant'];
   protected $afterFind          = ['findRelations'];
 
 	function __construct() {
@@ -43,6 +45,17 @@ class {class_name}ModelBase extends Model
     ${table}Validation = new {class_name}Validation();
     $this->validationRules = ${table}Validation->getRules();
 	}
+
+  protected function includeTenant(array $data)
+  {
+    if (!empty($data['data']) && !empty($this->tenant)) {
+      if (in_array('tenant_id', $this->fields)) {
+        $data['data']['tenant_id'] = $this->tenant->id;
+      }
+    }
+
+    return $data;
+  }
 
   protected function findRelations(array $data)
   {

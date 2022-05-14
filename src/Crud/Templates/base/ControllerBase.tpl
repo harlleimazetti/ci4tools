@@ -141,7 +141,7 @@ class {class_name}Base extends MainController
 	public function store()
 	{
 		${table}Model = new \App\Models\{model_name}Model();
-		$this->result = ${table}Model->store($this->request->getPost());
+		$this->result = ${table}Model->withTenant($this->tenant)->store($this->request->getPost());
     if ($this->result->success === false) {
        return $this->fail($this->result, 400);
     }
