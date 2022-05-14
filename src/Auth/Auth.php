@@ -15,10 +15,11 @@ class Auth
   {
     $uri = new \CodeIgniter\HTTP\URI(base_url());
 
+    $this->config     = $this->getConfig();
     $this->host       = $uri->getHost();
     $this->request    = \Config\Services::request();
     $this->result     = new \stdClass();
-    //$this->serverKey  = $this->getServerKey();
+    $this->serverKey  = $this->getServerKey();
     $this->algo       = 'HS256';
   }
 
@@ -202,7 +203,8 @@ class Auth
   }
 
   protected function getServerKey() {
-    return getenv('app.serverKey');
+    return $this->config['serverKey'];
+    //return getenv('app.serverKey');
   }
 
   protected function getAuthToken() {
@@ -223,5 +225,10 @@ class Auth
     $this->result->success = false;
     $this->result->message[] = 'Acesso negado - token não informado';
     return null;
+  }
+
+  protected function getConfig() {
+    $config = config('Ci4tools');
+    return $config;
   }
 }
