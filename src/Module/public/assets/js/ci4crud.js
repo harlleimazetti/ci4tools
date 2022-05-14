@@ -46,18 +46,18 @@ export function initializeTableRecords() {
     let tableRecordsName  = $(table).data('tablename');
     let tableRecordsUrl   = $(table).data('url');
 
-    function getColumns(url) { 
-      return $.ajax({
+    async function getColumns(url) { 
+      return await $.ajax({
         url: url,
         type: 'POST',
         dataType: 'json'
       });
     };
 
-    var columns = await getColumns(tableRecordsUrl + '/dataTablesColumns');
+    //var columns = await getColumns(tableRecordsUrl + '/dataTablesColumns');
     
     console.log(tableRecordsUrl);
-    console.log(columns);
+    //console.log(columns);
 
     let tableRecordsButtons = [{
       text: '<i class="fal fa-file mr-2"></i>Novo',
@@ -86,12 +86,15 @@ export function initializeTableRecords() {
   
     tables[index] = $(table).dataTable({
       responsive: true,
+      processing: true,
       serverSide: true,
       ajax: {
         url: tableRecordsUrl + '/searchDataTables',
-        type: 'POST'
+        type: 'POST',
+        dataType: 'json'
       },
-      columns: columns,
+      //columns: columns,
+      columns: await getColumns(tableRecordsUrl + '/dataTablesColumns'),
       language: {
         url: '/localisation/datatables_pt_br.json'
       },

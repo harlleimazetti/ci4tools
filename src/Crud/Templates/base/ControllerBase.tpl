@@ -158,7 +158,7 @@ class {class_name}Base extends MainController
     $source   = empty($source)    ? $this->request->getPostGet('source')    : $source;
     $template = empty($template)  ? $this->request->getPostGet('template')  : $template;
 
-    $columns = 'id, '.implode(', ', $this->listVisibleFields);
+    $columns = implode(', ', $this->listVisibleFields);
 
 		${table}Model = new \App\Models\{model_name}Model();
 
@@ -215,45 +215,42 @@ class {class_name}Base extends MainController
   public function searchDataTables() {
     $searchResult = $this->executeSearch($this->request->getPost('q'));
     return DataTable::of($searchResult->builder())
-      /*
-      ->add('id', function($row){
-        return '
-          <td class="text-center">
+      ->edit('id', function($row){
+        return 
+        '<td class="text-center">
             <div class="custom-control custom-checkbox">
               <input type="checkbox" class="custom-control-input" name="id[]" id="id['.$row->id.']" value="'.$row->id.'">
               <label class="custom-control-label" for="id['.$row->id.']"></label>
             </div>
           </td>';
       })
-      */
       ->add('actions', function($row) {
-        return '
-          <td class="text-center">
+        return
+        '<td class="text-center">
             <div class="btn-group dropleft">
               <button type="button" class="btn btn-outline btn-sm btn-icon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fal fa-ellipsis-v"></i>
               </button>
               <div class="dropdown-menu">
-                <a class="dropdown-item" href="<?php echo base_url() ?>/sistema/{{table}}/edit/'.$row->id .'"><i class="fal fa-edit mr-2"></i> Editar</a>
+                <a class="dropdown-item" href="'.base_url('/sistema/{table}/edit').'/'.$row->id.'"><i class="fal fa-edit mr-2"></i> Editar</a>
                 <div class="dropdown-divider"></div>
                 <a class="dropdown-item" href="javascript:void(0)"><i class="fal fa-times-circle mr-2"></i> Excluir</a>
               </div>
             </div>
           </td>';
       })
-      ->toJson(true);                              
+      ->toJson(true);
   }
 
 	function dataTablesColumns()
 	{
     $columns = [];
-    //$columns[] = ['data' => 'id'];
     
     foreach ($this->listVisibleFields as $field) {
       $columns[] = ['data' => $field];
     }
 
-    $columns[] = ['data' => 'actions', orderable: false];
+    $columns[] = ['data' => 'actions', 'orderable' => false];
 
 		return json_encode($columns);
 	}
