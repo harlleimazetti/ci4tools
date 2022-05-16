@@ -203,7 +203,7 @@ class Auth
   }
 
   protected function getServerKey() {
-    return $this->config['serverKey'];
+    return $this->config->serverKey;
     //return getenv('app.serverKey');
   }
 
