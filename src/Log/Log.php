@@ -1,8 +1,5 @@
 <?php namespace Harlleimazetti\Ci4tools\Log;
 
-use Firebase\JWT\JWT;
-use Firebase\JWT\Key;
-
 class Log
 {
   protected $request;
@@ -36,7 +33,7 @@ class Log
 
   public function log($level = INFO, $rawMessage = '', $context = [], $tenant = null)
   {
-    if (empty($message)) {
+    if (empty($rawMessage)) {
       return null;
     }
 
@@ -75,10 +72,6 @@ class Log
     }
 
     return strtr($message, $replace);
-  }
-
-  private function getAuthToken() {
-    $authToken = $this->request->getHeader('Authorization');
   }
 
   private function getConfig() {

@@ -2,12 +2,14 @@
     <div class="row">
         <div class="col-xl-12">
             <div id="panel-1" class="panel">
+              <?php if (false) { ?>
                 <div class="panel-hdr">
                     <h2>
                         Example <span class="fw-300"><i>Table</i></span>
                     </h2>
                 </div>
-                <div class="panel-container show">
+              <?php } ?>
+                <div class="panel-container show mt-2">
                     <div class="panel-content">
                         <!--
                         <div class="panel-tag">

@@ -56,6 +56,13 @@ class MainController extends Controller
   protected $auth;
 
   /**
+   * Log service.
+   *
+   * @service log
+   */
+  protected $log;
+
+  /**
    * Constructor.
    */
   public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
@@ -75,6 +82,7 @@ class MainController extends Controller
     $this->tenant = $this->defineTenant();
 
     $this->auth   = service('auth');
+    $this->log    = service('log');
 
     define('UPLOADPATH', WRITEPATH.'uploads'.DIRECTORY_SEPARATOR);
   }
