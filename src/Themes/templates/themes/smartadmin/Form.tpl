@@ -3,8 +3,8 @@
 
   include('content_header.php');
 
-  if (file_exists('./{table}FormCustom.php')) {
-    include('./{table}FormCustom.php');
+  if (file_exists('./{{class_name}}FormCustom.php')) {
+    include('./{{class_name}}FormCustom.php');
   } else {
 ?>
 
