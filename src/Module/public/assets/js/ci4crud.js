@@ -39,10 +39,34 @@ server.interceptors.response.use(
   (error) => errorHandler(error)
 );
 
-export function initializeTableRecords() {
-  let tables = [];
+export const tableRecordsButtons = {
+  new: {
+    text: '<i class="fa fa-file mr-2"></i>Novo',
+    className: 'btn btn-primary',
+    action: function ( e, dt, node, config ) {
+      let url = `${tableRecordsUrl}/new`;
+      $(location).attr('href', url);
+    }
+  },
+  upload: {
+    text: '<i class="fa fa-upload mr-2"></i>Upload',
+    className: 'btn btn-primary',
+    action: function ( e, dt, node, config ) {
+      $('#modal_arquivo').modal('show');
+    }
+  },
+  delete: {
+    text: '<i class="fa fa-times-circle mr-2"></i>Excluir',
+    className: 'btn btn-danger',
+    action: function ( e, dt, node, config ) {
+      let url = `${tableRecordsUrl}/delete`;
+    }
+}};
 
-  $('.table-records').each(async function (index, table) {
+export async function initializeTableRecords(table, buttons) {
+  return new Promise (async function(resolve, reject) {
+    let tb;
+    let tableID           = $(table).attr('id');
     let tableRecordsName  = $(table).data('tablename');
     let tableRecordsUrl   = $(table).data('url');
 
@@ -53,38 +77,8 @@ export function initializeTableRecords() {
         dataType: 'json'
       });
     };
-
-    //var columns = await getColumns(tableRecordsUrl + '/dataTablesColumns');
-    
-    console.log(tableRecordsUrl);
-    //console.log(columns);
-
-    let tableRecordsButtons = [{
-      text: '<i class="fal fa-file mr-2"></i>Novo',
-      className: 'btn btn-primary',
-      action: function ( e, dt, node, config ) {
-        let url = `${tableRecordsUrl}/new`;
-        console.log(url);
-        $(location).attr('href', url);
-      }
-    },
-    {
-      text: '<i class="fal fa-upload mr-2"></i>Upload',
-      className: 'btn btn-primary',
-      action: function ( e, dt, node, config ) {
-        $('#modal_arquivo').modal('show');
-      }
-    },
-    {
-      text: '<i class="fal fa-times-circle mr-2"></i>Excluir',
-      className: 'btn btn-danger',
-      action: function ( e, dt, node, config ) {
-        let url = `${tableRecordsUrl}/delete`;
-        console.log(url);
-      }
-    }];
   
-    tables[index] = $(table).dataTable({
+    tb = await $('.table-records').DataTable({
       responsive: true,
       processing: true,
       serverSide: true,
@@ -93,13 +87,15 @@ export function initializeTableRecords() {
         type: 'POST',
         dataType: 'json'
       },
-      //columns: columns,
       columns: await getColumns(tableRecordsUrl + '/dataTablesColumns'),
       language: {
         url: '/localisation/datatables_pt_br.json'
       },
       dom: "<'row mb-3'<'col-sm-12 col-md-4 d-flex align-items-center justify-content-start'B><'col-sm-12 col-md-4 d-flex align-items-center justify-content-start'f><'col-sm-12 col-md-4 d-flex align-items-center justify-content-end'l>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
-      buttons: tableRecordsButtons
+      buttons: buttons
     });
-  });
+
+    resolve (tb);
+    reject (null);
+  })
 }

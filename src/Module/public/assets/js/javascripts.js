@@ -1,26 +1,31 @@
-import { initializeTableRecords, server, cookies, baseURL } from './ci4crud.js';
-import { notify, unHighlightFieldsError, highlightFieldsError} from './utils.js';
+import {
+  initializeTableRecords,
+  tableRecordsButtons,
+  server,
+  cookies,
+  baseURL
+} from './ci4crud.js';
 
-$(document).ready(function() {
-  $('.js-thead-colors a').on('click', function() {
-    var theadColor = $(this).attr("data-bg");
-    console.log(theadColor);
-    $('#dt-basic-example thead').removeClassPrefix('bg-').addClass(theadColor);
-  });
+import {
+  notify,
+  unHighlightFieldsError,
+  highlightFieldsError
+} from './utils.js';
 
-  $('.js-tbody-colors a').on('click', function() {
-    var theadColor = $(this).attr("data-bg");
-    console.log(theadColor);
-    $('#dt-basic-example').removeClassPrefix('bg-').addClass(theadColor);
-  });
+$(document).ready(async function() {
 
   $(function() {
     $('.select2').select2();
   })
 
-  var tableRecords = initializeTableRecords();
+  let tableRecords = [];
 
-  //console.log(tableRecords);
+  await $('.table-records').each(async function (index, table) {
+    initializeTableRecords(table, [tableRecordsButtons.new, tableRecordsButtons.delete])
+      .then ((tableRecord) => {
+        tableRecords[index] = tableRecord;
+      })
+  });
 
   $("#form-login").submit(function(event) {
     event.preventDefault();
@@ -172,4 +177,17 @@ $(document).ready(function() {
       notify(response.messages, 'error');
     }
   });
+
+  $('.js-thead-colors a').on('click', function() {
+    var theadColor = $(this).attr("data-bg");
+    console.log(theadColor);
+    $('#dt-basic-example thead').removeClassPrefix('bg-').addClass(theadColor);
+  });
+
+  $('.js-tbody-colors a').on('click', function() {
+    var theadColor = $(this).attr("data-bg");
+    console.log(theadColor);
+    $('#dt-basic-example').removeClassPrefix('bg-').addClass(theadColor);
+  });
+
 });
