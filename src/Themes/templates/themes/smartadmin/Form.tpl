@@ -1,7 +1,13 @@
 <?php
 	${{table}} = reset(${{table}});
+
+  include('content_header.php');
+
+  if (file_exists('./{table}FormCustom.php')) {
+    include('./{table}FormCustom.php');
+  } else {
 ?>
-<?php include('content_header.php'); ?>
+
   <div class="row">
     <div class="col-xl-12">
       <div id="panel-1" class="panel">
@@ -29,7 +35,8 @@
       </div>
     </div>
   </div>
-<?php include('content_footer.php'); ?>
+
+<?php } include('content_footer.php'); ?>
 
 <?php
 /* End of File {{view_name}}Form.php */
