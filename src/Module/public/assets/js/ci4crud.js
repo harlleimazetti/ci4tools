@@ -1,4 +1,6 @@
-export const baseURL = 'http://localhost/danms/appweb/';
+import * as config from './config.js';
+
+export const baseURL = config.baseURL;
 
 export const cookies = Cookies;
 
@@ -6,8 +8,8 @@ export const server = axios.create({
   baseURL: baseURL,
   timeout: 1000,
   headers: {
-    'x-api-key': '',
-    'x-client-type': 'appweb',
+    'x-api-key': config.apiKey,
+    'x-client-type': config.clientType,
   }
 });
 
@@ -82,6 +84,7 @@ export async function initializeTableRecords(table, buttons) {
       responsive: true,
       processing: true,
       serverSide: true,
+      stateSave: true,
       ajax: {
         url: tableRecordsUrl + '/searchDataTables',
         type: 'POST',
