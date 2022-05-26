@@ -149,12 +149,13 @@ class {class_name}Base extends MainController
 		return $this->respond($this->result, 200);
 	}
 
-  private function executeSearch($q = '', $page = 0, $perpage = 20, $params = [], $source = '', $template = '')
+  private function executeSearch($q = '', $page = 0, $perpage = 20, $params = [], $filters, $source = '', $template = '')
   {
     $q        = empty($q)         ? $this->request->getPostGet('q')         : $q;
     $page     = empty($page)      ? $this->request->getPostGet('page')      : $page;
     $perpage  = empty($perpage)   ? $this->request->getPostGet('perpage')   : $perpage;
     $params   = empty($params)    ? $this->request->getPostGet('params')    : $params;
+    $filters  = empty($filters)   ? $this->request->getPostGet('filters')   : $filters;
     $source   = empty($source)    ? $this->request->getPostGet('source')    : $source;
     $template = empty($template)  ? $this->request->getPostGet('template')  : $template;
 
@@ -172,22 +173,31 @@ class {class_name}Base extends MainController
       }
       ${table}Model->groupEnd();
     }
+
+    if (!empty($filters)) {
+      ${table}Model->groupStart();
+      foreach($filters as $field => $value) {
+        ${table}Model->where($field, $value);
+      }
+      ${table}Model->groupEnd();
+    }
   
     ${table}Model->limit($perpage, ($page * $perpage));
 
     return ${table}Model;
   }
 
-  public function search($q = '', $page = 0, $perpage = 20, $params = [], $source = '', $template = '')
+  public function search($q = '', $page = 0, $perpage = 20, $params = [], $filters = [], $source = '', $template = '')
 	{
     $q        = empty($q)         ? $this->request->getPostGet('q')         : $q;
     $page     = empty($page)      ? $this->request->getPostGet('page')      : $page;
     $perpage  = empty($perpage)   ? $this->request->getPostGet('perpage')   : $perpage;
     $params   = empty($params)    ? $this->request->getPostGet('params')    : $params;
+    $filters  = empty($filters)   ? $this->request->getPostGet('filters')   : $filters;
     $source   = empty($source)    ? $this->request->getPostGet('source')    : $source;
     $template = empty($template)  ? $this->request->getPostGet('template')  : $template;
 
-    $searchResult = $this->executeSearch($this->request->getPost('q'), $this->request->getPost('page'), $this->request->getPost('perpage'));
+    $searchResult = $this->executeSearch($q, $page, $perpage, $params, $filters);
     ${record}s = $searchResult->get();
 
 		return json_encode(${record}s->getResult());

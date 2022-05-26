@@ -18,6 +18,7 @@ $(document).ready(async function() {
     $.fn.recordsList = function(options) {
       var settings = $.extend({
         template: ".records-list-item-template",
+        form: ".records-list-form",
         itemsContainer: ".records-list-items-container",
         prevElement: '.records-list-prev',
         nextElement: '.records-list-next',
@@ -27,6 +28,18 @@ $(document).ready(async function() {
         const names = Object.keys(params);
         const vals = Object.values(params);
         return new Function(...names, `return \`${this}\`;`)(...vals);
+      }
+
+      function QueryStringToJSON(qs) {            
+        var pairs = qs.slice(1).split('&');
+        
+        var result = {};
+        pairs.forEach(function(pair) {
+            pair = pair.split('=');
+            result[pair[0]] = decodeURIComponent(pair[1] || '');
+        });
+    
+        return JSON.parse(JSON.stringify(result));
       }
 
       function prev(list) {
@@ -44,6 +57,7 @@ $(document).ready(async function() {
         var $recordList = $(list);
 
         var $recordListContainer = $recordList.find(settings.itemsContainer);
+        var $recordListForm = $recordList.find(settings.form);
         var $recordListItemTemplate = $recordList.find(settings.template);
         var $recordListItem = $recordListItemTemplate.clone();
         var $htmlTemplate = $recordListItem.prop('outerHTML');
@@ -54,32 +68,39 @@ $(document).ready(async function() {
         $recordListItemTemplate.remove();
 
         $prevButton.on('click', function () {
-          var $page = $recordList.data('page');
+          var $page = $recordListForm.find('#page').val();
           $page--;
           $page < 0 ? $page = 0 : $page;
           $recordList.data('page', $page);
-          var params = $recordList.data();
+          $recordListForm.find('#page').val($page);
+          var params = $recordListForm.serialize();
+          var filters = $recordListForm.find('.records-filter').serializeArray();
           console.log('Prev', params);
-          refreshRecordList(params);
+          console.log('Prev', filters);
+          refreshRecordList(params, filters);
         })
 
         $nextButton.on('click', function () {
-          var $page = $recordList.data('page');
+          var $page = $recordListForm.find('#page').val();
           $page++;
           var $max_page = 5;
           $page > $max_page ? $page = $max_page : $page;
           $recordList.data('page', $page);
-          var params = $recordList.data();
+          $recordListForm.find('#page').val($page);
+          var params = $recordListForm.serialize();
+          var filters = $recordListForm.find('.records-filter').serializeArray();
           console.log('Next', params);
-          refreshRecordList(params);
+          console.log('Next', filters);
+          refreshRecordList(params, filters);
         })
 
-        function refreshRecordList(params) {
+        function refreshRecordList(params, filters) {
+          params = QueryStringToJSON(params);
           $.ajax({
             url: $recordList.data('url') + '/search',
             type: 'post',
             dataType: 'json',
-            data: params
+            data: {...params, filters }
           }).then(function(data) {
             $recordListContainer.empty();
             data.map(function (record) {
