@@ -14,6 +14,67 @@ import {
 
 $(document).ready(async function() {
 
+  (function ( $ ) {
+    $.fn.recordsList = function(options) {
+      var settings = $.extend({
+        template: ".records-list-item-template",
+        prevElement: '.records-list-prev',
+        nextElement: '.records-list-next',
+      }, options );
+
+      String.prototype.interpolate = function(params) {
+        const names = Object.keys(params);
+        const vals = Object.values(params);
+        return new Function(...names, `return \`${this}\`;`)(...vals);
+      }
+
+      function prev(list) {
+        console.log(list);
+        console.log('prev');
+      }
+
+      function next(list) {
+        console.log(list);
+        console.log('next');
+      }
+
+      return this.each(function(index, list) {
+
+        var $recordList = $(list);
+      
+        var $recordListItemTemplate = $recordList.find(settings.template);
+        var $recordListItem = $recordListItemTemplate.clone();
+        var $htmlTemplate = $recordListItem.prop('outerHTML');
+
+        var $prevButton = $recordList.find(settings.prevElement);
+        var $nextButton = $recordList.find(settings.nextElement);
+
+        $recordListItemTemplate.remove();
+
+        $prevButton.on('click', function () {
+          prev(list);
+        })
+
+        $nextButton.on('click', function () {
+          next(list);
+        })
+
+        $.ajax({
+          url: $recordList.data('url') + '/search',
+          type: 'post',
+          dataType: 'json'
+        }).then(function(data) {
+          data.map(function (record) {
+            $recordListItem = $htmlTemplate.interpolate({record});
+            $(list).append($recordListItem);
+          });
+        });
+      });
+  
+    };
+  
+  }( jQuery ));
+
   $(function() {
     $('.select2').select2();
   })
@@ -27,30 +88,8 @@ $(document).ready(async function() {
       })
   });
 
-  /*
-  await $('.records-list').each(async function (index, list) {
-    var $recordList = $(list);
-    var $recordListItemTemplate = $recordList.find('.records-list-item-template');
-    $.ajax({
-      url: $recordList.data('url') + '/search',
-      type: 'post',
-      dataType: 'json'
-    }).then(function(data) {
-      data.map(function (record) {
-        var fields = Object.keys(record);
-        var $recordsListItem = $recordListItemTemplate.clone();
-        $recordListItemTemplate.remove();
-        fields.map(function (field, index) {
-          $recordsListItem.children().find(`[data-field='${field}']`).html(record[field]);
-        });
-        $recordList.append($recordsListItem);
-      });
-    });
-  });
-  */
-
   await $('.records-list').recordsList({
-    recordsListItemTemplate: ".records-list-item-template",
+    template: ".records-list-item-template",
   });
 
   $("#form-login").submit(function(event) {
@@ -160,15 +199,16 @@ $(document).ready(async function() {
   
   $('.file-upload').on('click', function() {
     //console.log('clicou');
-    $('#file-upload-status').hide();
-    $('#file-upload-progress').hide();
-    //$('#file-upload-progress .progress-bar').css('width', '0%');
+    //$('#file-upload-progress').hide();
     //$('#file-upload-list').show();
-    //$('#file-upload-progress').show();
+    $('.file-upload-status').html('Selecione o(s) arquivo(s)').show();
+    $('.file-upload-progress .progress-bar').css('width', '0%');
+    $('.file-upload-progress').show();
   });
 
   $('.file-upload').fileupload({
     dataType: 'json',
+    /*
     add: function(e, data) {
       var html = '<div class="progress progress-sm mt-1"><div class="progress-bar bg-warning-50" role="progressbar" style="width: 0%" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100"></div></div>'
       data.context = $('<span class="file"></span>')
@@ -181,27 +221,31 @@ $(document).ready(async function() {
       var progress = parseInt((data.loaded / data.total) * 100, 10);
       data.context.find('.progress').find('.progress-bar').css('width', progress + '%');
     },
-    /*
+    */
     progressall: function (e, data) {
       var progress = parseInt(data.loaded / data.total * 100, 10);
-      $('#file-upload-progress .progress-bar').css('width', progress + '%');
+      $('.file-upload-progress .file-upload-status').html('Transferindo (' + progress + '%)').show();
+      $('.file-upload-progress .progress-bar').css('width', progress + '%');
     },
-    */
     stop: function (e) {
-      $('#file-upload-status').html(' <i class="fa fa-check"></i> Concluído').show();
-      $('#file-upload-progress').hide();
+      $('.file-upload-progress .file-upload-status-icon').html('<i class="fa fa-check fs-xl"></i>').show();
+      $('.file-upload-progress .file-upload-status').html('Concluído').show();
+      $('.file-upload-progress').delay(3000).fadeOut();
+      //$('.file-upload-progress .progress-bar').hide();
       //atualiza_tabela_registros();
     },
     done: function (e, data) {
       console.log(data);
-      var response = data.result;
-      notify(response.messages, 'info');
+      //var response = data.result;
+      //notify(response.messages, 'info');
     },
+    /*
     error: function (jqXHR, textStatus, errorThrown) {
       var response = jqXHR.responseJSON;
       console.log(response);
       notify(response.messages, 'error');
     }
+    */
   });
 
   $('.js-thead-colors a').on('click', function() {

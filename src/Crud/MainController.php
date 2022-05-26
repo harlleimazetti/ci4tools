@@ -135,6 +135,14 @@ class MainController extends Controller
     ];
 
     $menuArea['Menu principal'][] = (object)[
+      'name' => 'Remessas',
+      'description' => 'Remessas',
+      'path' => 'sistema/remessa/list',
+      'icon' => 'fa fa-upload',
+      'tags' => 'remessa'
+    ];
+
+    $menuArea['Menu principal'][] = (object)[
       'name' => 'Planilhas',
       'description' => 'Planilhas',
       'path' => 'sistema/arquivo/list',

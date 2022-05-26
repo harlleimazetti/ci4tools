@@ -187,7 +187,7 @@ class {class_name}Base extends MainController
     $source   = empty($source)    ? $this->request->getPostGet('source')    : $source;
     $template = empty($template)  ? $this->request->getPostGet('template')  : $template;
 
-    $searchResult = $this->executeSearch($this->request->getPost('q'));
+    $searchResult = $this->executeSearch($this->request->getPost('q'), $this->request->getPost('page'), $this->request->getPost('perPage'));
     ${record}s = $searchResult->get();
 
 		return json_encode(${record}s->getResult());
