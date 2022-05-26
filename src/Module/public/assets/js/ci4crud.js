@@ -42,28 +42,40 @@ server.interceptors.response.use(
 );
 
 export const tableRecordsButtons = {
-  new: {
-    text: '<i class="fa fa-file mr-2"></i>Novo',
-    className: 'btn btn-primary',
-    action: function ( e, dt, node, config ) {
-      let url = `${tableRecordsUrl}/new`;
-      $(location).attr('href', url);
+  new: function(table) {
+    let buttonNew = {
+      text: '<i class="fa fa-file mr-2"></i>Novo',
+      className: 'btn btn-primary',
+      action: function ( e, dt, node, config ) {
+        //let url = `${tableRecordsUrl}/new`;
+        let url = `${$(table).data('url')}/new`;
+        $(location).attr('href', url);
+      }
     }
+    return buttonNew;
   },
-  upload: {
-    text: '<i class="fa fa-upload mr-2"></i>Upload',
-    className: 'btn btn-primary',
-    action: function ( e, dt, node, config ) {
-      $('#modal_arquivo').modal('show');
+  upload: function(table) {
+    let buttonUpload = {
+      text: '<i class="fa fa-upload mr-2"></i>Upload',
+      className: 'btn btn-primary',
+      action: function ( e, dt, node, config ) {
+        $('#modal_arquivo').modal('show');
+      }
     }
+    return buttonUpload;
   },
-  delete: {
-    text: '<i class="fa fa-times-circle mr-2"></i>Excluir',
-    className: 'btn btn-danger',
-    action: function ( e, dt, node, config ) {
-      let url = `${tableRecordsUrl}/delete`;
+  delete: function(table) {
+    let buttonDelete = {
+      text: '<i class="fa fa-times-circle mr-2"></i>Excluir',
+      className: 'btn btn-danger',
+      action: function ( e, dt, node, config ) {
+        //let url = `${tableRecordsUrl}/delete`;
+        let url = `${$(table).data('url')}/delete`;
+      }
     }
-}};
+    return buttonDelete;
+  },
+};
 
 export async function initializeTableRecords(table, buttons) {
   return new Promise (async function(resolve, reject) {

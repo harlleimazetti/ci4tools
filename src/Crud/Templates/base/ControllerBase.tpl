@@ -149,11 +149,11 @@ class {class_name}Base extends MainController
 		return $this->respond($this->result, 200);
 	}
 
-  private function executeSearch($q = '', $page = 0, $perPage = 20, $params = [], $source = '', $template = '')
+  private function executeSearch($q = '', $page = 0, $perpage = 20, $params = [], $source = '', $template = '')
   {
     $q        = empty($q)         ? $this->request->getPostGet('q')         : $q;
     $page     = empty($page)      ? $this->request->getPostGet('page')      : $page;
-    $perPage  = empty($perPage)   ? $this->request->getPostGet('perPage')   : $perPage;
+    $perpage  = empty($perpage)   ? $this->request->getPostGet('perpage')   : $perpage;
     $params   = empty($params)    ? $this->request->getPostGet('params')    : $params;
     $source   = empty($source)    ? $this->request->getPostGet('source')    : $source;
     $template = empty($template)  ? $this->request->getPostGet('template')  : $template;
@@ -173,21 +173,21 @@ class {class_name}Base extends MainController
       ${table}Model->groupEnd();
     }
   
-    ${table}Model->limit($perPage, ($page * $perPage));
+    ${table}Model->limit($perpage, ($page * $perpage));
 
     return ${table}Model;
   }
 
-  public function search($q = '', $page = 0, $perPage = 20, $params = [], $source = '', $template = '')
+  public function search($q = '', $page = 0, $perpage = 20, $params = [], $source = '', $template = '')
 	{
     $q        = empty($q)         ? $this->request->getPostGet('q')         : $q;
     $page     = empty($page)      ? $this->request->getPostGet('page')      : $page;
-    $perPage  = empty($perPage)   ? $this->request->getPostGet('perPage')   : $perPage;
+    $perpage  = empty($perpage)   ? $this->request->getPostGet('perpage')   : $perpage;
     $params   = empty($params)    ? $this->request->getPostGet('params')    : $params;
     $source   = empty($source)    ? $this->request->getPostGet('source')    : $source;
     $template = empty($template)  ? $this->request->getPostGet('template')  : $template;
 
-    $searchResult = $this->executeSearch($this->request->getPost('q'), $this->request->getPost('page'), $this->request->getPost('perPage'));
+    $searchResult = $this->executeSearch($this->request->getPost('q'), $this->request->getPost('page'), $this->request->getPost('perpage'));
     ${record}s = $searchResult->get();
 
 		return json_encode(${record}s->getResult());

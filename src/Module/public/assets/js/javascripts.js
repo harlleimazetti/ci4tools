@@ -18,6 +18,7 @@ $(document).ready(async function() {
     $.fn.recordsList = function(options) {
       var settings = $.extend({
         template: ".records-list-item-template",
+        itemsContainer: ".records-list-items-container",
         prevElement: '.records-list-prev',
         nextElement: '.records-list-next',
       }, options );
@@ -41,7 +42,8 @@ $(document).ready(async function() {
       return this.each(function(index, list) {
 
         var $recordList = $(list);
-      
+
+        var $recordListContainer = $recordList.find(settings.itemsContainer);
         var $recordListItemTemplate = $recordList.find(settings.template);
         var $recordListItem = $recordListItemTemplate.clone();
         var $htmlTemplate = $recordListItem.prop('outerHTML');
@@ -52,23 +54,40 @@ $(document).ready(async function() {
         $recordListItemTemplate.remove();
 
         $prevButton.on('click', function () {
-          prev(list);
+          var $page = $recordList.data('page');
+          $page--;
+          $page < 0 ? $page = 0 : $page;
+          $recordList.data('page', $page);
+          var params = $recordList.data();
+          console.log('Prev', params);
+          refreshRecordList(params);
         })
 
         $nextButton.on('click', function () {
-          next(list);
+          var $page = $recordList.data('page');
+          $page++;
+          var $max_page = 5;
+          $page > $max_page ? $page = $max_page : $page;
+          $recordList.data('page', $page);
+          var params = $recordList.data();
+          console.log('Next', params);
+          refreshRecordList(params);
         })
 
-        $.ajax({
-          url: $recordList.data('url') + '/search',
-          type: 'post',
-          dataType: 'json'
-        }).then(function(data) {
-          data.map(function (record) {
-            $recordListItem = $htmlTemplate.interpolate({record});
-            $(list).append($recordListItem);
+        function refreshRecordList(params) {
+          $.ajax({
+            url: $recordList.data('url') + '/search',
+            type: 'post',
+            dataType: 'json',
+            data: params
+          }).then(function(data) {
+            $recordListContainer.empty();
+            data.map(function (record) {
+              $recordListItem = $htmlTemplate.interpolate({record});
+              $recordListContainer.append($recordListItem);
+            });
           });
-        });
+        }
       });
   
     };
@@ -82,7 +101,7 @@ $(document).ready(async function() {
   let tableRecords = [];
 
   await $('.table-records').each(async function (index, table) {
-    initializeTableRecords(table, [tableRecordsButtons.new, tableRecordsButtons.delete])
+    initializeTableRecords(table, [tableRecordsButtons.new(table), tableRecordsButtons.delete(table)])
       .then ((tableRecord) => {
         tableRecords[index] = tableRecord;
       })
