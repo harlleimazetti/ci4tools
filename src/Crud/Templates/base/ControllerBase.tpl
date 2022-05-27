@@ -176,8 +176,8 @@ class {class_name}Base extends MainController
 
     if (!empty($filters)) {
       ${table}Model->groupStart();
-      foreach($filters as $field => $value) {
-        ${table}Model->where($field, $value);
+      foreach($filters as $field) {
+        ${table}Model->where($field['name'], $field['value']);
       }
       ${table}Model->groupEnd();
     }

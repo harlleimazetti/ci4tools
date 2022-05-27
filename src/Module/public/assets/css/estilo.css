@@ -103,3 +103,6 @@
 .cd-campo-codigo-uso {
   margin-left: 55px !important;
 }
+.select2-container {
+  z-index: 9999999;
+}

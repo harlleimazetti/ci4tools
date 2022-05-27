@@ -277,15 +277,13 @@ $(document).ready(async function() {
     done: function (e, data) {
       console.log(data);
       //var response = data.result;
-      //notify(response.messages, 'info');
+      notify(response.messages, 'info');
     },
-    /*
     error: function (jqXHR, textStatus, errorThrown) {
       var response = jqXHR.responseJSON;
       console.log(response);
       notify(response.messages, 'error');
     }
-    */
   });
 
   $('.js-thead-colors a').on('click', function() {

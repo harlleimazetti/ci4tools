@@ -33,6 +33,7 @@ License: You must have a valid license purchased only from wrapbootstrap.com (li
         <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/css/datagrid/datatables/datatables.bundle.css">
         <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/css/formplugins/select2/select2.bundle.css">
         <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/themes/smartadmin/assets/css/notifications/toastr/toastr.css">
+        <link rel="stylesheet" media="screen, print" href="<?php echo base_url(); ?>/public/assets/css/estilo.css">
         <!-- You can add your own stylesheet here to override any styles that comes before it
 		<link rel="stylesheet" media="screen, print" href="css/your_styles.css">-->
     </head>
