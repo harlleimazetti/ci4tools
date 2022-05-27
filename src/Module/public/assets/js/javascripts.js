@@ -275,8 +275,8 @@ $(document).ready(async function() {
       //atualiza_tabela_registros();
     },
     done: function (e, data) {
-      console.log(data);
-      //var response = data.result;
+      console.log(data.jqXHR.responseJSON);
+      var response = data.jqXHR.responseJSON;
       notify(response.messages, 'info');
     },
     error: function (jqXHR, textStatus, errorThrown) {

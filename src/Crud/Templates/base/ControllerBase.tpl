@@ -149,7 +149,7 @@ class {class_name}Base extends MainController
 		return $this->respond($this->result, 200);
 	}
 
-  private function executeSearch($q = '', $page = 0, $perpage = 20, $params = [], $filters, $source = '', $template = '')
+  private function executeSearch($q = '', $page = 0, $perpage = 20, $params = [], $filters = [], $source = '', $template = '')
   {
     $q        = empty($q)         ? $this->request->getPostGet('q')         : $q;
     $page     = empty($page)      ? $this->request->getPostGet('page')      : $page;
