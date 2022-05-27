@@ -15,7 +15,7 @@ class {class_name}ModelBase extends Model
 	protected $countResultsRecords;
   protected $tenant;
   protected $relations = [];
-  protected $result = [];
+  protected $result;
 
 	protected $table              = '{table}';
 	protected $primaryKey         = 'id';
@@ -36,6 +36,8 @@ class {class_name}ModelBase extends Model
 
 	function __construct() {
 		parent::__construct();
+
+    $this->result = new \stdClass();
     
 		$database = \Config\Database::connect();
 		$this->db	= $database->table('{table}');
@@ -262,16 +264,16 @@ class {class_name}ModelBase extends Model
     ${table}->fill($data);
 
     if (!$this->save(${table})) {
-      $this->result['success'] = false;
-      $this->result['messages'][] = 'Problemas na gravação do registro';
-      $this->result['errors'] = $this->errors();
+      $this->result->success = false;
+      $this->result->messages[] = 'Problemas na gravação do registro';
+      $this->result->errors = $this->errors();
       
       return (object)$this->result;
     }
 
-    $this->result['success'] = true;
-    $this->result['messages'][] = 'Registro salvo com sucesso';
-    $this->result['errors'] = [];
+    $this->result->success = true;
+    $this->result->messages[] = 'Registro salvo com sucesso';
+    $this->result->errors = [];
 
     return (object)$this->result;
   }

@@ -49,6 +49,7 @@
                                     <i class="fal fa-search"></i>
                                 </a>
                             </div>
+                            <?php if (false) { ?>
                             <!-- app settings -->
                             <div class="hidden-md-down">
                                 <a href="#" class="header-icon" data-toggle="modal" data-target=".js-modal-settings">
@@ -584,6 +585,7 @@
                                     </div>
                                 </div>
                             </div>
+                            <?php } ?>
                             <!-- app user menu -->
                             <div>
                                 <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com" class="header-icon d-flex align-items-center justify-content-center ml-2">

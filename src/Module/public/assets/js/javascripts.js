@@ -128,7 +128,7 @@ $(document).ready(async function() {
       })
   });
 
-  await $('.records-list').recordsList({
+  var lists = await $('.records-list').recordsList({
     template: ".records-list-item-template",
   });
 
@@ -236,14 +236,51 @@ $(document).ready(async function() {
       }
     });
   });
+
+  $(".form-ajax").submit(function(event) {
+    event.preventDefault();
+
+    unHighlightFieldsError();
+
+    var url = $(this).attr('action');
+    var formData = new FormData(this);
+
+    console.log(formData);
+
+    server.post(url, formData)
+      .then(response => {
+        console.log(response);
+        notify(response.data.messages, 'info');
+      })
+      .catch(error => {
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.log(error.response.data);
+          notify(error.response.data.messages, 'error');
+          //highlightFieldsError(error.response.data.messages.error.errors);
+        } else if (error.request) {
+          // The request was made but no response was received
+          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+          // http.ClientRequest in node.js
+          console.log(error.request);
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          console.log('Error', error.message);
+        }
+      });
+    return false;
+  });
   
   $('.file-upload').on('click', function() {
     //console.log('clicou');
     //$('#file-upload-progress').hide();
     //$('#file-upload-list').show();
+    /*
     $('.file-upload-status').html('Selecione o(s) arquivo(s)').show();
     $('.file-upload-progress .progress-bar').css('width', '0%');
     $('.file-upload-progress').show();
+    */
   });
 
   $('.file-upload').fileupload({
@@ -262,6 +299,12 @@ $(document).ready(async function() {
       data.context.find('.progress').find('.progress-bar').css('width', progress + '%');
     },
     */
+    add: function(e, data) {
+      //$('.file-upload-status').html('Selecione o(s) arquivo(s)').show();
+      $('.file-upload-progress .progress-bar').css('width', '0%');
+      $('.file-upload-progress').show();
+      data.submit();
+    },
     progressall: function (e, data) {
       var progress = parseInt(data.loaded / data.total * 100, 10);
       $('.file-upload-progress .file-upload-status').html('Transferindo (' + progress + '%)').show();
