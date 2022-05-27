@@ -4,7 +4,6 @@ use CodeIgniter\Model;
 use App\Entities\{class_name};
 use App\Crudbase\Validation\{class_name}Validation;
 use Harlleimazetti\Ci4tools\Relation\Relation;
-use Harlleimazetti\Ci4tools\Log\Log;
 
 class {class_name}ModelBase extends Model
 {
@@ -40,7 +39,7 @@ class {class_name}ModelBase extends Model
 		parent::__construct();
 
     $this->result = new \stdClass();
-    $this->log = new \Harlleimazetti\Ci4tools\Log\Log;
+    $this->log    = service('log');
     
 		$database = \Config\Database::connect();
 		$this->db	= $database->table('{table}');
