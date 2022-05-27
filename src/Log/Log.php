@@ -31,7 +31,7 @@ class Log
     $this->db->table($this->config->logTable);
   }
 
-  public function log($level = INFO, $rawMessage = '', $context = [], $tenant = null)
+  public function log($level = INFO, $rawMessage = '', $context = [], $table = null, $record_id = null, $tenant = null)
   {
     if (empty($rawMessage)) {
       return null;
@@ -42,6 +42,8 @@ class Log
 
       $data = [
         'tenant_id'   => isset($tenant) ? $tenant->id : null,
+        'record_id'   => isset($record_id) ? $record_id : null,
+        'table'       => isset($table) ? $table : null,
         'date'        => date('Y-m-d'),
         'time'        => date('H:i:s'),
         'level'       => $level,
