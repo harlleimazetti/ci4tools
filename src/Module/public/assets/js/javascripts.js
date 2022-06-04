@@ -22,6 +22,7 @@ $(document).ready(async function() {
         itemsContainer: ".records-list-items-container",
         prevElement: '.records-list-prev',
         nextElement: '.records-list-next',
+        refreshElement: '.records-list-refresh',
       }, options );
 
       String.prototype.interpolate = function(params) {
@@ -42,17 +43,8 @@ $(document).ready(async function() {
         return JSON.parse(JSON.stringify(result));
       }
 
-      function prev(list) {
-        console.log(list);
-        console.log('prev');
-      }
-
-      function next(list) {
-        console.log(list);
-        console.log('next');
-      }
-
       return this.each(function(index, list) {
+        var $this = $(this);
 
         var $recordList = $(list);
 
@@ -64,8 +56,24 @@ $(document).ready(async function() {
 
         var $prevButton = $recordList.find(settings.prevElement);
         var $nextButton = $recordList.find(settings.nextElement);
+        var $refreshButton = $recordList.find(settings.refreshElement);
 
         $recordListItemTemplate.remove();
+
+        $this.on('prev', function() {
+          console.log('Prev');
+          $prevButton.trigger('click');
+        })
+
+        $this.on('next', function() {
+          console.log('Next');
+          $nextButton.trigger('click');
+        })
+
+        $this.on('refresh', function() {
+          console.log('PrevRefresh');
+          $refreshButton.trigger('click');
+        })
 
         $prevButton.on('click', function () {
           var $page = $recordListForm.find('#page').val();
@@ -83,7 +91,7 @@ $(document).ready(async function() {
         $nextButton.on('click', function () {
           var $page = $recordListForm.find('#page').val();
           $page++;
-          var $max_page = 5;
+          var $max_page = $recordListForm.find('#max_page').val();
           $page > $max_page ? $page = $max_page : $page;
           $recordList.data('page', $page);
           $recordListForm.find('#page').val($page);
@@ -91,6 +99,19 @@ $(document).ready(async function() {
           var filters = $recordListForm.find('.records-filter').serializeArray();
           console.log('Next', params);
           console.log('Next', filters);
+          refreshRecordList(params, filters);
+        })
+
+        $refreshButton.on('click', function () {
+          var $page = $recordListForm.find('#page').val();
+          var $max_page = $recordListForm.find('#max_page').val();
+          $page > $max_page ? $page = $max_page : $page;
+          $recordList.data('page', $page);
+          $recordListForm.find('#page').val($page);
+          var params = $recordListForm.serialize();
+          var filters = $recordListForm.find('.records-filter').serializeArray();
+          console.log('Refresh', params);
+          console.log('Params', filters);
           refreshRecordList(params, filters);
         })
 
@@ -131,6 +152,8 @@ $(document).ready(async function() {
   var lists = await $('.records-list').recordsList({
     template: ".records-list-item-template",
   });
+
+  $(lists).trigger('refresh');
 
   $("#form-login").submit(function(event) {
     event.preventDefault();
@@ -314,13 +337,14 @@ $(document).ready(async function() {
       $('.file-upload-progress .file-upload-status-icon').html('<i class="fa fa-check fs-xl"></i>').show();
       $('.file-upload-progress .file-upload-status').html('Concluído').show();
       $('.file-upload-progress').delay(3000).fadeOut();
+      notify('Transferência completa', 'info');
       //$('.file-upload-progress .progress-bar').hide();
       //atualiza_tabela_registros();
     },
     done: function (e, data) {
       console.log(data.jqXHR.responseJSON);
       var response = data.jqXHR.responseJSON;
-      notify(response.messages, 'info');
+      //notify(response.messages, 'info');
     },
     error: function (jqXHR, textStatus, errorThrown) {
       var response = jqXHR.responseJSON;
