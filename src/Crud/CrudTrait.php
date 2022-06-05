@@ -572,6 +572,7 @@ trait CrudTrait {
     $this->setTableInfo($table);
 
     unset($options['table']);
+    unset($options['tableLabel']);
     
     $optionsKeys = array_keys($options);
     $countOptions = count($options['name']);
