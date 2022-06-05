@@ -29,8 +29,6 @@
 
                             <div class="tab-content">
                               <div class="tab-pane active fade show" id="table-basic-info" role="tabpanel">
-                                <h3 class="card-body__title">General information</h3>
-                                <p>Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nulla sit amet est. Praesent ac massa at ligula laoreet iaculis. Vivamus aliquet elit ac nisl. Nulla porta dolor. Cras dapibus. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.</p>
                                 <div class="row">
                                   <div class="col-md-12">
                                     <div class="form-group">
@@ -39,6 +37,129 @@
                                       <i class="form-group__bar"></i>
                                     </div>
                                   </div>
+
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Description</label>
+                                      <input type="text" id="tableDescription" name="tableDescription" value="<?php echo $tableConfig->tableDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+
+                                  <h3 class="card-body__title">List configuration</h3>
+
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>List Title</label>
+                                      <input type="text" id="tableListTitle" name="tableListTitle" value="<?php echo $tableConfig->tableListTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>List Subtitle</label>
+                                      <input type="text" id="tableListSubtitle" name="tableListSubtitle" value="<?php echo $tableConfig->tableListSubtitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>List Description</label>
+                                      <input type="text" id="tableListDescription" name="tableListDescription" value="<?php echo $tableConfig->tableListDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+
+                                  <h3 class="card-body__title">Form configuration</h3>
+
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Form Title</label>
+                                      <input type="text" id="tableFormTitle" name="tableFormTitle" value="<?php echo $tableConfig->tableFormTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Form Subtitle</label>
+                                      <input type="text" id="tableFormSubtitle" name="tableFormSubtitle" value="<?php echo $tableConfig->tableFormSubtitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Form Description</label>
+                                      <input type="text" id="tableFormDescription" name="tableFormDescription" value="<?php echo $tableConfig->tableFormDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Edit Title</label>
+                                      <input type="text" id="tableEditTitle" name="tableEditTitle" value="<?php echo $tableConfig->tableEditTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Edit Subtitle</label>
+                                      <input type="text" id="tableEditSubtitle" name="tableEditSubtitle" value="<?php echo $tableConfig->tableEditSubtitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Edit Description</label>
+                                      <input type="text" id="tableEditDescription" name="tableEditDescription" value="<?php echo $tableConfig->tableEditDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>New Title</label>
+                                      <input type="text" id="tableNewTitle" name="tableNewTitle" value="<?php echo $tableConfig->tableNewTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>New Subtitle</label>
+                                      <input type="text" id="tableNewSubtitle" name="tableNewSubtitle" value="<?php echo $tableConfig->tableNewSubtitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>New Description</label>
+                                      <input type="text" id="tableNewDescription" name="tableNewDescription" value="<?php echo $tableConfig->tableNewDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+
+                                  <h3 class="card-body__title">View configuration</h3>
+
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>View Title</label>
+                                      <input type="text" id="tableViewTitle" name="tableViewTitle" value="<?php echo $tableConfig->tableViewTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>View Subtitle</label>
+                                      <input type="text" id="tableViewSubtitle" name="tableViewSubtitle" value="<?php echo $tableConfig->tableViewSubtitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>View Description</label>
+                                      <input type="text" id="tableViewDescription" name="tableViewDescription" value="<?php echo $tableConfig->tableViewDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+
                                 </div>
                               </div>
 
@@ -146,14 +267,14 @@
                                 </div>
                               </div>
 
-                              <div class="tab-pane active fade show" id="table-relations" role="tabpanel">
+                              <div class="tab-pane fade show" id="table-relations" role="tabpanel">
                                 <p>Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nulla sit amet est. Praesent ac massa at ligula laoreet iaculis. Vivamus aliquet elit ac nisl. Nulla porta dolor. Cras dapibus. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.</p>
                                 <p>In hac habitasse platea dictumst. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Nam eget dui. In ac felis quis tortor malesuada pretium. Phasellus consectetuer vestibulum elit. Duis lobortis massa imperdiet quam. Pellentesque commodo eros a enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Phasellus a est. Pellentesque commodo eros a enim. Cras ultricies mi eu turpis hendrerit fringilla. Donec mollis hendrerit risus. Vestibulum turpis sem, aliquet eget, lobortis pellentesque, rutrum eu, nisl. Praesent egestas neque eu enim. In hac habitasse platea dictumst.</p>
                               </div>
                             </div>
                           </div>
 
-                          <button type="submit" class="btn btn-primary">Salvar</button>
+                          <button type="submit" class="btn btn-primary">Save configuration</button>
                         </div>
 
                       </form>
