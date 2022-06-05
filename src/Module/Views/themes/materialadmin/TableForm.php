@@ -22,13 +22,26 @@
                               <li class="nav-item">
                                 <a class="nav-link" data-toggle="tab" href="#table-fields" role="tab">Fields</a>
                               </li>
+                              <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#table-relations" role="tab">Relations</a>
+                              </li>
                             </ul>
 
                             <div class="tab-content">
                               <div class="tab-pane active fade show" id="table-basic-info" role="tabpanel">
+                                <h3 class="card-body__title">General information</h3>
                                 <p>Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nulla sit amet est. Praesent ac massa at ligula laoreet iaculis. Vivamus aliquet elit ac nisl. Nulla porta dolor. Cras dapibus. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.</p>
-                                <p>In hac habitasse platea dictumst. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Nam eget dui. In ac felis quis tortor malesuada pretium. Phasellus consectetuer vestibulum elit. Duis lobortis massa imperdiet quam. Pellentesque commodo eros a enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Phasellus a est. Pellentesque commodo eros a enim. Cras ultricies mi eu turpis hendrerit fringilla. Donec mollis hendrerit risus. Vestibulum turpis sem, aliquet eget, lobortis pellentesque, rutrum eu, nisl. Praesent egestas neque eu enim. In hac habitasse platea dictumst.</p>
+                                <div class="row">
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label>Label</label>
+                                      <input type="text" id="tableLabel" name="tableLabel" value="<?php echo $tableConfig->tableLabel ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
+
                               <div class="tab-pane fade" id="table-fields" role="tabpanel">
                                 <div class="listview listview--hover" id="table-config">
                                   <div class="listview__item p-2">
@@ -131,6 +144,11 @@
                                   <?php } ?>
 
                                 </div>
+                              </div>
+
+                              <div class="tab-pane active fade show" id="table-relations" role="tabpanel">
+                                <p>Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nulla sit amet est. Praesent ac massa at ligula laoreet iaculis. Vivamus aliquet elit ac nisl. Nulla porta dolor. Cras dapibus. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.</p>
+                                <p>In hac habitasse platea dictumst. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Nam eget dui. In ac felis quis tortor malesuada pretium. Phasellus consectetuer vestibulum elit. Duis lobortis massa imperdiet quam. Pellentesque commodo eros a enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Phasellus a est. Pellentesque commodo eros a enim. Cras ultricies mi eu turpis hendrerit fringilla. Donec mollis hendrerit risus. Vestibulum turpis sem, aliquet eget, lobortis pellentesque, rutrum eu, nisl. Praesent egestas neque eu enim. In hac habitasse platea dictumst.</p>
                               </div>
                             </div>
                           </div>

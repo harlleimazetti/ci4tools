@@ -21,11 +21,11 @@ class Routes extends \Ci4toolsadmin\Controllers\BaseController
     $controllers = $this->route->loadControllers();
 
     $this->data['page_title']       = 'Controllers';
-    $this->data['page_subtitle']    = 'Configuração dos Controladores do sistema';
-    $this->data['page_description'] = 'Parametrização das informações de identificação (labels, descrição) dos Controllers e seus métodos';
+    $this->data['page_subtitle']    = 'System Controllers Configuration';
+    $this->data['page_description'] = 'Controllers and methods configuration (labels, description)';
     $this->data['page_icon']        = 'fal fa-globe';
-    $this->data['body_id']          = 'body_table';
-    $this->data['system_area']      = 'Tabelas';
+    $this->data['body_id']          = 'body_controller';
+    $this->data['system_area']      = 'Controllers';
     $this->data['menus']            = $this->menus;
     $this->data['controllers']      = $controllers;
 

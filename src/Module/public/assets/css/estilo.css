@@ -106,23 +106,25 @@
 .select2-container {
   z-index: 9999999;
 }
-#image-preview {
-  width: 120px;
+.image-preview {
+  z-index: 5;
+  /*width: 120px;
   height: 110px;
   position: relative;
   overflow: hidden;
   background-color: #ffffff;
-  color: #ecf0f1;
+  color: #ecf0f1;*/
 }
-#image-preview input {
+.image-preview input {
   line-height: 30px;
   font-size: 30px;
   position: absolute;
   opacity: 0;
   z-index: 10;
 }
-#image-preview label {
-  position: absolute;
+.image-preview label {
+  z-index: 5;
+  /*position: absolute;
   z-index: 5;
   opacity: 0.8;
   cursor: pointer;
@@ -137,5 +139,5 @@
   right: 0;
   bottom: 0;
   margin: auto;
-  text-align: center;
+  text-align: center;*/
 }

@@ -23,12 +23,12 @@ class Table extends \Ci4toolsadmin\Controllers\BaseController
     $tableFields = $this->crud->getFieldsConfigurable();
     $tableConfig = $this->crud->getTableConfig();
 
-    $this->data['page_title']       = 'Tabelas';
-    $this->data['page_subtitle']    = 'Configuração das tabelas do banco de dados';
-    $this->data['page_description'] = 'Parametrização de campos, relacionamentos, labels e formato das colunas da tabela';
+    $this->data['page_title']       = 'Tables';
+    $this->data['page_subtitle']    = 'Database tables configuration';
+    $this->data['page_description'] = 'Table fields, labels, relations and columns formatting configurations';
     $this->data['page_icon']        = 'fal fa-globe';
     $this->data['body_id']          = 'body_table';
-    $this->data['system_area']      = 'Tabelas';
+    $this->data['system_area']      = 'Tables';
     $this->data['menus']            = $this->menus;
 
     $this->data['table']            = $table;
