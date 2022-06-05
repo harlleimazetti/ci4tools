@@ -29,133 +29,140 @@
 
                             <div class="tab-content">
                               <div class="tab-pane active fade show" id="table-basic-info" role="tabpanel">
+                                <input type="hidden" id="table" name="[general][table]" value="<?php echo $tableConfig->general->table ?>">
                                 <div class="row">
                                   <div class="col-md-12">
                                     <div class="form-group">
-                                      <label>Label</label>
-                                      <input type="text" id="tableLabel" name="tableLabel" value="<?php echo $tableConfig->tableLabel ?>" class="form-control" placeholder="Label">
+                                      <label class="mb-0">Label</label>
+                                      <input type="text" id="tableLabel" name="[general][tableLabel]" value="<?php echo $tableConfig->general->tableLabel ?>" class="form-control" placeholder="Label">
                                       <i class="form-group__bar"></i>
                                     </div>
                                   </div>
 
                                   <div class="col-md-12">
                                     <div class="form-group">
-                                      <label>Description</label>
-                                      <input type="text" id="tableDescription" name="tableDescription" value="<?php echo $tableConfig->tableDescription ?>" class="form-control" placeholder="Label">
+                                      <label class="mb-0">Description</label>
+                                      <input type="text" id="tableDescription" name="[general][tableDescription]" value="<?php echo $tableConfig->general->tableDescription ?>" class="form-control" placeholder="Label">
                                       <i class="form-group__bar"></i>
                                     </div>
                                   </div>
 
-                                  <h3 class="card-body__title">List configuration</h3>
+                                  <div class="col-md-12 mt-3">
+                                    <h3 class="card-body__title font-weight-bold">List Settings</h3>
+                                  </div>
 
-                                  <div class="col-md-12">
+                                  <div class="col-md-6">
                                     <div class="form-group">
-                                      <label>List Title</label>
-                                      <input type="text" id="tableListTitle" name="tableListTitle" value="<?php echo $tableConfig->tableListTitle ?>" class="form-control" placeholder="Label">
+                                      <label class="mb-0">List Title</label>
+                                      <input type="text" id="tableListTitle" name="[general][tableListTitle]" value="<?php echo $tableConfig->general->tableListTitle ?>" class="form-control" placeholder="Label">
                                       <i class="form-group__bar"></i>
                                     </div>
                                   </div>
-                                  <div class="col-md-12">
+                                  <div class="col-md-6">
                                     <div class="form-group">
-                                      <label>List Subtitle</label>
-                                      <input type="text" id="tableListSubtitle" name="tableListSubtitle" value="<?php echo $tableConfig->tableListSubtitle ?>" class="form-control" placeholder="Label">
+                                      <label class="mb-0">List Subtitle</label>
+                                      <input type="text" id="tableListSubtitle" name="[general][tableListSubtitle]" value="<?php echo $tableConfig->general->tableListSubtitle ?>" class="form-control" placeholder="Label">
                                       <i class="form-group__bar"></i>
                                     </div>
                                   </div>
                                   <div class="col-md-12">
                                     <div class="form-group">
                                       <label>List Description</label>
-                                      <input type="text" id="tableListDescription" name="tableListDescription" value="<?php echo $tableConfig->tableListDescription ?>" class="form-control" placeholder="Label">
+                                      <input type="text" id="tableListDescription" name="[general][tableListDescription]" value="<?php echo $tableConfig->general->tableListDescription ?>" class="form-control" placeholder="Label">
                                       <i class="form-group__bar"></i>
                                     </div>
                                   </div>
 
-                                  <h3 class="card-body__title">Form configuration</h3>
-
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>Form Title</label>
-                                      <input type="text" id="tableFormTitle" name="tableFormTitle" value="<?php echo $tableConfig->tableFormTitle ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>Form Subtitle</label>
-                                      <input type="text" id="tableFormSubtitle" name="tableFormSubtitle" value="<?php echo $tableConfig->tableFormSubtitle ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>Form Description</label>
-                                      <input type="text" id="tableFormDescription" name="tableFormDescription" value="<?php echo $tableConfig->tableFormDescription ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>Edit Title</label>
-                                      <input type="text" id="tableEditTitle" name="tableEditTitle" value="<?php echo $tableConfig->tableEditTitle ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>Edit Subtitle</label>
-                                      <input type="text" id="tableEditSubtitle" name="tableEditSubtitle" value="<?php echo $tableConfig->tableEditSubtitle ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>Edit Description</label>
-                                      <input type="text" id="tableEditDescription" name="tableEditDescription" value="<?php echo $tableConfig->tableEditDescription ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>New Title</label>
-                                      <input type="text" id="tableNewTitle" name="tableNewTitle" value="<?php echo $tableConfig->tableNewTitle ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>New Subtitle</label>
-                                      <input type="text" id="tableNewSubtitle" name="tableNewSubtitle" value="<?php echo $tableConfig->tableNewSubtitle ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>New Description</label>
-                                      <input type="text" id="tableNewDescription" name="tableNewDescription" value="<?php echo $tableConfig->tableNewDescription ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
+                                  <div class="col-md-12 mt-3">
+                                    <h3 class="card-body__title font-weight-bold">Form Settings</h3>
                                   </div>
 
-                                  <h3 class="card-body__title">View configuration</h3>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label class="mb-0">Form Title</label>
+                                      <input type="text" id="tableFormTitle" name="[general][tableFormTitle]" value="<?php echo $tableConfig->general->tableFormTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label class="mb-0">Form Subtitle</label>
+                                      <input type="text" id="tableFormSubtitle" name="[general][tableFormSubtitle]" value="<?php echo $tableConfig->general->tableFormSubtitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label class="mb-0">Form Description</label>
+                                      <input type="text" id="tableFormDescription" name="[general][tableFormDescription]" value="<?php echo $tableConfig->general->tableFormDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label class="mb-0">Edit Title</label>
+                                      <input type="text" id="tableEditTitle" name="[general][tableEditTitle]" value="<?php echo $tableConfig->general->tableEditTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label class="mb-0">Edit Subtitle</label>
+                                      <input type="text" id="tableEditSubtitle" name="[general][tableEditSubtitle]" value="<?php echo $tableConfig->general->tableEditSubtitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label class="mb-0">Edit Description</label>
+                                      <input type="text" id="tableEditDescription" name="[general][tableEditDescription]" value="<?php echo $tableConfig->general->tableEditDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label class="mb-0">New Title</label>
+                                      <input type="text" id="tableNewTitle" name="[general][tableNewTitle]" value="<?php echo $tableConfig->general->tableNewTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label class="mb-0">New Subtitle</label>
+                                      <input type="text" id="tableNewSubtitle" name="[general][tableNewSubtitle]" value="<?php echo $tableConfig->general->tableNewSubtitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-12">
+                                    <div class="form-group">
+                                      <label class="mb-0">New Description</label>
+                                      <input type="text" id="tableNewDescription" name="[general][tableNewDescription]" value="<?php echo $tableConfig->general->tableNewDescription ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
 
-                                  <div class="col-md-12">
+                                  <div class="col-md-12 mt-3">
+                                    <h3 class="card-body__title font-weight-bold">View Settings</h3>
+                                  </div>
+
+                                  <div class="col-md-6">
                                     <div class="form-group">
-                                      <label>View Title</label>
-                                      <input type="text" id="tableViewTitle" name="tableViewTitle" value="<?php echo $tableConfig->tableViewTitle ?>" class="form-control" placeholder="Label">
+                                      <label class="mb-0">View Title</label>
+                                      <input type="text" id="tableViewTitle" name="[general][tableViewTitle]" value="<?php echo $tableConfig->general->tableViewTitle ?>" class="form-control" placeholder="Label">
+                                      <i class="form-group__bar"></i>
+                                    </div>
+                                  </div>
+                                  <div class="col-md-6">
+                                    <div class="form-group">
+                                      <label class="mb-0">View Subtitle</label>
+                                              <input type="text" id="tableViewSubtitle" name="[general][tableViewSubtitle]" value="<?php echo $tableConfig->general->tableViewSubtitle ?>" class="form-control" placeholder="Label">
                                       <i class="form-group__bar"></i>
                                     </div>
                                   </div>
                                   <div class="col-md-12">
                                     <div class="form-group">
-                                      <label>View Subtitle</label>
-                                      <input type="text" id="tableViewSubtitle" name="tableViewSubtitle" value="<?php echo $tableConfig->tableViewSubtitle ?>" class="form-control" placeholder="Label">
-                                      <i class="form-group__bar"></i>
-                                    </div>
-                                  </div>
-                                  <div class="col-md-12">
-                                    <div class="form-group">
-                                      <label>View Description</label>
-                                      <input type="text" id="tableViewDescription" name="tableViewDescription" value="<?php echo $tableConfig->tableViewDescription ?>" class="form-control" placeholder="Label">
+                                      <label class="mb-0">View Description</label>
+                                      <input type="text" id="tableViewDescription" name="[general][tableViewDescription]" value="<?php echo $tableConfig->general->tableViewDescription ?>" class="form-control" placeholder="Label">
                                       <i class="form-group__bar"></i>
                                     </div>
                                   </div>
@@ -197,23 +204,23 @@
                                       $key = array_search($tableField->name, array_column($tableConfig->fields, 'name'));
                                   ?>
 
-                                  <input type="hidden" id="order[]" name="order[]" value="<?php echo $tableConfig->fields[$key]->order ?>">
-                                  <input type="hidden" id="field_class[]" name="field_class[]" value="<?php echo $tableConfig->fields[$key]->field_class ?>">
-                                  <input type="hidden" id="label_class[]" name="label_class[]" value="<?php echo $tableConfig->fields[$key]->label_class ?>">
+                                  <input type="hidden" id="order[]" name="[fields][<?php echo $k ?>][order]" value="<?php echo $tableConfig->fields[$key]->order ?>">
+                                  <input type="hidden" id="field_class[]" name="[fields][<?php echo $k ?>][field_class]" value="<?php echo $tableConfig->fields[$key]->field_class ?>">
+                                  <input type="hidden" id="label_class[]" name="[fields][<?php echo $k ?>][label_class]" value="<?php echo $tableConfig->fields[$key]->label_class ?>">
 
                                   <div class="listview__item p-1">
                                     <div class="col-1 mr-2">
-                                      <input type="text" id="name[]" name="name[]" class="form-control" value="<?php echo $tableField->name ?>" placeholder="<?php echo $tableField->name ?>" readonly>
+                                      <input type="text" id="name[]" name="[fields][<?php echo $k ?>][name]" class="form-control" value="<?php echo $tableField->name ?>" placeholder="<?php echo $tableField->name ?>" readonly>
                                       <i class="form-group__bar"></i>
                                     </div>
 
                                     <div class="col-3">
-                                      <input type="text" id="label[]" name="label[]" class="form-control" value="<?php echo $tableConfig->fields[$key]->label ?>" placeholder="<?php echo $tableConfig->fields[$key]->label ?>">
+                                      <input type="text" id="label[]" name="[fields][<?php echo $k ?>][label]" class="form-control" value="<?php echo $tableConfig->fields[$key]->label ?>" placeholder="<?php echo $tableConfig->fields[$key]->label ?>">
                                       <i class="form-group__bar"></i>
                                     </div>
 
                                     <div class="col-3">
-                                      <select class="select2 w-100" id="type[]" name="type[]">
+                                      <select class="select2 w-100" id="type[]" name="[fields][<?php echo $k ?>][type]">
                                         <option value="text"     <?php if ($tableConfig->fields[$key]->type == 'text') { ?>     selected <?php } ?>>Text</option>
                                         <option value="password" <?php if ($tableConfig->fields[$key]->type == 'password') { ?> selected <?php } ?>>Password</option>
                                         <option value="textarea" <?php if ($tableConfig->fields[$key]->type == 'textarea') { ?> selected <?php } ?>>Textarea</option>
@@ -227,35 +234,35 @@
 
                                     <div class="col-1 text-center">
                                       <div class="checkbox mt-2">
-                                        <input type="checkbox" id="allowed[<?php echo $k ?>]" name="allowed[]" value="Y" <?php if ($tableConfig->fields[$key]->allowed === 'Y') { ?> checked <?php } ?>>
+                                        <input type="checkbox" id="allowed[<?php echo $k ?>]" name="[fields][<?php echo $k ?>][allowed]" value="Y" <?php if ($tableConfig->fields[$key]->allowed === 'Y') { ?> checked <?php } ?>>
                                         <label class="checkbox__label" for="allowed[<?php echo $k ?>]"></label>
                                       </div>
                                     </div>
 
                                     <div class="col-1 text-center">
                                       <div class="checkbox mt-2">
-                                        <input type="checkbox" id="multiple[<?php echo $k ?>]" name="multiple[]" value="Y" <?php if ($tableConfig->fields[$key]->multiple === 'Y') { ?> checked <?php } ?>>
+                                        <input type="checkbox" id="multiple[<?php echo $k ?>]" name="[fields][<?php echo $k ?>][multiple]" value="Y" <?php if ($tableConfig->fields[$key]->multiple === 'Y') { ?> checked <?php } ?>>
                                         <label class="checkbox__label" for="multiple[<?php echo $k ?>]"></label>
                                       </div>
                                     </div>
 
                                     <div class="col-1 text-center">
                                       <div class="checkbox mt-2">
-                                        <input type="checkbox" id="show[<?php echo $k ?>]" name="show[]" value="Y" <?php if ($tableConfig->fields[$key]->show === 'Y') { ?> checked <?php } ?>>
+                                        <input type="checkbox" id="show[<?php echo $k ?>]" name="[fields][<?php echo $k ?>][show]" value="Y" <?php if ($tableConfig->fields[$key]->show === 'Y') { ?> checked <?php } ?>>
                                         <label class="checkbox__label" for="show[<?php echo $k ?>]"></label>
                                       </div>
                                     </div>
 
                                     <div class="col-1 text-center">
                                       <div class="checkbox mt-2">
-                                        <input type="checkbox" id="show_on_form[<?php echo $k ?>]" name="show_on_form[]" value="Y" <?php if ($tableConfig->fields[$key]->show_on_form === 'Y') { ?> checked <?php } ?>>
+                                        <input type="checkbox" id="show_on_form[<?php echo $k ?>]" name="[fields][<?php echo $k ?>][show_on_form]" value="Y" <?php if ($tableConfig->fields[$key]->show_on_form === 'Y') { ?> checked <?php } ?>>
                                         <label class="checkbox__label" for="show_on_form[<?php echo $k ?>]"></label>
                                       </div>
                                     </div>
 
                                     <div class="col-1 text-center">
                                       <div class="checkbox mt-2">
-                                        <input type="checkbox" id="searchable[<?php echo $k ?>]" name="searchable[]" value="Y" <?php if ($tableConfig->fields[$key]->searchable === 'Y') { ?> checked <?php } ?>>
+                                        <input type="checkbox" id="searchable[<?php echo $k ?>]" name="[fields][<?php echo $k ?>][searchable]" value="Y" <?php if ($tableConfig->fields[$key]->searchable === 'Y') { ?> checked <?php } ?>>
                                         <label class="checkbox__label" for="searchable[<?php echo $k ?>]"></label>
                                       </div>
                                     </div>

@@ -302,24 +302,26 @@ trait CrudTrait {
       $n = 0;
 
       $tableConfig = [
-        "table"				          => $table,
-        'tableLabel'						=> ucfirst($this->table),
-        'tableDescription'			=> ucfirst($this->table),
-        'tableListTitle'				=> ucfirst($this->table),
-        'tableFormTitle'				=> ucfirst($this->table),
-        'tableEditTitle'				=> ucfirst($this->table).' - Atualizar registro',
-        'tableNewTitle'					=> ucfirst($this->table).' - Novo registro',
-        'tableViewTitle'				=> ucfirst($this->table).' - Visualizar registro',
-        'tableListSubtitle'			=> 'Listagem de registros',
-        'tableFormSubtitle'			=> 'Formulário de edição do registro',
-        'tableEditSubtitle'			=> 'Editar registro',
-        'tableNewSubtitle'			=> 'Novo registro',
-        'tableViewSubtitle'			=> 'Detalhes do registro',
-        'tableListDescription'	=> 'Para atualizar ou visualizar os detalhes do registro selecione a opção desejada no menu ao final da linha do registro',
-        'tableFormDescription'	=> 'Os campos com * são obrigatórios',
-        'tableEditDescription'	=> 'Os campos com * são obrigatórios',
-        'tableNewDescription'		=> 'Os campos com * são obrigatórios',
-        'tableViewDescription'  => 'Os campos com * são obrigatórios',
+        'general' => [
+          'table'				          => $table,
+          'tableLabel'						=> ucfirst($this->table),
+          'tableDescription'			=> ucfirst($this->table),
+          'tableListTitle'				=> ucfirst($this->table),
+          'tableFormTitle'				=> ucfirst($this->table),
+          'tableEditTitle'				=> ucfirst($this->table).' - Atualizar registro',
+          'tableNewTitle'					=> ucfirst($this->table).' - Novo registro',
+          'tableViewTitle'				=> ucfirst($this->table).' - Visualizar registro',
+          'tableListSubtitle'			=> 'Listagem de registros',
+          'tableFormSubtitle'			=> 'Formulário de edição do registro',
+          'tableEditSubtitle'			=> 'Editar registro',
+          'tableNewSubtitle'			=> 'Novo registro',
+          'tableViewSubtitle'			=> 'Detalhes do registro',
+          'tableListDescription'	=> 'Para atualizar ou visualizar os detalhes do registro selecione a opção desejada no menu ao final da linha do registro',
+          'tableFormDescription'	=> 'Os campos com * são obrigatórios',
+          'tableEditDescription'	=> 'Os campos com * são obrigatórios',
+          'tableNewDescription'		=> 'Os campos com * são obrigatórios',
+          'tableViewDescription'  => 'Os campos com * são obrigatórios',
+        ]
       ];
 
 			foreach ($this->fields as $field)
@@ -571,25 +573,42 @@ trait CrudTrait {
   {
     $this->setTableInfo($table);
 
+    /*
     unset($options['table']);
     unset($options['tableLabel']);
-    
-    $optionsKeys = array_keys($options);
-    $countOptions = count($options['name']);
+    unset($options['tableDescription']);
+    unset($options['tableListTitle']);
+    unset($options['tableFormTitle']);
+    unset($options['tableEditTitle']);
+    unset($options['tableNewTitle']);
+    unset($options['tableViewTitle']);
+    unset($options['tableListSubtitle']);
+    unset($options['tableFormSubtitle']);
+    unset($options['tableEditSubtitle']);
+    unset($options['tableNewSubtitle']);
+    unset($options['tableViewSubtitle']);
+    unset($options['tableListDescription']);
+    unset($options['tableFormDescription']);
+    unset($options['tableEditDescription']);
+    unset($options['tableNewDescription']);
+    unset($options['tableViewDescription']);
+    */
 
-    for ($i = 0; $i < $countOptions; $i++) {
-      $newConf[] = array_combine($optionsKeys, array_column($options, $i));
-    }
-
-    //$tableFields = $this->crud->getFieldsConfigurable();
     $tableConfig = $this->getTableConfig();
     $tableConfig = json_decode(json_encode($tableConfig), true);
 
-    $newFields = array_column($newConf, 'name');
-    $oldFields = array_column($tableConfig['fields'], 'name');
-    $newFields = array_diff($newFields, $oldFields);
+    // Merge Form General Options with saved TableConfig General Options
+ 
+    $tableConfig['general'] = $options['general'];
 
-    foreach($newConf as $pos => $newConfig) {
+    // Merge Form Fields Options with saved TableConfig Fields Options
+
+    //$newFields = array_column($newConf, 'name');
+    //$newFields = array_column($options['fields'], 'name');
+    //$oldFields = array_column($tableConfig['fields'], 'name');
+    //$newFields = array_diff($newFields, $oldFields);
+
+    foreach($options['fields'] as $pos => $newConfig) {
       $index = array_search($newConfig['name'], array_column($tableConfig['fields'], 'name'));
       if ($index === false) {
         $fk = $this->verifyForeignKey($newConfig['name']);
@@ -606,7 +625,7 @@ trait CrudTrait {
     $fileConfigPath = $this->crudConfigFolder.$table.".json";
 
     if (!file_put_contents($fileConfigPath, $tableConfig)) {
-      //throw new Exception('Erro ao gravar arquivo de configurção');
+      //throw new Exception('Erro ao gravar arquivo de configuração');
       $this->result['success'] = false;
       $this->result['messages'][] = 'Problemas na gravação dos dados';
       $this->result['errors'] = $e->getMessage();
