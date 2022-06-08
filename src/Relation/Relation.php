@@ -6,6 +6,7 @@ defined('PACKAGE_NAME') or define('PACKAGE_NAME', 'ci4tools');
 
 class Relation  {
 	protected $db;
+  protected $table;
   protected $relationType;
   protected $record;
 	protected $parentTable;
@@ -18,6 +19,8 @@ class Relation  {
   protected $childTableModel;
   protected $linkTable;
   protected $linkTableModel;
+  protected $relatedTables = [];
+  protected $linkTables = [];
   protected $tenant;
 
   function __construct($relation = null, $tenant = null)
@@ -101,7 +104,7 @@ class Relation  {
     $this->linkTable = $linkTable;
   }
 
-  public function getrelationType()
+  public function getRelationType()
   {
     return $this->relationType;
   }
@@ -131,7 +134,8 @@ class Relation  {
    *
    * @return Model Result
    */
-  public function get() {
+  public function get()
+  {
     switch ($this->relationType) {
       case 'manyToOne':
         return $this->manyToOne($this->record);
@@ -210,21 +214,21 @@ class Relation  {
     $keys = [];
     
     $parentTablePk = $this->extractPk($this->parentTable);
-    $childTablePk = $this->extractPk($this->childTable);
+    $childTablePk  = $this->extractPk($this->childTable);
 
     if ($this->relationType == 'manyToMany') {
       $parentTableFk = $this->extractFk($this->parentTable, $this->linkTable);
-      $childTableFk = $this->extractFk($this->childTable, $this->linkTable);
+      $childTableFk  = $this->extractFk($this->childTable, $this->linkTable);
     } else {
       $parentTableFk = $this->extractFk($this->parentTable, $this->childTable);
-      $childTableFk = $this->extractFk($this->childTable, $this->parentTable);
+      $childTableFk  = $this->extractFk($this->childTable, $this->parentTable);
     }
 
     $keys['parentTablePk'] = $parentTablePk;
-    $keys['childTablePk'] = $childTablePk;
+    $keys['childTablePk']  = $childTablePk;
 
     $keys['parentTableFk'] = $parentTableFk;
-    $keys['childTableFk'] = $childTableFk;
+    $keys['childTableFk']  = $childTableFk;
 
     return $keys;
   }
@@ -243,7 +247,8 @@ class Relation  {
     return $pk;
   }
 
-  protected function extractFk($table1, $table2) {
+  protected function extractFk($table1, $table2)
+  {
     if (empty($table1) || empty($table2)) {
       return null;
     }
@@ -252,20 +257,173 @@ class Relation  {
 
     $index = array_search($table1, array_column($foreignKey, 'foreign_table_name'));
 
-    if (!isset($foreignKey[$index])) {
-      return null;
+    if ($index === 0 || $index > 0) {
+      $fk = $foreignKey[$index]->column_name;
+      return $fk;
     }
 
-    $fk = $foreignKey[$index]->column_name;
-
-    return $fk;
+    return null;
   }
 
   protected function defineLinkTable($parentTable, $childTable) {
     $linkTable = $parentTable."_".$childTable;
     if (!$this->db->tableExists($linkTable)) {
       $linkTable = $childTable."_".$parentTable;
+      if (!$this->db->tableExists($linkTable)) {
+        return null;
+      }
     }
     return $linkTable;
+  }
+
+  /**
+   * Set Related tables to given Table
+   * 
+   * @param string $table
+   *
+   * @return null
+   */
+  public function setRelatedTables($table)
+  {
+		$fields   = $this->db->getFieldData($table);
+		$keys     = $this->db->getForeignKeyData($table);
+		$indexes  = $this->db->getIndexData($table);
+    $tables   = $this->db->listTables();
+
+    $this->linkTables = $this->setLinkTables($table);
+
+    foreach ($tables as $relatedTable)
+    {
+      if (in_array($relatedTable, array_column($this->linkTables, 'linkTable'))) {
+        continue;
+      }
+
+      if ($this->extractFk($table, $relatedTable)) {
+        $this->addRelatedTable(
+          $relationType = 'oneToMany',
+          $parentTable  = $table,
+          $childTable   = $relatedTable,
+          $record       = null
+        );
+      }
+
+      if ($this->extractFk($relatedTable, $table)) {
+        $this->addRelatedTable(
+          $relationType = 'manyToOne',
+          $parentTable  = $relatedTable,
+          $childTable   = $table,
+          $record       = null
+        );
+      }
+
+      /*
+      $this->setRelation($relation);
+
+      echo "Relation Type: ".$this->relationType."\r\n";
+      echo "Parent Table: ".$this->parentTable."\r\n";
+      echo "Parent PK: ".$this->parentTablePk."\r\n";
+      echo "Parent FK: ".$this->parentTableFk."\r\n";
+      echo "Child Table: ".$this->childTable."\r\n";
+      echo "Child PK: ".$this->childTablePk."\r\n";
+      echo "Child FK: ".$this->childTableFk."\r\n";
+      echo "********************"."\r\n\r\n\r\n\r\n\r\n";
+      */
+    }
+    
+    print_r($this->relatedTables);
+  }
+
+  public function addRelatedTable($relationType = null, $parentTable = null, $childTable = null, $linkTable = null, $record = null)
+  {
+    if (empty($relationType) || empty($parentTable) || empty($childTable)) {
+      return null;
+    }
+
+    $this->resetObject();
+
+    $relation = (object)[
+      'type'        => $relationType,
+      'parentTable' => $parentTable,
+      'childTable'  => $childTable,
+      'linkTable'   => $linkTable,
+      'record'      => $record,
+    ];
+
+    $this->setRelation($relation);
+
+    $relation->parentTablePk    = $this->parentTablePk;
+    $relation->parentTableFk    = $this->parentTableFk;
+    $relation->parentTableModel = $this->parentTableModel;
+
+    $relation->childTablePk     = $this->childTablePk;
+    $relation->childTableFk     = $this->childTableFk;
+    $relation->childTableModel  = $this->childTableModel;
+
+    $relation->linkTableModel   = $this->linkTableModel;
+
+    array_push($this->relatedTables, $relation);
+  }
+
+  public function addLinkTable($relationType = null, $parentTable = null, $childTable = null, $linkTable = null, $record = null)
+  {
+    if (empty($parentTable) || empty($childTable) || empty($linkTable)) {
+      return null;
+    }
+
+    array_push($this->linkTables, (object)[
+      'relationType'  => 'manyToMany',
+      'parentTable'   => $parentTable,
+      'childTable'    => $childTable,
+      'linkTable'     => $linkTable,
+      'record'        => $record,
+    ]);
+  }
+
+  public function setLinkTables($table)
+  {
+    $tables = $this->db->listTables();
+
+    $linkTables = [];
+
+    foreach ($tables as $relatedTable)
+    {
+      if ($linkTable = $this->defineLinkTable($table, $relatedTable))
+      {
+        $relation = (object)[
+          'relationType'  => 'manyToMany',
+          'parentTable'   => $table,
+          'childTable'    => $relatedTable,
+          'linkTable'     => $linkTable,
+          'record'        => null
+        ];
+
+        array_push($linkTables, $relation);
+
+        $this->addRelatedTable(
+          $relationType = 'manyToMany',
+          $parentTable  = $table,
+          $childTable   = $relatedTable,
+          $linkTable    = $linkTable,
+          $record       = null
+        );
+      }
+    }
+
+    return $linkTables;
+  }
+
+  protected function resetObject() {
+    $this->relationType     = null;
+    $this->record           = null;
+    $this->parentTable      = null;
+    $this->parentTablePk    = null;
+    $this->parentTableFk    = null;
+    $this->parentTableModel = null;
+    $this->childTable       = null;
+    $this->childTablePk     = null;
+    $this->childTableFk     = null;
+    $this->childTableModel  = null;
+    $this->linkTable        = null;
+    $this->linkTableModel   = null;
   }
 }

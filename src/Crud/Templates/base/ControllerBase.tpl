@@ -6,14 +6,14 @@ use \Hermawan\DataTables\DataTable;
 
 class {class_name}Base extends MainController
 {
-	private $result;
-  private $crud;
-	private $relations;
-  private $visibleFields;
-  private $listVisibleFields;
-  private $formVisibleFields;
-  private $searchableFields;
-	private $data = [];
+	protected $result;
+  protected $crud;
+	protected $relations;
+  protected $visibleFields;
+  protected $listVisibleFields;
+  protected $formVisibleFields;
+  protected $searchableFields;
+	protected $data = [];
 
 	function __construct()
 	{
@@ -149,7 +149,7 @@ class {class_name}Base extends MainController
 		return $this->respond($this->result, 200);
 	}
 
-  private function executeSearch($q = '', $page = 0, $perpage = 20, $params = [], $filters = [], $source = '', $template = '')
+  protected function executeSearch($q = '', $page = 0, $perpage = 20, $params = [], $filters = [], $source = '', $template = '')
   {
     $q        = empty($q)         ? $this->request->getPostGet('q')         : $q;
     $page     = empty($page)      ? $this->request->getPostGet('page')      : $page;

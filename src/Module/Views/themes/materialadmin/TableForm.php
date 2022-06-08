@@ -275,8 +275,63 @@
                               </div>
 
                               <div class="tab-pane fade show" id="table-relations" role="tabpanel">
-                                <p>Duis arcu tortor, suscipit eget, imperdiet nec, imperdiet iaculis, ipsum. Vestibulum purus quam, scelerisque ut, mollis sed, nonummy id, metus. Nulla sit amet est. Praesent ac massa at ligula laoreet iaculis. Vivamus aliquet elit ac nisl. Nulla porta dolor. Cras dapibus. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus.</p>
-                                <p>In hac habitasse platea dictumst. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos hymenaeos. Nam eget dui. In ac felis quis tortor malesuada pretium. Phasellus consectetuer vestibulum elit. Duis lobortis massa imperdiet quam. Pellentesque commodo eros a enim. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; In ac dui quis mi consectetuer lacinia. Phasellus a est. Pellentesque commodo eros a enim. Cras ultricies mi eu turpis hendrerit fringilla. Donec mollis hendrerit risus. Vestibulum turpis sem, aliquet eget, lobortis pellentesque, rutrum eu, nisl. Praesent egestas neque eu enim. In hac habitasse platea dictumst.</p>
+                                <div class="listview" id="table-config">
+                                  <div class="listview__item p-0 row">
+                                    <div class="col-md-3">
+                                      <div class="listview__heading">
+                                        <div class="form-group">
+                                          <label class="mb-0 font-weight-bold"><small>Name</small></label>
+                                          <input type="text" id="tableRelationName" name="tableRelationName" value="" class="form-control" placeholder="Name">
+                                          <i class="form-group__bar"></i>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="listview__heading">
+                                        <div class="form-group">
+                                          <label class="mb-0 font-weight-bold"><small>Type</small></label>
+                                          <select class="select2 w-100" id="tableRelationType" name="tableRelationType">
+                                            <option value="oneToMany">One to Many (1:N)</option>
+                                            <option value="manyToOne">Many to One (N:1)</option>
+                                            <option value="manyToMany">Many to Many (N:N)</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                      <div class="listview__heading">
+                                        <div class="form-group">
+                                          <label class="mb-0 font-weight-bold"><small>Table</small></label>
+                                          <select class="select2 w-100" id="tableRelationTable" name="tableRelationTable">
+                                            <option value="Arquivo">Arquivo</option>
+                                            <option value="Imagem">Imagem</option>
+                                            <option value="Pda">Pda</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                      <div class="listview__heading">
+                                        <div class="form-group">
+                                          <label class="mb-0 font-weight-bold"><small>Loading way</small></label>
+                                          <select class="select2 w-100" id="tableRelationLoading" name="tableRelationLoading">
+                                            <option value="model">Model</option>
+                                            <option value="ajax">Ajax</option>
+                                          </select>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                      <div class="listview__heading">
+                                        <div class="form-group">
+                                          <label class="mb-0 font-weight-bold"><small>Action</small></label><br />
+                                          <button type="button" class="btn btn-sm btn-secondary"><i class="zmdi zmdi-check"></i></button>
+                                          <button type="button" class="btn btn-sm btn-danger"><i class="zmdi zmdi-close"></i></button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </div>
