@@ -6,7 +6,7 @@
   ${{class_name}}FormCustom = __DIR__.DIRECTORY_SEPARATOR.'{{class_name}}FormCustom.php';
 
   if (file_exists(${{class_name}}FormCustom)) {
-    include({{class_name}}FormCustom);
+    include(${{class_name}}FormCustom);
   } else {
 ?>
 

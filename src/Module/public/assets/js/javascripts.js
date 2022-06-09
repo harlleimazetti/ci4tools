@@ -155,6 +155,17 @@ $(document).ready(async function() {
 
   $(lists).trigger('refresh');
 
+  await $('#image-upload').each(async function (index, table) {
+    $.uploadPreview({
+      input_field: "#image-upload",   // Default: .image-upload
+      preview_box: "#image-preview",  // Default: .image-preview
+      label_field: "#image-label",    // Default: .image-label
+      label_default: "Selecionar imagem",   // Default: Choose File
+      label_selected: "Alterar imagem",  // Default: Change File
+      no_label: false                 // Default: false
+    });
+  })
+
   $("#form-login").submit(function(event) {
     event.preventDefault();
     console.log('submit login');
