@@ -18,7 +18,7 @@ class Fileprocess
     $this->result         = new \stdClass();
     $this->config         = $this->getConfig();
     $this->request        = $request ? $request : \Config\Services::request();
-    $this->folderName     = $folderName;
+    $this->folderName     = $folderName ? $folderName : $this->createFolder();
     $this->data           = $data;
     $this->db             = \Config\Database::connect();
     $this->auth           = service('auth');
@@ -110,6 +110,13 @@ class Fileprocess
     $this->result->status = 'ok';
     $this->result->messages[] = 'Arquivo salvo com sucesso';
     return $this->result;
+  }
+
+  private function createFolder()
+  {
+    $length = 10;
+    $folderName = date('YmdHis').substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+    return $folderName;
   }
 
   private function defineFileModel($file)
