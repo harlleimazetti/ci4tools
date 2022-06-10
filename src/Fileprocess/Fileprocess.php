@@ -26,6 +26,10 @@ class Fileprocess
     $this->files          = [];
   }
 
+  public function getFiles() {
+    return $this->files;
+  }
+
   public function validate()
   {
     foreach($this->request->getFiles() as $file) {
@@ -34,7 +38,7 @@ class Fileprocess
       $validateFile = $validateMymeType && $validateFileSize;
 
       if ($validateFile) {
-        $this->files[] = $file;
+        //$this->files[] = $file;
       }
     }
 
@@ -55,6 +59,15 @@ class Fileprocess
 
     foreach ($this->files as $file)
     {
+      $fileModel = $this->defineFileModel($file);
+
+      if (!$fileModel) {
+        $this->result->status = 'er';
+        $this->result->messages[] = 'Não foi possível salvar o arquivo '.$file->getClientName();
+        $this->result->errors[]   = 'Não foi possível salvar o arquivo '.$file->getClientName();
+        continue;
+      }
+
       $tenantFolder = 'tenant'.$currentUser->tenant_id;
       $pda_id       = $this->request->getPost('pda_id');
       $folderName   = $this->request->getPost('folder_name');
@@ -68,8 +81,8 @@ class Fileprocess
   
       $data = array(
         'tenant_id'   => $currentUser->tenant_id,
-        'pda_id'      => $pda_id,
-        'remessa_id'  => $this->request->getPost('remessa_id'),
+        //'pda_id'      => $pda_id,
+        //'remessa_id'  => $this->request->getPost('remessa_id'),
         'data'        => date('Y-m-d'),
         'hora'        => date('H:i:s'),
         'nome'        => $fileName,
@@ -81,22 +94,35 @@ class Fileprocess
 
       $data = array_merge($data, $this->data);
   
-      print_r($data);
-  
-      /*
       $result = $fileModel->store($data);
+
+      $data['id'] = $fileModel->getInsertID();
+      
+      $this->files[] = $data;
   
       if ($result->success === false) {
         $this->result->status = 'er';
-        $this->result->messages[] = 'Erro ao salvar o arquivo';
+        $this->result->messages[] = 'Erro ao salvar o arquivo '.$file->getClientName();
         $this->result->errors[]   = 'Erro ao salvar o arquivo '.$file->getClientName();
       }
-      */
     }
 
     $this->result->status = 'ok';
     $this->result->messages[] = 'Arquivo salvo com sucesso';
     return $this->result;
+  }
+
+  private function defineFileModel($file)
+  {
+    if (in_array($file->getMimeType(), array('image/jpg','image/jpeg','image/png','image/gif'))) {
+      $fileModel = new \App\Models\ImagemModel();
+    } else if (in_array($uploadedFile->getMimeType(), array('text/plain' /*, 'application/vnd.ms-excel'*/))) {
+      $fileModel = new \App\Models\ArquivoModel();
+    } else {
+      return false;
+    }
+
+    return $fileModel;
   }
 
   private function validateMymeType($file) {

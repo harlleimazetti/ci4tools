@@ -10,8 +10,6 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\API\ResponseTrait;
 use Psr\Log\LoggerInterface;
 
-use Harlleimazetti\Ci4tools\Fileprocess\Fileprocess;
-
 /**
  * Class MainController
  *
