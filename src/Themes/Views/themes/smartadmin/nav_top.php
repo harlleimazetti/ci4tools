@@ -598,11 +598,11 @@
                                     <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
                                         <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
                                             <span class="mr-2">
-                                                <img src="<?php echo base_url(); ?>/public/assets/img/hccm.jpg" class="rounded-circle profile-image" alt="<?php echo $this->auth->user()->name ?>">
+                                                <img src="<?php echo base_url(); ?>/public/assets/img/hccm.jpg" class="rounded-circle profile-image" alt="<?php echo $currentUser->name ?>">
                                             </span>
                                             <div class="info-card-text">
-                                                <div class="fs-lg text-truncate text-truncate-lg">Dr. Codex Lantern</div>
-                                                <span class="text-truncate text-truncate-md opacity-80">drlantern@gotbootstrap.com</span>
+                                                <div class="fs-lg text-truncate text-truncate-lg"><?php echo $currentUser->name ?></div>
+                                                <span class="text-truncate text-truncate-md opacity-80"><?php echo $currentUser->email ?></span>
                                             </div>
                                         </div>
                                     </div>

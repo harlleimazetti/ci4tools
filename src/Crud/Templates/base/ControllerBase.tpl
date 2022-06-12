@@ -36,9 +36,9 @@ class {class_name}Base extends MainController
 	{
 		${table}Model = new \App\Models\{model_name}Model();
     $this->data['data'] = array();
-		${record}s = ${table}Model->withTenant($this->tenant)->findAll();
+		//${record}s = ${table}Model->withTenant($this->tenant)->findAll();
     
-    $this->data['{record}s']          = ${record}s;
+    //$this->data['{record}s']          = ${record}s;
     $this->data['listVisibleFields']  = $this->listVisibleFields;
     $this->data['page_title']         = 'Lista';
     $this->data['page_subtitle']      = 'Listagem de registros';
