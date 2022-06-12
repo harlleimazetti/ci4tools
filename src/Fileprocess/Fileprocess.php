@@ -11,6 +11,8 @@ class Fileprocess
   protected $auth;
   protected $uploadedFiles;
   protected $files;
+  protected $errorFiles;
+  protected $storedFiles;
   protected $tenant;
 
   function __construct($request = null, $folderName = null, $data = [])
@@ -24,21 +26,29 @@ class Fileprocess
     $this->auth           = service('auth');
     $this->uploadedFiles  = $this->request->getFiles();
     $this->files          = [];
+    $this->errorFiles     = [];
+    $this->storedFiles    = [];
   }
 
   public function getFiles() {
     return $this->files;
   }
 
+  public function getStoredFiles() {
+    return $this->storedFiles;
+  }
+
   public function validate()
   {
-    foreach($this->request->getFiles() as $file) {
+    foreach($this->uploadedFiles as $file) {
       $validateMymeType = $this->validateMymeType($file);
       $validateFileSize = $this->validateFileSize($file);
       $validateFile = $validateMymeType && $validateFileSize;
 
       if ($validateFile) {
-        //$this->files[] = $file;
+        $this->files[] = $file;
+      } else {
+        $this->errorFiles[] = $file;
       }
     }
 
@@ -69,8 +79,7 @@ class Fileprocess
       }
 
       $tenantFolder = 'tenant'.$currentUser->tenant_id;
-      $pda_id       = $this->request->getPost('pda_id');
-      $folderName   = $this->request->getPost('folder_name');
+      $folderName   = $this->folderName;
       $fileName     = $file->getClientName();
   
       $file->store($tenantFolder.DIRECTORY_SEPARATOR.$folderName);
@@ -81,8 +90,6 @@ class Fileprocess
   
       $data = array(
         'tenant_id'   => $currentUser->tenant_id,
-        //'pda_id'      => $pda_id,
-        //'remessa_id'  => $this->request->getPost('remessa_id'),
         'data'        => date('Y-m-d'),
         'hora'        => date('H:i:s'),
         'nome'        => $fileName,
@@ -95,20 +102,20 @@ class Fileprocess
       $data = array_merge($data, $this->data);
   
       $result = $fileModel->store($data);
-
-      $data['id'] = $fileModel->getInsertID();
-      
-      $this->files[] = $data;
   
       if ($result->success === false) {
         $this->result->status = 'er';
         $this->result->messages[] = 'Erro ao salvar o arquivo '.$file->getClientName();
         $this->result->errors[]   = 'Erro ao salvar o arquivo '.$file->getClientName();
+        continue;
       }
+
+      $data['id'] = $fileModel->getInsertID();
+      $this->storedFiles[] = $data;
     }
 
     $this->result->status = 'ok';
-    $this->result->messages[] = 'Arquivo salvo com sucesso';
+    $this->result->messages[] = 'Processamento dos arquivos enviados foi concluído';
     return $this->result;
   }
 
