@@ -208,6 +208,8 @@ $(document).ready(async function() {
   $(".form-record").submit(function(event) {
     event.preventDefault();
 
+    console.log('Submit Form Record');
+
     unHighlightFieldsError();
 
     var url = $(this).attr('action');
@@ -292,7 +294,7 @@ $(document).ready(async function() {
           // that falls out of the range of 2xx
           console.log(error.response.data);
           notify(error.response.data.messages, 'error');
-          //highlightFieldsError(error.response.data.messages.error.errors);
+          highlightFieldsError(error.response.data.errors);
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of

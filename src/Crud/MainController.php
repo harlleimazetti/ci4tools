@@ -63,6 +63,13 @@ class MainController extends Controller
   protected $log;
 
   /**
+   * Current Logged User.
+   *
+   * @object currentUser
+   */
+  protected $currentUser;
+
+  /**
    * Constructor.
    */
   public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
@@ -83,6 +90,8 @@ class MainController extends Controller
 
     $this->auth   = service('auth');
     $this->log    = service('log');
+
+    $this->currentUser = $this->auth->user();
 
     define('UPLOADPATH', WRITEPATH.'uploads'.DIRECTORY_SEPARATOR);
   }

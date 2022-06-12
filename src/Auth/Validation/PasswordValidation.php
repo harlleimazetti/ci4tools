@@ -1,4 +1,4 @@
-<?php namespace Harlleimazetti\Ci4tools\Auth;
+<?php namespace Harlleimazetti\Ci4tools\Auth\Validation;
 
 class PasswordValidation
 {

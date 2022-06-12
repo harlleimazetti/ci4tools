@@ -598,7 +598,7 @@
                                     <div class="dropdown-header bg-trans-gradient d-flex flex-row py-4 rounded-top">
                                         <div class="d-flex flex-row align-items-center mt-1 mb-1 color-white">
                                             <span class="mr-2">
-                                                <img src="<?php echo base_url(); ?>/public/assets/img/hccm.jpg" class="rounded-circle profile-image" alt="Dr. Codex Lantern">
+                                                <img src="<?php echo base_url(); ?>/public/assets/img/hccm.jpg" class="rounded-circle profile-image" alt="<?php echo $this->auth->user()->name ?>">
                                             </span>
                                             <div class="info-card-text">
                                                 <div class="fs-lg text-truncate text-truncate-lg">Dr. Codex Lantern</div>
@@ -608,7 +608,7 @@
                                     </div>
                                     <div class="dropdown-divider m-0"></div>
                                     <a href="#" class="dropdown-item" data-action="app-reset">
-                                        <span data-i18n="drpdwn.reset_layout">Reset Layout</span>
+                                        <span data-i18n="drpdwn.reset_layout">Redefinir Layout Padrão</span>
                                     </a>
                                     <a href="#" class="dropdown-item" data-toggle="modal" data-target=".js-modal-settings">
                                         <span data-i18n="drpdwn.settings">Settings</span>

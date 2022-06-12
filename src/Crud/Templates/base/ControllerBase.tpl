@@ -46,6 +46,7 @@ class {class_name}Base extends MainController
     $this->data['page_icon']          = 'fal fa-globe';
     $this->data['body_id']            = 'body_{table}_list';
     $this->data['system_area']        = '{system_area_list_description}';
+    $this->data['currentUser']        = $this->currentUser;
     $this->data['menus']              = $this->menus;
 
     $this->data['theme_options']      = [
@@ -79,6 +80,7 @@ class {class_name}Base extends MainController
     $this->data['page_icon']          = 'fal fa-globe';
     $this->data['body_id']            = 'body_place_new';
     $this->data['system_area']        = '{system_area_new_description}';
+    $this->data['currentUser']        = $this->currentUser;
     $this->data['menus']              = $this->menus;
 
     $this->data['theme_options']      = [
@@ -112,6 +114,7 @@ class {class_name}Base extends MainController
     $this->data['page_icon']          = 'fal fa-globe';
     $this->data['body_id']            = 'body_place_new';
     $this->data['system_area']        = '{system_area_edit_description}';
+    $this->data['currentUser']        = $this->currentUser;
     $this->data['menus']              = $this->menus;
 
     $this->data['theme_options']      = [
