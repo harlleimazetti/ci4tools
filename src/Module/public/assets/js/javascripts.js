@@ -3,7 +3,9 @@ import {
   tableRecordsButtons,
   server,
   cookies,
-  baseURL
+  baseURL,
+  showLoadingDialog,
+  hideLoadingDialog
 } from './ci4crud.js';
 
 import {
@@ -116,6 +118,7 @@ $(document).ready(async function() {
         })
 
         function refreshRecordList(params, filters) {
+          var loadingDialog = showLoadingDialog();
           params = QueryStringToJSON(params);
           $.ajax({
             url: $recordList.data('url') + '/search',
@@ -128,6 +131,7 @@ $(document).ready(async function() {
               $recordListItem = $htmlTemplate.interpolate({record});
               $recordListContainer.append($recordListItem);
             });
+            hideLoadingDialog(loadingDialog);
           });
         }
       });
@@ -153,7 +157,7 @@ $(document).ready(async function() {
     template: ".records-list-item-template",
   });
 
-  $(lists).trigger('refresh');
+  //$(lists).trigger('refresh');
 
   await $('#image-upload').each(async function (index, table) {
     $.uploadPreview({
@@ -277,6 +281,7 @@ $(document).ready(async function() {
     event.preventDefault();
 
     unHighlightFieldsError();
+    var loadingDialog = showLoadingDialog();
 
     var url = $(this).attr('action');
     var formData = new FormData(this);
@@ -304,6 +309,9 @@ $(document).ready(async function() {
           // Something happened in setting up the request that triggered an Error
           console.log('Error', error.message);
         }
+      })
+      .finally(() => {
+        hideLoadingDialog(loadingDialog);
       });
     return false;
   });

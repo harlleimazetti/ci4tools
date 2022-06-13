@@ -114,3 +114,19 @@ export async function initializeTableRecords(table, buttons) {
     reject (null);
   })
 }
+
+export function showLoadingDialog() {
+  var dialog = bootbox.dialog({
+    message: '<div class="spinner-border spinner-border-sm p-0 m-0" role="status"></div><span class="ml-2 mb-0 pb-0">Executando...</span>',
+    centerVertical: true,
+    closeButton: false,
+    size: 'small',
+    animate: false,
+  });
+
+  return dialog;
+}
+
+export function hideLoadingDialog(dialog) {
+  dialog.modal('hide');
+}

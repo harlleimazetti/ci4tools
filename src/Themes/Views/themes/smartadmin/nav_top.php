@@ -4,8 +4,8 @@
                         <!-- we need this logo when user switches to nav-function-top -->
                         <div class="page-logo">
                             <a href="#" class="page-logo-link press-scale-down d-flex align-items-center position-relative" data-toggle="modal" data-target="#modal-shortcut">
-                                <img src="<?php echo base_url(); ?>/public/assets/img/logo_validador_184x20.png" alt="Validador Estudantil" aria-roledescription="logo">
-                                <span class="page-logo-text mr-1">Validador Estudantil</span>
+                                <img src="<?php echo base_url(); ?>/public/assets/img/logo_validador_184x20_white.png" alt="Validador Estudantil" aria-roledescription="logo">
+                                <span class="page-logo-text mr-1"></span>
                                 <span class="position-absolute text-white opacity-50 small pos-top pos-right mr-2 mt-n2"></span>
                                 <i class="fal fa-angle-down d-inline-block ml-1 fs-lg color-primary-300"></i>
                             </a>
@@ -611,17 +611,22 @@
                                         <span data-i18n="drpdwn.reset_layout">Redefinir Layout Padrão</span>
                                     </a>
                                     <a href="#" class="dropdown-item" data-toggle="modal" data-target=".js-modal-settings">
-                                        <span data-i18n="drpdwn.settings">Settings</span>
+                                        <span data-i18n="drpdwn.settings">Configurações</span>
                                     </a>
                                     <div class="dropdown-divider m-0"></div>
                                     <a href="#" class="dropdown-item" data-action="app-fullscreen">
-                                        <span data-i18n="drpdwn.fullscreen">Fullscreen</span>
+                                        <span data-i18n="drpdwn.fullscreen">Tela cheia</span>
                                         <i class="float-right text-muted fw-n">F11</i>
                                     </a>
                                     <a href="#" class="dropdown-item" data-action="app-print">
-                                        <span data-i18n="drpdwn.print">Print</span>
+                                        <span data-i18n="drpdwn.print">Imprimir</span>
                                         <i class="float-right text-muted fw-n">Ctrl + P</i>
                                     </a>
+                                    <a href="<?php echo base_url('/sistema/password/change'); ?>" class="dropdown-item">
+                                        <span data-i18n="drpdwn.print">Alterar senha</span>
+                                        <i class="fa fa-lock float-right text-muted fw-n"></i>
+                                    </a>
+                                    <?php if (false) { ?>
                                     <div class="dropdown-multilevel dropdown-multilevel-left">
                                         <div class="dropdown-item">
                                             Language
@@ -635,10 +640,11 @@
                                             <a href="#?lang=ch" class="dropdown-item" data-action="lang" data-lang="ch">中文</a>
                                         </div>
                                     </div>
+                                    <?php } ?>
                                     <div class="dropdown-divider m-0"></div>
-                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="page_login.html">
-                                        <span data-i18n="drpdwn.page-logout">Logout</span>
-                                        <span class="float-right fw-n">&commat;codexlantern</span>
+                                    <a class="dropdown-item fw-500 pt-3 pb-3" href="">
+                                        <span data-i18n="drpdwn.page-logout">Sair</span>
+                                        <span class="float-right fw-n"><?php echo $currentUser->name ?></span>
                                     </a>
                                 </div>
                             </div>
