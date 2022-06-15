@@ -59,7 +59,7 @@
                             <button type="button" class="btn btn-primary btn-block btn-md">Criar uma conta <!--<i class="fab fa-google"></i>--></button>
                         </div>
                         <div class="col-lg-6 pl-lg-1 my-2">
-                            <button id="" type="submit" class="btn bg-warning-800 btn-block btn-md color-white">Entrar</button>
+                            <button id="btn-login" type="button" class="btn bg-warning-800 btn-block btn-md color-white">Entrar</button>
                         </div>
                     </div>
                 </form>

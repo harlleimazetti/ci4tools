@@ -170,6 +170,11 @@ $(document).ready(async function() {
     });
   })
 
+  $("#btn-login").click(function(event) {
+    event.preventDefault();
+    $("#form-login").trigger("submit");
+  })
+
   $("#form-login").submit(function(event) {
     event.preventDefault();
     console.log('submit login');
