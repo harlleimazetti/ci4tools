@@ -588,7 +588,7 @@
                             <?php } ?>
                             <!-- app user menu -->
                             <div>
-                                <a href="#" data-toggle="dropdown" title="drlantern@gotbootstrap.com" class="header-icon d-flex align-items-center justify-content-center ml-2">
+                                <a href="#" data-toggle="dropdown" title="<?php echo $currentUser->email ?>" class="header-icon d-flex align-items-center justify-content-center ml-2">
                                     <img src="<?php echo base_url(); ?>/public/assets/img/user.jpg" class="profile-image rounded-circle" alt="Harllei Mazetti">
                                     <!-- you can also add username next to the avatar with the codes below:
 									<span class="ml-1 mr-1 text-truncate text-truncate-header hidden-xs-down">Me</span>

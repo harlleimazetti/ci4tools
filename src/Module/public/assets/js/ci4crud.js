@@ -13,6 +13,45 @@ export const server = axios.create({
   }
 });
 
+$.ajaxSetup({
+  //url: baseURL,
+  beforeSend: function(xhr) {
+    xhr.setRequestHeader('Authorization', 'Bearer ' + cookies.get('token'));
+    xhr.setRequestHeader('x-api-key', config.apiKey,);
+    xhr.setRequestHeader('x-client-type', config.clientType);
+  },
+  error: function(xhr, textStatus, errorThrown){
+    console.log('Error Ajax Request');
+    console.log(xhr);
+    console.log(textStatus);
+    console.log(errorThrown);
+
+    if (xhr.status == '401') {
+      if (xhr.responseJSON == 'Expired token') {
+        bootbox.confirm ({
+          title: "<i class='fal fa-times-circle text-danger mr-2'></i> Sua sessão expirou",
+          message: "<span><strong></strong>Por favor, entre com suas credenciais novamente</span>",
+          centerVertical: true,
+          swapButtonOrder: true,
+          buttons: {
+            confirm: {
+              label: 'Ok',
+              className: 'btn-default shadow-0'
+            },
+          },
+          className: "modal-alert",
+          closeButton: false,
+          callback: function(result) {
+            console.log(result);
+            window.location.href = baseURL + 'sistema/login';
+          }
+        });
+      }
+    }
+  }
+});
+
+/*
 const requestHandler = request => {
   // Token will be dynamic so we can use any app-specific way to always   
   // fetch the new token before making the call
@@ -40,6 +79,7 @@ server.interceptors.response.use(
   (response) => responseHandler(response),
   (error) => errorHandler(error)
 );
+*/
 
 export const tableRecordsButtons = {
   new: function(table) {

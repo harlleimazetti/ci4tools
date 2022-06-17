@@ -118,7 +118,7 @@ $(document).ready(async function() {
         })
 
         function refreshRecordList(params, filters) {
-          var loadingDialog = showLoadingDialog();
+          //var loadingDialog = showLoadingDialog();
           params = QueryStringToJSON(params);
           $.ajax({
             url: $recordList.data('url') + '/search',
@@ -131,7 +131,7 @@ $(document).ready(async function() {
               $recordListItem = $htmlTemplate.interpolate({record});
               $recordListContainer.append($recordListItem);
             });
-            hideLoadingDialog(loadingDialog);
+            //hideLoadingDialog(loadingDialog);
           });
         }
       });
@@ -170,10 +170,12 @@ $(document).ready(async function() {
     });
   })
 
+  /*
   $("#btn-login").click(function(event) {
     event.preventDefault();
     $("#form-login").trigger("submit");
   })
+  */
 
   $("#form-login").submit(function(event) {
     event.preventDefault();
@@ -183,6 +185,39 @@ $(document).ready(async function() {
 
     var url = $(this).attr('action');
     var formData = new FormData(this);
+    var dataForm = $(this).serialize();
+
+    console.log(url);
+    console.log(dataLogin);
+
+    $.ajax({
+      url: url,
+      type: 'post',
+      dataType: 'json',
+      data: dataForm
+    //}).then(function(response) {
+    //  console.log(response);
+    //  notify(response.data.message, 'info');
+    //  cookies.set('token', response.data.token);
+    //  window.location.href = baseURL + 'sistema/dashboard';
+    }).done(function(response,textStatus, jqXHR){
+      console.log(response);
+      notify(response.message, 'info');
+      cookies.set('token', response.token);
+      window.location.href = baseURL + 'sistema/dashboard';
+    }).fail(function(jqXHR, textStatus, errorThrown){
+      //code to handle error here.
+      console.log(jqXHR);
+      console.log(textStatus);
+      console.log(errorThrown);
+      notify(jqXHR.responseJSON.message, 'error');
+      highlightFieldsError(jqXHR.errors);
+    }).always(function(jqXHR, textStatus, errorThrown){
+      //this code will always execute regardless
+      //of whether the done or error method executes
+    });
+
+    return false;
 
     server.post(url, formData)
       .then(response => {
@@ -199,14 +234,16 @@ $(document).ready(async function() {
           console.log(error.response.status);
           console.log(error.response.headers);
           notify(error.response.data.message, 'error');
-          highlightFieldsError(error.response.data.messages.error.errors);
+          highlightFieldsError(error.response.data.errors);
         } else if (error.request) {
           // The request was made but no response was received
           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
           // http.ClientRequest in node.js
+          console.log('Error request')
           console.log(error.request);
         } else {
           // Something happened in setting up the request that triggered an Error
+          console.log('General Error')
           console.log('Error', error.message);
         }
       });
@@ -223,6 +260,7 @@ $(document).ready(async function() {
 
     var url = $(this).attr('action');
     var formData = new FormData(this);
+    var dataForm = $(this).serialize();
 
     server.post(url, formData)
       .then(response => {
@@ -230,6 +268,7 @@ $(document).ready(async function() {
         notify(response.data.messages, 'info');
       })
       .catch(error => {
+        console.log('Error Form Ajax');
         if (error.response) {
           // The request was made and the server responded with a status code
           // that falls out of the range of 2xx
@@ -290,8 +329,29 @@ $(document).ready(async function() {
 
     var url = $(this).attr('action');
     var formData = new FormData(this);
+    var dataForm = $(this).serialize();
 
     console.log(formData);
+
+    $.ajax({
+      url: url,
+      type: 'post',
+      dataType: 'json',
+      data: dataForm
+    }).done(function(response,textStatus, jqXHR){
+      console.log(response);
+      notify(response.messages, 'info');
+    }).fail(function(jqXHR, textStatus, errorThrown){
+      console.log(jqXHR);
+      console.log(textStatus);
+      console.log(errorThrown);
+      notify(jqXHR.responseJSON.messages, 'error');
+      highlightFieldsError(jqXHR.responseJSON.errors);
+    }).always(function(jqXHR, textStatus, errorThrown){
+      hideLoadingDialog(loadingDialog);
+    });
+
+    return false;
 
     server.post(url, formData)
       .then(response => {
