@@ -141,16 +141,19 @@ class {class_name}ModelBase extends Model
       $this->where('id', $id)->delete();
       
       $this->result->success      = true;
-      $this->result->record['id'] = $record_id;
+      $this->result->record['id'] = $id;
       $this->result->messages[]   = 'Registro salvo com sucesso';
       $this->result->errors       = [];
 
       return (object)$this->result;
-		}
-		catch(Exception $e) {
-			$resultado['status'] = "er";
-			$resultado['mensagem'][] = 'Problemas na exclusão do registro: ' . $e->getMessage();
-			return $resultado;
+      
+		} catch(\Exception $e) {
+      $this->result->success      = false;
+      $this->result->record['id'] = $id;
+      $this->result->messages[]   = 'Problemas na exclusão do registro';
+      $this->result->errors       = 'Problemas na exclusão do registro';
+
+      return (object)$this->result;
 		}
 	}
 
