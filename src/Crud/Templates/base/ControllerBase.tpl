@@ -239,9 +239,11 @@ class {class_name}Base extends MainController
       ->edit('id', function($row){
         return 
         '<td class="text-center">
-            <div class="custom-control custom-checkbox">
-              <input type="checkbox" class="custom-control-input" name="id[]" id="id['.$row->id.']" value="'.$row->id.'">
-              <label class="custom-control-label" for="id['.$row->id.']"></label>
+            <div class="record-list-item" data-id="'.$row->id.'">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" name="id[]" id="id['.$row->id.']" value="'.$row->id.'">
+                <label class="custom-control-label" for="id['.$row->id.']"></label>
+              </div>
             </div>
           </td>';
       })
@@ -255,7 +257,7 @@ class {class_name}Base extends MainController
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="'.base_url('/sistema/{table}/edit').'/'.$row->id.'"><i class="fal fa-edit mr-2"></i> Editar</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="javascript:void(0)"><i class="fal fa-times-circle mr-2"></i> Excluir</a>
+                <a class="dropdown-item btn-record-delete" href="javascript:void(0)"><i class="fal fa-times-circle mr-2"></i> Excluir</a>
               </div>
             </div>
           </td>';
