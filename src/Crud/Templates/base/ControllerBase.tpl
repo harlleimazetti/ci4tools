@@ -257,7 +257,7 @@ class {class_name}Base extends MainController
               <div class="dropdown-menu">
                 <a class="dropdown-item" href="'.base_url('/sistema/{table}/edit').'/'.$row->id.'"><i class="fal fa-edit mr-2"></i> Editar</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item btn-record-delete" href="javascript:void(0)"><i class="fal fa-times-circle mr-2"></i> Excluir</a>
+                <a class="dropdown-item btn-record-delete" data-id="'.$row->id.'" href="javascript:void(0)"><i class="fal fa-times-circle mr-2"></i> Excluir</a>
               </div>
             </div>
           </td>';

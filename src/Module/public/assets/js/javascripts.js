@@ -245,6 +245,31 @@ $(document).ready(async function() {
     return false;
   });
 
+  $(document).on("click",".btn-record-delete", function() {
+    var dialog = bootbox.dialog({
+      title: 'Excluir registro(s)',
+      message: '<div class="alert alert-danger" role="alert"><p class="m-0"><strong>ATENÇÃO!</strong> O registro e todos os dados relacionados a ele serão definitivamente excluídos. Não é possível desfazer essa ação.</p></div>',
+      size: 'default',
+      buttons: {
+        cancel: {
+          label: "Cancelar",
+          className: 'btn-default',
+          callback: function() {
+            console.log('Cancel Delete');
+          }
+        },
+        ok:{
+          label: "Excluir registro(s)",
+          className: 'btn-danger',
+          callback: function(){
+            console.log('Delete Record');
+            console.log('Record ID: ' + $(this).closest('.record-list-item').data('id'));
+          }
+        }
+      }
+    });
+  });
+
   $(".form-record").submit(function(event)
   {
     console.log('Submit Form Record');
