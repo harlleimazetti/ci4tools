@@ -137,14 +137,22 @@ class {class_name}Base extends MainController
   public function erase()
 	{
 		${table}Model = new \App\Models\{model_name}Model();
-		$this->result = ${table}Model->erase($this->request->getPost('id'));
-		echo json_encode($this->result);
+		
+    $this->result = ${table}Model->withTenant($this->tenant)->erase($this->request->getPost('id'));
+		
+    if ($this->result->success === false) {
+       return $this->fail($this->result, 400);
+    }
+
+		return $this->respond($this->result, 200);
 	}
 
 	public function store()
 	{
 		${table}Model = new \App\Models\{model_name}Model();
-		$this->result = ${table}Model->withTenant($this->tenant)->store($this->request->getPost());
+		
+    $this->result = ${table}Model->withTenant($this->tenant)->store($this->request->getPost());
+    
     if ($this->result->success === false) {
        return $this->fail($this->result, 400);
     }

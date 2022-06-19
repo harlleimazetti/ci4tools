@@ -135,124 +135,17 @@ class {class_name}ModelBase extends Model
 		return $this->fields;
 	}
 
-	function getAll($params = array()) {
-		if (!isset($params['OR'])) { $params['OR'] = array(); }
-		if (!isset($params['AND'])) { $params['AND'] = array(); }
-		if (!isset($params['LIKE'])) { $params['LIKE'] = array(); }
-		$r = $this->get_{record}($params);
-		return $r;
-	}
-
-	function get{class_name}($params)
-	{
-		if (!isset($params['OR'])) { $params['OR'] = array(); }
-		if (!isset($params['AND'])) { $params['AND'] = array(); }
-		if (!isset($params['LIKE'])) { $params['LIKE'] = array(); }
-		$this->db->select('{table}.*');
-		//$this->db->from('{table}');
-		$this->db->where($params['AND']);
-		$this->db->orWhere($params['OR']);
-		$this->db->like($params['LIKE']);
-		$q = $this->db->get();
-		return $q->getResult();
-		foreach ($q->result() as $reg) {
-			$campos = get_object_vars($reg);
-			foreach ($campos as $campo => $valor) {
-				if ( ($campo == 'valor') or (substr($campo, 0, 6) == 'valor_') ) {
-					$reg->{$campo} = number_format($reg->{$campo}, 2, ',', '.');
-				}
-				if ( ($campo == 'data') or ($campo == 'nascimento') or ($campo == 'admissao') or (substr($campo, 0, 6) == 'data_') ) {
-					$reg->{$campo} = date('d/m/Y', strtotime($reg->{$campo}));
-				}
-			}
-		}
-		//echo get_class($this);
-		//echo $this->db->last_query(); exit;
-		if ($q->num_rows() > 0) {
-        	if ($q->num_rows() >= 1) {
-				$q = $this->relation->set('{table}', $q, TRUE);
-			}
-			return $q->result();
-		} else {
-			$r = array((object)$this->campos);
-			$r = $this->relation->set('{table}', $r, FALSE);
-			return $r;
-		}
-	}
-
-	function getDatatablesColumns()
-	{
-		$this->db->select('config');
-		$this->db->from('table_def');
-		$this->db->where(array('table' => '{table}'));
-		$q = $this->db->get();
-		$r = $q->result();
-		$r = reset($r);
-		$config = json_decode($r->config);
-		$colunas = array();
-		foreach ($config as $config) {
-			if ($config->mostrar == 'S') {
-				array_push($colunas, array('title' => $config->titulo));
-			}
-		}
-		array_push($colunas, array('title' => 'Ações'));
-		return $colunas;
-	}
-
-	function getDatatablesRecords($params = array())
-	{
-		if (!isset($params['OR'])) { $params['OR'] = array(); }
-		if (!isset($params['AND'])) { $params['AND'] = array(); }
-		if (!isset($params['LIKE'])) { $params['LIKE'] = array(); }
-		$this->load->helper('my_datatables_helper');
-		$this->load->library('datatables');
-		$this->db->select('config');
-		$this->db->from('table_def');
-		$this->db->where(array('table' => '{table}'));
-		$q = $this->db->get();
-		$r = $q->result();
-		$r = reset($r);
-		$conf = json_decode($r->config);
-		$campos = '';
-		$colunas = array();
-		//foreach ($this->campos as $campo) {
-		foreach ($conf as $config) {
-			if ($config->mostrar == 'S') {
-				$campos .= $config->nome . ', ';
-				array_push($colunas, array('title' => $config->titulo));
-			}
-		}
-		array_push($colunas, array('title' => 'Ações'));
-		$campos .= 'id AS acoes, ';
-		$campos = substr($campos, 0, -2);
-		$this->datatables->select($campos)->from("{table}")->where($params['AND']);
-		$this->datatables->edit_column('id','$1','$this->formata_registro_id(id)');
-		$this->datatables->edit_column('acoes','$1','$this->formata_acoes(acoes)');
-		foreach ($conf as $config) {
-			if ($config->mostrar == 'S') {
-				if ( ($config->nome == 'valor') or (substr($config->nome, 0, 6) == 'valor_') ) {
-					$this->datatables->edit_column("$config->nome",'$1','$this->formata_valor('."$config->nome".')');
-				} else if ( ($config->nome == 'data') or (substr($config->nome, 0, 5) == 'data_') ) {
-					$this->datatables->edit_column("$config->nome",'$1','$this->formata_data('."$config->nome".')');
-				} else {
-					$this->datatables->edit_column("$config->nome",'$1','$this->formata_coluna_datatables('."$config->nome".', "{table}", '.'col_'.$config->nome.')');
-				}
-			}
-		}
-		$data = json_decode($this->datatables->generate());
-		return json_encode($data);
-	}
-
 	function erase($id)
 	{
-		$resultado = array();
 		try {
-			$this->db->where(array('id' => $id));
-			$this->db->update('{table}', array('opt_deleted' => 1));
-			//echo $this->db->last_query(); exit;
-			$resultado['status'] = "ok";
-			$resultado['mensagem'][] = 'Registro excluído com sucesso';
-			return $resultado;
+      $this->where('id', $id)->delete();
+      
+      $this->result->success      = true;
+      $this->result->record['id'] = $record_id;
+      $this->result->messages[]   = 'Registro salvo com sucesso';
+      $this->result->errors       = [];
+
+      return (object)$this->result;
 		}
 		catch(Exception $e) {
 			$resultado['status'] = "er";
@@ -261,21 +154,33 @@ class {class_name}ModelBase extends Model
 		}
 	}
 
-  function store($data) {
-    ${table} = new \App\Entities\{class_name}();
-    ${table}->fill($data);
+  function store($data)
+  {
+    try {
+      ${table} = new \App\Entities\{class_name}();
+      ${table}->fill($data);
 
-    if (!$this->save(${table})) {
-      $this->result->success = false;
-      $this->result->messages[] = 'Problemas na gravação do registro';
-      $this->result->errors = $this->errors();
-      
-      return (object)$this->result;
+      if (!$this->save(${table})) {
+        $this->result->success = false;
+        $this->result->messages[] = 'Problemas na gravação do registro';
+        $this->result->errors = $this->errors();
+        
+        return (object)$this->result;
+      }
+    } catch(\Exception $e) {
+        $this->result->success = false;
+        $this->result->messages[] = 'Problemas na gravação do registro';
+        $this->result->errors = $this->errors();
+        
+        return (object)$this->result;
     }
 
-    $this->result->success = true;
-    $this->result->messages[] = 'Registro salvo com sucesso';
-    $this->result->errors = [];
+    $record_id = $this->getInsertID();
+
+    $this->result->success      = true;
+    $this->result->record['id'] = $record_id;
+    $this->result->messages[]   = 'Registro salvo com sucesso';
+    $this->result->errors       = [];
 
     return (object)$this->result;
   }
