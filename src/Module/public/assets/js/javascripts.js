@@ -194,11 +194,6 @@ $(document).ready(async function() {
       type: 'post',
       dataType: 'json',
       data: dataForm
-    //}).then(function(response) {
-    //  console.log(response);
-    //  notify(response.data.message, 'info');
-    //  cookies.set('token', response.data.token);
-    //  window.location.href = baseURL + 'sistema/dashboard';
     }).done(function(response,textStatus, jqXHR){
       console.log(response);
       notify(response.message, 'info');
@@ -250,79 +245,10 @@ $(document).ready(async function() {
     return false;
   });
 
-  $(".form-record").submit(function(event) {
-    event.preventDefault();
-
+  $(".form-record").submit(function(event)
+  {
     console.log('Submit Form Record');
-
-    unHighlightFieldsError();
-
-    var url = $(this).attr('action');
-    var formData = new FormData(this);
-    var dataForm = $(this).serialize();
-
-    server.post(url, formData)
-      .then(response => {
-        console.log(response);
-        notify(response.data.messages, 'info');
-      })
-      .catch(error => {
-        console.log('Error Form Ajax');
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-          notify(error.response.data.messages.error.messages, 'error');
-          highlightFieldsError(error.response.data.messages.error.errors);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-      });
-
-    return false;
-
-    var dados = $(this).serialize();
-    var url = $(this).attr('action');
-    var formData = new FormData(this);
-    //console.log(formData);
-    $.ajax({
-      url: url,
-      type: 'POST',
-      data: formData,
-      async: false,
-      cache: false,
-      contentType: false,
-      processData: false,
-      success: function (response) {
-        console.log(response);
-        //response = jQuery.parseJSON(response);
-        if (response.status == 'ok') {
-          //prompt(response.message);
-          //$("form.formulario-registro #id").val("0");
-          //$("form.formulario-registro #operacao_bd").val("novo");
-          //$('#modal_formulario_registro').modal('hide');
-          //atualiza_tabela_registros();
-        } else {
-          //toastr.error(response.message);
-        }
-      },
-      error: function(jqXHR, textStatus, msg) {
-        console.log(jqXHR);
-      }
-    });
-  });
-
-  $(".form-ajax").submit(function(event) {
     event.preventDefault();
-
     unHighlightFieldsError();
     var loadingDialog = showLoadingDialog();
 
@@ -330,14 +256,45 @@ $(document).ready(async function() {
     var formData = new FormData(this);
     var dataForm = $(this).serialize();
 
-    console.log(formData);
+    $.ajax({
+      url: url,
+      type: 'post',
+      dataType: 'json',
+      data: dataForm
+    }).done(function(response, textStatus, jqXHR){
+      console.log(response);
+      $('#id').val(response.record.id);
+      notify(response.messages, 'info');
+    }).fail(function(jqXHR, textStatus, errorThrown){
+      console.log(jqXHR);
+      console.log(textStatus);
+      console.log(errorThrown);
+      notify(jqXHR.responseJSON.messages, 'error');
+      highlightFieldsError(jqXHR.responseJSON.errors);
+    }).always(function(jqXHR, textStatus, errorThrown){
+      hideLoadingDialog(loadingDialog);
+    });
+
+    return false;
+  });
+
+  $(".form-ajax").submit(function(event)
+  {
+    console.log('Submit Ajax Form');
+    event.preventDefault();
+    unHighlightFieldsError();
+    var loadingDialog = showLoadingDialog();
+
+    var url = $(this).attr('action');
+    var formData = new FormData(this);
+    var dataForm = $(this).serialize();
 
     $.ajax({
       url: url,
       type: 'post',
       dataType: 'json',
       data: dataForm
-    }).done(function(response,textStatus, jqXHR){
+    }).done(function(response, textStatus, jqXHR){
       console.log(response);
       notify(response.messages, 'info');
     }).fail(function(jqXHR, textStatus, errorThrown){

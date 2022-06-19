@@ -161,21 +161,21 @@ class {class_name}ModelBase extends Model
       ${table}->fill($data);
 
       if (!$this->save(${table})) {
-        $this->result->success = false;
+        $this->result->success    = false;
         $this->result->messages[] = 'Problemas na gravação do registro';
-        $this->result->errors = $this->errors();
+        $this->result->errors     = $this->errors();
         
         return (object)$this->result;
       }
     } catch(\Exception $e) {
-        $this->result->success = false;
+        $this->result->success    = false;
         $this->result->messages[] = 'Problemas na gravação do registro';
-        $this->result->errors = $this->errors();
+        $this->result->errors     = $this->errors();
         
         return (object)$this->result;
     }
 
-    $record_id = $this->getInsertID();
+    $record_id = empty(${table}->id) ? $this->getInsertID() : ${table}->id;
 
     $this->result->success      = true;
     $this->result->record['id'] = $record_id;
