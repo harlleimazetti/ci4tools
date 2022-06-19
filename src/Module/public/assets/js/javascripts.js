@@ -188,7 +188,6 @@ $(document).ready(async function() {
     var dataForm = $(this).serialize();
 
     console.log(url);
-    console.log(dataLogin);
 
     $.ajax({
       url: url,
