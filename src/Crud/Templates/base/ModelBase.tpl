@@ -139,6 +139,7 @@ class {class_name}ModelBase extends Model
 	{
 		try {
       $this->where('id', $id)->delete();
+      $this->purgeDeleted();
       
       $this->result->success      = true;
       $this->result->record['id'] = $id;
