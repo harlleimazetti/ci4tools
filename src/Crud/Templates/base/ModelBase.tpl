@@ -142,11 +142,11 @@ class {class_name}ModelBase extends Model
       
       $this->result->success      = true;
       $this->result->record['id'] = $id;
-      $this->result->messages[]   = 'Registro salvo com sucesso';
+      $this->result->messages[]   = 'Registro excluído com sucesso';
       $this->result->errors       = [];
 
       return (object)$this->result;
-      
+
 		} catch(\Exception $e) {
       $this->result->success      = false;
       $this->result->record['id'] = $id;

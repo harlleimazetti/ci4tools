@@ -246,6 +246,8 @@ $(document).ready(async function() {
   });
 
   $(document).on("click",".btn-record-delete", function() {
+    var recordId = $(this).data('id');
+    var url = $(this).closest('.table-records').data('url');
     var dialog = bootbox.dialog({
       title: 'Excluir registro(s)',
       message: '<div class="alert alert-danger" role="alert"><p class="m-0"><strong>ATENÇÃO!</strong> O registro e todos os dados relacionados a ele serão definitivamente excluídos. Não é possível desfazer essa ação.</p></div>',
@@ -261,14 +263,38 @@ $(document).ready(async function() {
         ok:{
           label: "Excluir registro(s)",
           className: 'btn-danger',
-          callback: function(){
-            console.log('Delete Record');
-            console.log('Record ID: ' + $(this).closest('.record-list-item').data('id'));
+          callback: async function() {
+            console.log('Delete Record ID: ' + recordId);
+            console.log('URL: ' + url);
+            await recordDelete(recordId, url + '/erase');
           }
         }
       }
     });
   });
+
+  function recordDelete(id, url) {
+    $.ajax({
+      url: url,
+      type: 'post',
+      dataType: 'json',
+      data: {id: id}
+    }).done(function(response,textStatus, jqXHR){
+      console.log(response);
+      notify(response.messages, 'info');
+      cookies.set('token', response.token);
+    }).fail(function(jqXHR, textStatus, errorThrown){
+      //code to handle error here.
+      console.log(jqXHR);
+      console.log(textStatus);
+      console.log(errorThrown);
+      notify(jqXHR.responseJSON.messages, 'error');
+      highlightFieldsError(jqXHR.errors);
+    }).always(function(jqXHR, textStatus, errorThrown){
+      //this code will always execute regardless
+      //of whether the done or error method executes
+    });
+  }
 
   $(".form-record").submit(function(event)
   {
