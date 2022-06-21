@@ -274,15 +274,15 @@ $(document).ready(async function() {
   });
 
   function recordDelete(id, url) {
+    var loadingDialog = showLoadingDialog();
     $.ajax({
       url: url,
       type: 'post',
       dataType: 'json',
       data: {id: id}
-    }).done(function(response,textStatus, jqXHR){
+    }).done(function(response, textStatus, jqXHR){
       console.log(response);
       notify(response.messages, 'info');
-      cookies.set('token', response.token);
     }).fail(function(jqXHR, textStatus, errorThrown){
       //code to handle error here.
       console.log(jqXHR);
@@ -290,10 +290,19 @@ $(document).ready(async function() {
       console.log(errorThrown);
       notify(jqXHR.responseJSON.messages, 'error');
       highlightFieldsError(jqXHR.errors);
-    }).always(function(jqXHR, textStatus, errorThrown){
+    }).always(async function(jqXHR, textStatus, errorThrown){
       //this code will always execute regardless
       //of whether the done or error method executes
+      await refreshPageState();
+      hideLoadingDialog(loadingDialog);
     });
+  }
+
+  function refreshPageState() {
+    console.log('Refresh Datatables');
+    tableRecords.map((tableRecord) => {
+      tableRecord.ajax.reload( null, false );
+    })
   }
 
   $(".form-record").submit(function(event)
@@ -310,8 +319,10 @@ $(document).ready(async function() {
     $.ajax({
       url: url,
       type: 'post',
-      dataType: 'json',
-      data: dataForm
+      //dataType: 'json',
+      data: formData,
+      processData: false,
+      contentType: false,
     }).done(function(response, textStatus, jqXHR){
       console.log(response);
       $('#id').val(response.record.id);
@@ -320,8 +331,8 @@ $(document).ready(async function() {
       console.log(jqXHR);
       console.log(textStatus);
       console.log(errorThrown);
-      notify(jqXHR.responseJSON.messages, 'error');
-      highlightFieldsError(jqXHR.responseJSON.errors);
+      notify(jqXHR.responseJSON.messages.error.messages, 'error');
+      highlightFieldsError(jqXHR.responseJSON.messages.error.errors);
     }).always(function(jqXHR, textStatus, errorThrown){
       hideLoadingDialog(loadingDialog);
     });
@@ -343,8 +354,10 @@ $(document).ready(async function() {
     $.ajax({
       url: url,
       type: 'post',
-      dataType: 'json',
-      data: dataForm
+      //dataType: 'json',
+      data: formData,
+      processData: false,
+      contentType: false,
     }).done(function(response, textStatus, jqXHR){
       console.log(response);
       notify(response.messages, 'info');
