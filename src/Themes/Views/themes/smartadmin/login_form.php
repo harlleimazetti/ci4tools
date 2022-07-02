@@ -157,6 +157,7 @@ DOC: if you remove pace.js from core please note on Internet Explorer some CSS a
 <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/formplugins/select2/select2.bundle.js"></script>
 <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/fileupload/jquery.fileupload.js"></script>
 <script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/notifications/toastr/toastr.js"></script>
+<script src="<?php echo base_url(); ?>/public/themes/smartadmin/assets/js/formplugins/inputmask/inputmask.bundle.js"></script>
 <script src="<?php echo base_url(); ?>/public/assets/js/axios.min.js"></script>
 <script src="<?php echo base_url(); ?>/public/assets/js/libraries/js.cookie/js.cookie.min.js"></script>
 <script src="<?php echo base_url(); ?>/public/assets/js/javascripts.js" type="module"></script>
