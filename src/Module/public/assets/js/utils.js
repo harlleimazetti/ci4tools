@@ -15,11 +15,13 @@ export function highlightFieldsError(errors) {
   console.log(errors);
   $.each(errors, function(field, error) {
     $('#' + field).addClass('border-danger');
-    $('#' + field).siblings('span').addClass('color-danger').html(error);
+    $('#' + field).siblings('span').find('.select2-selection').addClass('border-danger');
+    $('#' + field).siblings('span.help-block').addClass('text-danger').html(error);
   });
 }
 
 export function unHighlightFieldsError() {
-  $('input.border-danger').siblings('span').removeClass('color-danger').html('');
   $('input.border-danger').removeClass('border-danger');
+  $('.select2-selection').removeClass('border-danger');
+  $('span.help-block').removeClass('text-danger').html('');
 }

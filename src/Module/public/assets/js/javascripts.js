@@ -16,6 +16,8 @@ import {
 
 $(document).ready(async function() {
 
+  $(".inputmask").inputmask();
+
   (function ( $ ) {
     $.fn.recordsList = function(options) {
       var settings = $.extend({
@@ -118,7 +120,7 @@ $(document).ready(async function() {
         })
 
         function refreshRecordList(params, filters) {
-          //var loadingDialog = showLoadingDialog();
+          var loadingDialog = showLoadingDialog();
           params = QueryStringToJSON(params);
           $.ajax({
             url: $recordList.data('url') + '/search',
@@ -131,7 +133,7 @@ $(document).ready(async function() {
               $recordListItem = $htmlTemplate.interpolate({record});
               $recordListContainer.append($recordListItem);
             });
-            //hideLoadingDialog(loadingDialog);
+            hideLoadingDialog(loadingDialog);
           });
         }
       });
@@ -157,7 +159,7 @@ $(document).ready(async function() {
     template: ".records-list-item-template",
   });
 
-  //$(lists).trigger('refresh');
+  $(lists).trigger('refresh');
 
   await $('#image-upload').each(async function (index, table) {
     $.uploadPreview({
@@ -398,6 +400,44 @@ $(document).ready(async function() {
       .finally(() => {
         hideLoadingDialog(loadingDialog);
       });
+    return false;
+  });
+
+  $(".form-pesquisar-carteira").submit(function(event)
+  {
+    console.log('Submit Pesquisar Carteira');
+    event.preventDefault();
+    unHighlightFieldsError();
+    var loadingDialog = showLoadingDialog();
+
+    var url = $(this).attr('action');
+    var formData = new FormData(this);
+    var dataForm = $(this).serialize();
+
+    $.ajax({
+      url: url,
+      type: 'post',
+      //dataType: 'json',
+      data: formData,
+      processData: false,
+      contentType: false,
+    }).done(function(response, textStatus, jqXHR){
+      //console.log(response);
+      //notify(response.messages, 'info');
+      var html = $(response).find('.pesquisar-carteira-resultado');
+      $('.pesquisar-carteira-container').hide();
+      $('.pesquisar-carteira-container').html(html)
+      $('.pesquisar-carteira-container').fadeIn('slow');
+    }).fail(function(jqXHR, textStatus, errorThrown){
+      console.log(jqXHR);
+      console.log(textStatus);
+      console.log(errorThrown);
+      notify(jqXHR.responseJSON.messages, 'error');
+      highlightFieldsError(jqXHR.responseJSON.errors);
+    }).always(function(jqXHR, textStatus, errorThrown){
+      hideLoadingDialog(loadingDialog);
+    });
+
     return false;
   });
   
