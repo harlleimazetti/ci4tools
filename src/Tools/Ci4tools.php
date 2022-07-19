@@ -110,6 +110,7 @@ class Ci4tools extends \CodeIgniter\Controller {
     $publisherConfigFiles = new \CodeIgniter\Publisher\Publisher($sourceConfigFiles, $destinationConfigFiles);
     $publisherConfigFiles->addPath('Ci4tools.php');
     $publisherConfigFiles->addPath('Ci4toolsRoutes.php');
+    $publisherConfigFiles->addPath('Ci4toolsValidation.php');
     $publisherConfigFiles->merge(false);
 
     /**
